@@ -1,0 +1,45 @@
+{
+  "generated_from": {
+    "models": 0,
+    "plans": 16,
+    "task_count": 113
+  },
+  "pairs": [],
+  "best_routes": [],
+  "cross_check": {
+    "pairs": [],
+    "summary": {}
+  },
+  "known_gaps": [
+    {
+      "plan": "Google AI Ultra",
+      "provider": "Google",
+      "reason": "Price is disputed across every source checked ($99.99, $199.99 and the original $249.99 have all been reported since Google I/O 2026) and, like Google AI Pro, there is no published conversion from AI credits to tokens or dollars. Not priced until the current price is confirmed directly."
+    },
+    {
+      "plan": "GLM Coding Plan (international, USD, Lite/Pro/Max)",
+      "provider": "Zhipu (Z.ai)",
+      "reason": "Z.ai's own pricing page and developer docs were unreachable from this build environment. Third-party aggregators disagreed on every tier's USD price. This repo prices the CNY-denominated domestic product instead, which was directly measured. Z.ai's published credit formula also needs its real output weight confirmed; see CONTRIBUTING item 3."
+    },
+    {
+      "plan": "Ollama Max, Ollama Team",
+      "provider": "Ollama",
+      "reason": "Figures for these tiers were found only via third-party aggregators, not Ollama's own pricing page (blocked from this build environment) or the CC BY 4.0 measured dataset this repo otherwise relies on."
+    },
+    {
+      "plan": "SuperGrok (agentic coding)",
+      "provider": "xAI",
+      "reason": "SuperGrok's usage pool is shared across chat, image generation and agentic coding with no separate coding quota published. Any agentic-only cost per task would be invented."
+    },
+    {
+      "plan": "DeepSWE model rate cards (data/models.json)",
+      "provider": "Datacurve",
+      "reason": "deepswe.datacurve.ai is blocked by this build environment's network egress. No per-model score, cost per task, output tokens or agent steps could be retrieved with a citation. This is the highest priority open item; see CONTRIBUTING item 1 and 6."
+    },
+    {
+      "plan": "MiniMax Coding Plan Plus",
+      "provider": "MiniMax",
+      "reason": "A real measured quota exists in Awesome Coding Plan (CNY 49/month, 54,400 requests, CNY 4,344 value) but has not yet been added to plans.json."
+    }
+  ]
+}

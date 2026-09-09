@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rack Rate — API list pricing is the rack rate. Nobody pays it.</title>
+<meta name="description" content="DeepSWE benchmark scores joined to what coding subscriptions actually charge. Every number cited.">
+<meta property="og:title" content="Rack Rate">
+<meta property="og:description" content="API list pricing is the rack rate. Nobody pays it.">
+<meta property="og:image" content="/og.png">
+<meta property="og:url" content="https://rackrate.dev">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0E15;
+    --panel:#111825;
+    --sunk:#0B1119;
+    --rule:#1D2735;
+    --rule-soft:#161F2C;
+    --ink:#EAEEF5;
+    --ink-dim:#A3B0C4;
+    --ink-faint:#67768D;
+    --adj:#FFB020;
+    --measured:#45D97F;
+    --api:#5C6A80;
+    --ease:cubic-bezier(.22,.61,.36,1);
+    --measure:60ch;
+    --dur-reprice:0.85s;
+    --dur-rail:0.4s;
+    --dur-toggle:0.32s;
+    --dur-hover:0.2s;
+  }
+  @media (prefers-reduced-motion: reduce){
+    :root{ --dur-reprice:0.01ms; --dur-rail:0.01ms; --dur-toggle:0.01ms; --dur-hover:0.01ms; }
+  }
+  *{ box-sizing:border-box; }
+  html{ background:var(--bg); }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink-dim);
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:17.5px;
+    line-height:1.62;
+    text-wrap:pretty;
+  }
+  h1,h2,h3,h4{
+    color:var(--ink);
+    font-weight:600;
+    letter-spacing:-.032em;
+    text-wrap:balance;
+    margin:0 0 .5em;
+  }
+  h1{ font-size:clamp(2.4rem,5vw,3.6rem); line-height:1.05; }
+  h2{ font-size:1.7rem; letter-spacing:-.02em; }
+  h3{ font-size:1.15rem; letter-spacing:-.01em; }
+  p{ margin:0 0 1em; }
+  a{ color:var(--adj); text-decoration-color:rgba(255,176,32,.4); }
+  a:hover{ text-decoration-color:var(--adj); }
+  code, .mono{ font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+  .tab-figs, table, .hero-figs, .rail-figs, .formula, code, .chart, figcaption .value{
+    font-variant-numeric: tabular-nums;
+  }
+  .measure{ max-width:var(--measure); margin-left:auto; margin-right:auto; padding:0 24px; }
+  @media (min-width:1500px){ .measure{ max-width:1240px; } h1{ font-size:4.2rem; } }
+
+  header.site{ padding:64px 0 40px; border-bottom:1px solid var(--rule); }
+  .wordmark{ font-family:"JetBrains Mono",monospace; font-size:.85rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:20px; }
+  .hero-figs{ display:flex; gap:36px; flex-wrap:wrap; margin-top:36px; }
+  .hero-fig{ min-width:140px; }
+  .hero-fig .value{ font-family:"JetBrains Mono",monospace; font-size:1.6rem; color:var(--adj); font-weight:500; }
+  .hero-fig .label{ color:var(--ink-faint); font-size:.85rem; margin-top:2px; }
+
+  .panel{ background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:28px; }
+  section.chart-section{ padding:56px 0; }
+  .chart-toolbar{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
+
+  .toggle-pill{ position:relative; display:flex; width:min(100%,320px); background:var(--sunk); border:1px solid var(--rule); border-radius:999px; padding:3px; font-family:"JetBrains Mono",monospace; font-size:.82rem; }
+  .toggle-pill button{ position:relative; z-index:1; flex:1; text-align:center; white-space:nowrap; background:none; border:0; color:var(--ink-faint); padding:7px 10px; border-radius:999px; cursor:pointer; transition:color var(--dur-toggle) var(--ease); }
+  .toggle-pill button[aria-pressed="true"]{ color:var(--bg); }
+  .toggle-pill .thumb{ position:absolute; top:3px; bottom:3px; left:3px; width:calc(50% - 3px); background:var(--adj); border-radius:999px; transition:transform var(--dur-toggle) var(--ease); }
+  .toggle-pill[data-mode="sub"] .thumb{ transform:translateX(100%); }
+
+  .mode-btn{ background:var(--sunk); border:1px solid var(--rule); color:var(--ink-dim); font-size:.82rem; padding:7px 14px; border-radius:8px; cursor:pointer; font-family:"JetBrains Mono",monospace; }
+  .mode-btn:disabled{ opacity:.4; cursor:not-allowed; }
+
+  .chart-wrap{ position:relative; }
+  svg.chart{ width:100%; height:auto; display:block; touch-action:manipulation; }
+  svg.chart:focus{ outline:2px solid var(--adj); outline-offset:4px; border-radius:8px; }
+  .gridline{ stroke:var(--rule-soft); stroke-width:1; }
+  .axis-label{ fill:var(--ink-faint); font-size:11px; font-family:"JetBrains Mono",monospace; }
+  .node{ transition:opacity var(--dur-hover) var(--ease); }
+  .node.dim{ opacity:.26; }
+  .node .connector{ stroke:var(--api); stroke-width:1; stroke-dasharray:2 3; }
+  .node .range-bar{ stroke:var(--api); stroke-width:3; stroke-linecap:round; opacity:.5; }
+  .node .halo{ fill:var(--adj); opacity:0; transition:opacity var(--dur-hover) var(--ease); }
+  .node.hot .halo{ opacity:.16; }
+  .node .dot{ transition:cx var(--dur-reprice) var(--ease), cy var(--dur-reprice) var(--ease), r var(--dur-hover) var(--ease); cursor:pointer; }
+  .node .dot.measured{ fill:var(--measured); stroke:none; }
+  .node .dot.published{ fill:var(--adj); stroke:none; }
+  .node .dot.derived{ fill:none; stroke:var(--adj); stroke-width:1.6; }
+  .node .leader{ stroke:var(--ink-faint); stroke-width:1; opacity:0; transition:opacity var(--dur-hover) var(--ease); }
+  .node.leadered .leader{ opacity:.6; }
+  .node .label{ fill:var(--ink-dim); font-size:12px; font-family:"JetBrains Mono",monospace; transition:transform var(--dur-reprice) var(--ease), fill var(--dur-hover) var(--ease); }
+  .node.hot .label{ fill:var(--ink); }
+  .crosshair{ stroke:var(--adj); stroke-width:1; stroke-dasharray:3 3; opacity:0; pointer-events:none; }
+  .crosshair.on{ opacity:.7; }
+  .crosshair-chip{ fill:var(--sunk); stroke:var(--rule); }
+  .crosshair-chip text{ fill:var(--adj); font-family:"JetBrains Mono",monospace; font-size:11px; }
+  .empty-state{ fill:var(--ink-faint); font-size:13px; }
+
+  .plan-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+  .plan-chip{ font-family:"JetBrains Mono",monospace; font-size:.78rem; background:var(--sunk); border:1px solid var(--rule); color:var(--ink-dim); padding:6px 12px; border-radius:999px; cursor:pointer; }
+  .plan-chip[aria-pressed="true"]{ border-color:var(--adj); color:var(--adj); }
+  details.plan-picker summary{ cursor:pointer; color:var(--ink-dim); font-family:"JetBrains Mono",monospace; font-size:.85rem; }
+
+  aside.rail{ position:fixed; top:0; right:0; height:100%; width:min(420px,92vw); background:var(--panel); border-left:1px solid var(--rule); padding:28px; overflow-y:auto; transform:translateX(100%); transition:transform var(--dur-rail) var(--ease); z-index:20; }
+  aside.rail.open{ transform:translateX(0); }
+  aside.rail .close{ background:none; border:0; color:var(--ink-faint); font-size:1.4rem; cursor:pointer; position:absolute; top:20px; right:20px; }
+  .rail-figs{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:20px 0; }
+  .rail-fig .value{ font-family:"JetBrains Mono",monospace; color:var(--adj); font-size:1.15rem; }
+  .rail-fig .label{ color:var(--ink-faint); font-size:.78rem; }
+  .rail .formula{ background:var(--sunk); border:1px solid var(--rule); border-radius:8px; padding:14px; font-size:.85rem; white-space:pre-wrap; }
+  .rail .evidence-list{ list-style:none; padding:0; margin:12px 0 0; }
+  .rail .evidence-list li{ padding:8px 0; border-top:1px solid var(--rule-soft); font-size:.85rem; }
+
+  table.routes{ width:100%; border-collapse:collapse; font-size:.92rem; }
+  table.routes th{ text-align:left; color:var(--ink-faint); font-weight:500; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; padding:10px 12px; border-bottom:1px solid var(--rule); cursor:pointer; user-select:none; }
+  table.routes th[aria-sort="ascending"]::after{ content:" \2191"; }
+  table.routes th[aria-sort="descending"]::after{ content:" \2193"; }
+  table.routes td{ padding:12px; border-bottom:1px solid var(--rule-soft); }
+  table.routes tr:hover td{ background:var(--sunk); }
+  .confidence-dot{ display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; }
+  .confidence-dot.measured{ background:var(--measured); }
+  .confidence-dot.published{ background:var(--adj); }
+  .confidence-dot.derived{ background:none; border:1.4px solid var(--adj); }
+  .confidence-dot.unresolved{ background:none; border:1px dashed var(--ink-faint); }
+
+  @media (max-width:620px){
+    table.routes thead{ display:none; }
+    table.routes, table.routes tbody, table.routes tr, table.routes td{ display:block; width:100%; }
+    table.routes tr{ border:1px solid var(--rule-soft); border-radius:10px; margin-bottom:10px; padding:8px 12px; }
+    table.routes td{ border:0; padding:6px 0; display:flex; justify-content:space-between; gap:12px; }
+    table.routes td::before{ content:attr(data-label); color:var(--ink-faint); font-size:.75rem; text-transform:uppercase; }
+  }
+
+  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:20px; }
+  @media (max-width:620px){ .cards{ grid-template-columns:1fr; } }
+  .card{ background:var(--panel); border:1px solid var(--rule); border-radius:12px; padding:20px; }
+  .license-badge{ display:inline-block; font-family:"JetBrains Mono",monospace; font-size:.72rem; padding:3px 8px; border-radius:5px; background:var(--sunk); border:1px solid var(--rule); color:var(--ink-faint); }
+  .license-badge.open{ color:var(--measured); border-color:var(--measured); }
+
+  .jump-nav{ position:sticky; top:0; z-index:5; background:rgba(10,14,21,.9); backdrop-filter:blur(6px); border-bottom:1px solid var(--rule); padding:12px 0; overflow-x:auto; }
+  .jump-nav .measure{ display:flex; gap:20px; white-space:nowrap; }
+  .jump-nav a{ color:var(--ink-faint); font-family:"JetBrains Mono",monospace; font-size:.8rem; }
+  .jump-nav a:hover{ color:var(--ink); }
+
+  footer.site{ padding:48px 0 80px; border-top:1px solid var(--rule); color:var(--ink-faint); font-size:.85rem; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="measure">
+    <div class="wordmark">Rack Rate</div>
+    <h1>API list pricing is the rack rate.<br>Nobody pays it.</h1>
+    <p>A hotel's rack rate is the price on the back of the door. <a href="https://deepswe.datacurve.ai/">DeepSWE</a> scores 21 coding models on 113 original engineering tasks and prices every one at API list rates. This page rejoins those scores to what a coding subscription actually charges, and cites every number.</p>
+    <div class="hero-figs" id="hero-figs"></div>
+  </div>
+</header>
+
+<nav class="jump-nav">
+  <div class="measure">
+    <a href="#chart">Chart</a>
+    <a href="#routes">Every route</a>
+    <a href="#runtime">How long a quota lasts</a>
+    <a href="#method">The method</a>
+    <a href="#cross-check">The cross check</a>
+    <a href="#sources">Sources</a>
+  </div>
+</nav>
+
+<section class="chart-section" id="chart">
+  <div class="measure">
+    <div class="panel">
+      <div class="chart-toolbar">
+        <div class="toggle-pill" data-mode="list" id="toggle-pill">
+          <div class="thumb"></div>
+          <button type="button" data-mode="list" aria-pressed="true">List price</button>
+          <button type="button" data-mode="sub" aria-pressed="false">Subscription price</button>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="mode-btn" id="copy-link" type="button">Copy link</button>
+          <button class="mode-btn" id="mode-3d" type="button" disabled title="Three-dimensional mode is not in this build yet">3D</button>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <svg class="chart" id="chart-svg" viewBox="0 0 960 520" tabindex="0" role="img" aria-label="Score against cost per task for every model">
+          <g id="gridlines"></g>
+          <g id="nodes"></g>
+          <line class="crosshair" id="crosshair-x" x1="0" y1="0" x2="0" y2="0"></line>
+          <line class="crosshair" id="crosshair-y" x1="0" y1="0" x2="0" y2="0"></line>
+          <text class="empty-state" id="empty-state" x="480" y="260" text-anchor="middle">No model data yet. deepswe.datacurve.ai is blocked from this build. See known_gaps in data/plans.json.</text>
+        </svg>
+      </div>
+      <details class="plan-picker">
+        <summary id="plan-picker-summary">Plans: all on</summary>
+        <div class="plan-chips" id="plan-chips"></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section id="routes" style="padding:0 0 56px;">
+  <div class="measure">
+    <h2>Every route</h2>
+    <p>One row per model, its cheapest plan among the ones selected above, and how that compares to API list price.</p>
+    <div style="overflow-x:auto;">
+      <table class="routes" id="routes-table">
+        <thead>
+          <tr>
+            <th data-key="model_name">Model</th>
+            <th data-key="score_pct">Score</th>
+            <th data-key="api_cost_per_task_usd">API list</th>
+            <th data-key="plan_name">Plan</th>
+            <th data-key="cost_per_task_usd">Plan cost / task</th>
+            <th data-key="days_for_full_run">Days for full run</th>
+          </tr>
+        </thead>
+        <tbody id="routes-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="runtime" style="padding:0 0 56px;">
+  <div class="measure">
+    <h2>How long a quota lasts</h2>
+    <p>A price per task hides the ceiling. This is how long all 113 tasks would take on each route, limited by whichever cap bites first: the monthly quota or the rolling five hour window.</p>
+    <svg class="chart" id="runtime-svg" viewBox="0 0 960 40" width="100%" role="img" aria-label="Days to run all tasks per route"></svg>
+  </div>
+</section>
+
+<section id="method" style="padding:0 0 56px;">
+  <div class="measure">
+    <h2>The method</h2>
+    <p><code>cost_per_task = price_per_month / tasks_per_month</code>. What counts as a task depends on which unit the vendor publishes its quota in.</p>
+    <div class="cards" id="method-cards"></div>
+  </div>
+</section>
+
+<section id="cross-check" style="padding:0 0 56px;">
+  <div class="measure">
+    <h2>The cross check</h2>
+    <p>Two vendors publish their measured quota twice, once in dollars and once in tokens. Counting both ways shares no input, since tokens per task come from a separate agent run. A stable gap between the two answers points at a systematic cause rather than noise.</p>
+    <svg class="chart" id="cross-svg" viewBox="0 0 960 160" width="100%" role="img" aria-label="Cross check ratio strip plot"></svg>
+    <p id="cross-summary" class="mono" style="color:var(--ink-faint); font-size:.85rem;"></p>
+  </div>
+</section>
+
+<section id="sources" style="padding:0 0 56px;">
+  <div class="measure">
+    <h2>Sources</h2>
+    <p>Every figure on this page traces to one of these records. Full detail in <a href="SOURCES.md">SOURCES.md</a>.</p>
+    <div class="cards" id="source-cards"></div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="measure">
+    <p>MIT licensed. Measured quotas from <a href="https://github.com/mahonzhan/awesome-coding-plan">Awesome Coding Plan</a> by mahonzhan, CC BY 4.0. See <a href="https://github.com/utkuacikgoz/rack-rate">the repository</a> and <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> for open work.</p>
+  </div>
+</footer>
+
+<aside class="rail" id="rail" aria-hidden="true">
+  <button class="close" id="rail-close" aria-label="Close">&times;</button>
+  <div id="rail-content"></div>
+</aside>
+
+<script id="rack-rate-data" type="application/json">{"models":[],"plans":[{"id":"claude-pro","name":"Claude Pro","provider":"Anthropic","price_usd_month":20.0,"quota_model":"budget","quota_usd_month":1273.6,"rolling_window_hours":5,"rolling_window_usd":31.84,"measured_against_model":"claude-opus-4.8","confidence":"measured","method":"Awesome Coding Plan measured a saturated month on claude-opus-4.8 through Claude Code: 14,360 requests and 1.588B tokens, valued at $1,273.60 at Anthropic's API rates. The 5-hour window figure ($31.84) is the same measurement's 5-hour slice.","evidence":["src-awesome-coding-plan"],"sources":["src-awesome-coding-plan"],"available":true},{"id":"claude-max-5x","name":"Claude Max 5x","provider":"Anthropic","price_usd_month":100.0,"quota_model":"budget","quota_usd_month":6368.0,"rolling_window_hours":5,"rolling_window_usd":159.2,"confidence":"medium","method":"Scaled from the measured Claude Pro quota by Anthropic's own advertised 5x multiplier for Max 5x. This is the vendor's claim carried through arithmetic, not an independent measurement. A real measured month would replace this row; see CONTRIBUTING.","evidence":["src-awesome-coding-plan","src-anthropic-max-pricing-search"],"sources":["src-awesome-coding-plan","src-anthropic-max-pricing-search"],"available":true},{"id":"claude-max-20x","name":"Claude Max 20x","provider":"Anthropic","price_usd_month":200.0,"quota_model":"budget","quota_usd_month":25472.0,"rolling_window_hours":5,"rolling_window_usd":636.8,"confidence":"medium","method":"Scaled from the measured Claude Pro quota by Anthropic's own advertised 20x multiplier for Max 20x. This is the vendor's claim carried through arithmetic, not an independent measurement. A real measured month would replace this row; see CONTRIBUTING.","evidence":["src-awesome-coding-plan","src-anthropic-max-pricing-search"],"sources":["src-awesome-coding-plan","src-anthropic-max-pricing-search"],"available":true},{"id":"chatgpt-plus","name":"ChatGPT Plus","provider":"OpenAI","price_usd_month":20.0,"quota_model":"budget","quota_usd_month":436.48,"measured_against_model":"gpt-5.6-sol","confidence":"measured","method":"Awesome Coding Plan measured a saturated month on gpt-5.6-sol through Codex: 8,760 requests and 616M tokens, valued at $436.48 at OpenAI's API rates. No 5-hour window figure was published for this plan, so days_for_full_run uses the monthly cap only.","evidence":["src-awesome-coding-plan"],"sources":["src-awesome-coding-plan"],"available":true},{"id":"chatgpt-pro-20x","name":"ChatGPT Pro 20x","provider":"OpenAI","price_usd_month":200.0,"quota_model":"budget","quota_usd_month":8729.6,"confidence":"medium","method":"Scaled from the measured ChatGPT Plus quota by OpenAI's own advertised roughly-20x multiplier for Pro over Plus. This is the vendor's claim carried through arithmetic, not an independent measurement.","evidence":["src-awesome-coding-plan","src-openai-pro-pricing-search"],"sources":["src-awesome-coding-plan","src-openai-pro-pricing-search"],"available":true},{"id":"cursor-pro","name":"Cursor Pro","provider":"Cursor","price_usd_month":20.0,"quota_model":"budget","quota_usd_month":20.0,"confidence":"high","method":"Cursor states Pro includes at least $20 of API usage per month, plus unmetered use of its Auto router. $20 is the vendor-published floor, not an exhaustively measured ceiling, so the real number is likely higher.","evidence":["src-awesome-coding-plan","src-cursor-pricing-search"],"sources":["src-awesome-coding-plan","src-cursor-pricing-search"],"available":true},{"id":"cursor-pro-plus","name":"Cursor Pro+","provider":"Cursor","price_usd_month":60.0,"quota_model":"budget","quota_usd_month":60.0,"confidence":"low","method":"Cursor's own pricing page was unreachable from this build environment. Third-party aggregators agree Pro+ is $60/month at roughly 3x Pro's included pool but disagree on the exact dollar figure ($60 to $70). This row uses 3x Cursor Pro's $20 floor as a placeholder guess, not a vendor-confirmed number.","evidence":["src-cursor-pricing-search"],"sources":["src-cursor-pricing-search"],"available":true},{"id":"cursor-ultra","name":"Cursor Ultra","provider":"Cursor","price_usd_month":200.0,"quota_model":"budget","quota_usd_month":400.0,"confidence":"low","method":"Cursor's own pricing page was unreachable from this build environment. Third-party aggregators describe Ultra as roughly 20x Pro's included pool. This row uses 20x Cursor Pro's $20 floor as a placeholder guess, not a vendor-confirmed number.","evidence":["src-cursor-pricing-search"],"sources":["src-cursor-pricing-search"],"available":true},{"id":"opencode-go","name":"OpenCode Go","provider":"OpenCode","price_usd_month":10.0,"quota_model":"budget","quota_usd_month":60.0,"confidence":"high","method":"OpenCode publishes Go's quota directly in dollars: $12 per 5 hours, $30 per week, $60 per month, spent across roughly two dozen open models. The vendor's discounted first month ($5) is excluded; this repo prices standard monthly billing only.","evidence":["src-awesome-coding-plan"],"sources":["src-awesome-coding-plan"],"available":true},{"id":"ollama-pro","name":"Ollama Pro","provider":"Ollama","price_usd_month":20.0,"quota_model":"budget","quota_usd_month":60.0,"confidence":"high","method":"Ollama states Pro includes $60 of monthly usage directly, spent at Ollama's own per-token overage rates.","evidence":["src-awesome-coding-plan"],"sources":["src-awesome-coding-plan"],"available":true},{"id":"github-copilot-pro","name":"GitHub Copilot Pro","provider":"GitHub","price_usd_month":10.0,"quota_model":"budget","quota_usd_month":15.0,"confidence":"high","method":"GitHub states Pro includes $15 of monthly usage credits directly.","evidence":["src-awesome-coding-plan"],"sources":["src-awesome-coding-plan"],"available":true},{"id":"kimi-code-andante","name":"Kimi Code Andante","provider":"Moonshot AI","price_usd_month":7.23,"quota_model":"requests","requests_month":2556,"measured_against_model":"kimi-k2.5","confidence":"measured","method":"Priced at CNY 49/month, sold only in China. Converted to USD at CNY 6.7787 per $1 (spot rate recorded 2026-09-04). Awesome Coding Plan measured a saturated month on kimi-k2.5: 2,556 requests, 84M tokens, valued at CNY 121.36. tasks_per_month divides requests_month by DeepSWE's agent steps per task, once data/models.json has a matching model.","evidence":["src-awesome-coding-plan"],"sources":["src-awesome-coding-plan"],"available":true,"quota_unresolved":true},{"id":"kimi-code-allegretto","name":"Kimi Code Allegretto","provider":"Moonshot AI","price_usd_month":29.36,"quota_model":"requests","requests_month":36292,"measured_against_model":"kimi-k2.5","confidence":"measured","method":"Priced at CNY 199/month, sold only in China. Converted to USD at CNY 6.7787 per $1 (spot rate recorded 2026-09-04). Awesome Coding Plan measured a saturated month on kimi-k2.5: 36,292 requests, 1.428B tokens, valued at CNY 1,968.00.","evidence":["src-awesome-coding-plan"],"sources":["src-awesome-coding-plan"],"available":true,"quota_unresolved":true},{"id":"glm-coding-lite","name":"GLM Coding Plan Lite","provider":"Zhipu (Z.ai)","price_usd_month":7.23,"quota_model":"requests","requests_month":2400,"measured_against_model":"glm-5.1","confidence":"measured","method":"This is the CNY 49/month domestic (bigmodel.cn) product, converted to USD at CNY 6.7787 per $1 (spot rate recorded 2026-09-04), not Z.ai's international USD-priced plan. Awesome Coding Plan measured a saturated month on glm-5.1: 2,400 prompts, 128M tokens, valued at CNY 248.76. This project uses request count rather than Z.ai's published credit formula because the formula's real output weight has not been confirmed; see CONTRIBUTING.","evidence":["src-awesome-coding-plan"],"sources":["src-awesome-coding-plan"],"available":true,"quota_unresolved":true},{"id":"glm-coding-pro","name":"GLM Coding Plan Pro","provider":"Zhipu (Z.ai)","price_usd_month":21.98,"quota_model":"requests","requests_month":12000,"measured_against_model":"glm-5.1","confidence":"measured","method":"This is the CNY 149/month domestic (bigmodel.cn) product, converted to USD at CNY 6.7787 per $1 (spot rate recorded 2026-09-04), not Z.ai's international USD-priced plan. Awesome Coding Plan measured a saturated month on glm-5.1: 12,000 prompts, 640M tokens, valued at CNY 1,243.80. This project uses request count rather than Z.ai's published credit formula because the formula's real output weight has not been confirmed; see CONTRIBUTING.","evidence":["src-awesome-coding-plan"],"sources":["src-awesome-coding-plan"],"available":true,"quota_unresolved":true},{"id":"google-ai-pro","name":"Google AI Pro","provider":"Google","price_usd_month":19.99,"quota_model":"credits","quota_unresolved":true,"quota_note":"1,000 AI credits per month.","confidence":"low","method":"Google states the monthly AI credit allotment directly, but has published no conversion from AI credits to tokens or API-rate dollars anywhere found. tasks_per_month cannot be computed. This row exists so the plan appears on the page, drawn hollow, rather than being silently missing.","evidence":["src-google-ai-pricing-search"],"sources":["src-google-ai-pricing-search"],"available":true}],"sources":[{"id":"src-deepswe-repo","title":"DeepSWE (Datacurve), GitHub repository","url":"https://github.com/datacurve-ai/deep-swe","license":"Apache-2.0","retrieved":"2026-09-09","covers":"Benchmark methodology, task count (113 tasks), harness (Pier + mini-swe-agent on Modal), and license. Read directly by cloning the repository; the live leaderboard site is blocked from this build environment.","changes":"None. Cited for methodology only, no data copied.","notes":"The live leaderboard at deepswe.datacurve.ai could not be reached from this build environment (network egress blocked). Per-model scores, cost per task, output tokens and agent steps are not yet in data/models.json as a result. See known_gaps."},{"id":"src-awesome-coding-plan","title":"Awesome Coding Plan, by mahonzhan","url":"https://github.com/mahonzhan/awesome-coding-plan","license":"CC BY 4.0","retrieved":"2026-09-09","covers":"Measured monthly quotas and their value at API rates for Claude Pro, ChatGPT Plus, Ollama Pro, OpenCode Go, Kimi Code Andante, Kimi Code Allegretto, GLM Coding Plan Lite, GLM Coding Plan Pro, Cursor Pro (floor value) and GitHub Copilot Pro.","changes":"Selected rows were converted from the source's table into this project's plan schema (price_usd_month, quota_usd_month or requests_month, confidence, method). CNY figures were kept as reported by the source and are not independently re-measured in USD here. Higher-tier plans (Claude Max 5x/20x, ChatGPT Pro) are this project's own scaling of the measured entry-tier row by the vendor's advertised multiplier, not a value from this source.","attribution":"Identification of the creator: mahonzhan@gmail.com. License notice: Licensed under the Creative Commons Attribution 4.0 International License. Link to the license: https://creativecommons.org/licenses/by/4.0/","credited_contributor":"mahonzhan"},{"id":"src-real-api-pricing","title":"real-api-pricing, by FeiZhuLulu","url":"https://github.com/FeiZhuLulu/real-api-pricing","license":"MIT (project software); underlying third-party data keeps its own terms, see the project's own SOURCES.md","retrieved":"2026-09-09","covers":"An independent per-token pricing comparison across other leaderboards, reaching a similar conclusion to this project by a different route. Credited in README.md. No figures from this source are copied into data/plans.json.","changes":"None. Credit only."},{"id":"src-anthropic-max-pricing-search","title":"Claude Max plan pricing and usage multipliers (search-corroborated)","url":"https://www.anthropic.com/pricing","license":"Not applicable, pricing page","retrieved":"2026-09-09","covers":"Claude Max 5x is $100/month and Max 20x is $200/month, each a multiplier on Claude Pro's usage limits per the vendor's own naming.","changes":"None.","notes":"The vendor's own pricing page is blocked from this build environment. This citation is corroborated through search-result summaries of the vendor's page and third-party coverage, not a direct fetch. A contributor without that network restriction should confirm directly and update this record's retrieval method."},{"id":"src-openai-pro-pricing-search","title":"ChatGPT Pro plan pricing and usage multiplier (search-corroborated)","url":"https://openai.com/chatgpt/pricing/","license":"Not applicable, pricing page","retrieved":"2026-09-09","covers":"ChatGPT Pro is $200/month, described by OpenAI as roughly 20x the usage of ChatGPT Plus ($20/month).","changes":"None.","notes":"Vendor page blocked from this build environment. Corroborated through search-result summaries and the OpenAI Help Center, not a direct fetch."},{"id":"src-cursor-pricing-search","title":"Cursor pricing tiers (search-corroborated)","url":"https://cursor.com/pricing","license":"Not applicable, pricing page","retrieved":"2026-09-09","covers":"Cursor Pro $20/month with a $20 included usage pool (matches the measured floor in Awesome Coding Plan). Pro+ $60/month at roughly 3x Pro's pool, Ultra $200/month at roughly 20x.","changes":"None.","notes":"Vendor page blocked from this build environment. Pro's figure is corroborated by src-awesome-coding-plan directly. Pro+ and Ultra multipliers come from third-party aggregator summaries only and are marked low confidence in plans.json."},{"id":"src-glm-zai-pricing-search","title":"Z.ai GLM Coding Plan (international, USD) pricing (search-corroborated, unresolved)","url":"https://z.ai/subscribe","license":"Not applicable, pricing page","retrieved":"2026-09-09","covers":"Attempted lookup of Z.ai's international USD-denominated GLM Coding Plan (Lite/Pro/Max) and its credit formula.","changes":"None.","notes":"Vendor page and vendor docs (docs.z.ai) are blocked from this build environment. Aggregator sites disagreed with each other on the USD price of every tier. Not used in plans.json; recorded in known_gaps instead. The plans priced in this repo's data (GLM Coding Plan Lite/Pro) are the CNY-denominated domestic product measured directly in src-awesome-coding-plan, a different product from the one this source describes."},{"id":"src-google-ai-pricing-search","title":"Google AI Pro and AI Ultra pricing and credits (search-corroborated, unresolved)","url":"https://gemini.google/subscriptions/","license":"Not applicable, pricing page","retrieved":"2026-09-09","covers":"Google AI Pro is $19.99/month with 1,000 AI credits/month. Google AI Ultra's price and credit allotment could not be resolved: sources disagreed between $99.99, $199.99 and the original $249.99 launch price, and between 25,000 and 35,000 credits.","changes":"None.","notes":"Vendor page blocked from this build environment. No published conversion from AI credits to tokens or dollars exists anywhere found. These rows are the weakest on the page by design; see known_gaps."}],"derived":{"generated_from":{"models":0,"plans":16,"task_count":113},"pairs":[],"best_routes":[],"cross_check":{"pairs":[],"summary":{}},"known_gaps":[{"plan":"Google AI Ultra","provider":"Google","reason":"Price is disputed across every source checked ($99.99, $199.99 and the original $249.99 have all been reported since Google I/O 2026) and, like Google AI Pro, there is no published conversion from AI credits to tokens or dollars. Not priced until the current price is confirmed directly."},{"plan":"GLM Coding Plan (international, USD, Lite/Pro/Max)","provider":"Zhipu (Z.ai)","reason":"Z.ai's own pricing page and developer docs were unreachable from this build environment. Third-party aggregators disagreed on every tier's USD price. This repo prices the CNY-denominated domestic product instead, which was directly measured. Z.ai's published credit formula also needs its real output weight confirmed; see CONTRIBUTING item 3."},{"plan":"Ollama Max, Ollama Team","provider":"Ollama","reason":"Figures for these tiers were found only via third-party aggregators, not Ollama's own pricing page (blocked from this build environment) or the CC BY 4.0 measured dataset this repo otherwise relies on."},{"plan":"SuperGrok (agentic coding)","provider":"xAI","reason":"SuperGrok's usage pool is shared across chat, image generation and agentic coding with no separate coding quota published. Any agentic-only cost per task would be invented."},{"plan":"DeepSWE model rate cards (data/models.json)","provider":"Datacurve","reason":"deepswe.datacurve.ai is blocked by this build environment's network egress. No per-model score, cost per task, output tokens or agent steps could be retrieved with a citation. This is the highest priority open item; see CONTRIBUTING item 1 and 6."},{"plan":"MiniMax Coding Plan Plus","provider":"MiniMax","reason":"A real measured quota exists in Awesome Coding Plan (CNY 49/month, 54,400 requests, CNY 4,344 value) but has not yet been added to plans.json."}]}}</script>
+<script>
+(function(){
+  "use strict";
+  var raw = document.getElementById("rack-rate-data").textContent;
+  var DATA = JSON.parse(raw);
+  var MODELS = DATA.models || [];
+  var PLANS = DATA.plans || [];
+  var DERIVED = DATA.derived || { pairs: [], best_routes: [], cross_check: { pairs: [], summary: {} }, known_gaps: [] };
+  var TASK_COUNT = (DERIVED.generated_from && DERIVED.generated_from.task_count) || 113;
+
+  var planById = {};
+  PLANS.forEach(function(p){ planById[p.id] = p; });
+  var modelById = {};
+  MODELS.forEach(function(m){ modelById[m.id] = m; });
+
+  // ---------- state ----------
+  var state = {
+    mode: "list",          // list | sub
+    selectedPlans: PLANS.filter(function(p){ return p.available !== false; }).map(function(p){ return p.id; }),
+    selectedModel: null,
+    hotId: null,
+  };
+
+  function readURL(){
+    var h = location.hash.replace(/^#/, "");
+    if (!h) return false;
+    var params = new URLSearchParams(h);
+    if (params.get("mode") === "sub" || params.get("mode") === "list") state.mode = params.get("mode");
+    if (params.has("plans")) {
+      var ids = params.get("plans").split(",").filter(Boolean);
+      if (ids.length) state.selectedPlans = ids;
+    }
+    if (params.has("model")) state.selectedModel = params.get("model");
+    return true;
+  }
+  function writeURL(){
+    var params = new URLSearchParams();
+    params.set("mode", state.mode);
+    params.set("plans", state.selectedPlans.join(","));
+    if (state.selectedModel) params.set("model", state.selectedModel);
+    history.replaceState(null, "", "#" + params.toString());
+  }
+  var skipOpeningAnimation = readURL();
+
+  // ---------- hero figures, computed live ----------
+  (function renderHero(){
+    var el = document.getElementById("hero-figs");
+    var routes = DERIVED.best_routes || [];
+    var pairCount = (DERIVED.pairs || []).length;
+    var figs = [
+      { label: MODELS.length + " model" + (MODELS.length === 1 ? "" : "s"), value: MODELS.length ? MODELS.length : "0" },
+      { label: "plans tracked", value: PLANS.length },
+      { label: "model × plan pairs priced", value: pairCount },
+    ];
+    if (routes.length) {
+      var cheapest = routes.reduce(function(a,b){ return b.cost_per_task_usd < a.cost_per_task_usd ? b : a; });
+      figs.push({ label: "cheapest route, " + cheapest.model_name + " on " + cheapest.plan_name, value: "$" + cheapest.cost_per_task_usd.toFixed(3) + "/task" });
+    }
+    el.innerHTML = figs.map(function(f){
+      return '<div class="hero-fig"><div class="value">' + f.value + '</div><div class="label">' + f.label + '</div></div>';
+    }).join("");
+  })();
+
+  // ---------- plan chips ----------
+  (function renderChips(){
+    var wrap = document.getElementById("plan-chips");
+    wrap.innerHTML = "";
+    PLANS.forEach(function(p){
+      var btn = document.createElement("button");
+      btn.className = "plan-chip";
+      btn.type = "button";
+      btn.textContent = p.name;
+      btn.setAttribute("aria-pressed", state.selectedPlans.indexOf(p.id) !== -1);
+      btn.addEventListener("click", function(){
+        var idx = state.selectedPlans.indexOf(p.id);
+        if (idx === -1) state.selectedPlans.push(p.id); else state.selectedPlans.splice(idx, 1);
+        btn.setAttribute("aria-pressed", state.selectedPlans.indexOf(p.id) !== -1);
+        writeURL();
+        recompute();
+      });
+      wrap.appendChild(btn);
+    });
+    document.getElementById("plan-picker-summary").textContent =
+      "Plans: " + state.selectedPlans.length + " of " + PLANS.length + " on";
+  })();
+
+  // ---------- toggle ----------
+  var togglePill = document.getElementById("toggle-pill");
+  togglePill.querySelectorAll("button").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      state.mode = btn.getAttribute("data-mode");
+      togglePill.setAttribute("data-mode", state.mode);
+      togglePill.querySelectorAll("button").forEach(function(b){
+        b.setAttribute("aria-pressed", b === btn);
+      });
+      writeURL();
+      paint();
+    });
+  });
+  togglePill.setAttribute("data-mode", state.mode);
+  togglePill.querySelectorAll("button").forEach(function(b){
+    b.setAttribute("aria-pressed", b.getAttribute("data-mode") === state.mode);
+  });
+
+  // ---------- chart geometry ----------
+  var svg = document.getElementById("chart-svg");
+  var nodesLayer = document.getElementById("nodes");
+  var gridLayer = document.getElementById("gridlines");
+  var emptyState = document.getElementById("empty-state");
+  var VB = { w: 960, h: 520, pad: 56 };
+  var N = {}; // model id -> { g, dot, label, connector, halo }
+  var xDomain = [0.01, 20];
+  var yDomain = [0, 100];
+
+  function xToPx(cost){
+    var lo = Math.log10(xDomain[0]), hi = Math.log10(xDomain[1]);
+    var t = (Math.log10(Math.max(cost, xDomain[0])) - lo) / (hi - lo);
+    return VB.pad + t * (VB.w - VB.pad * 2);
+  }
+  function yToPx(score){
+    var t = (score - yDomain[0]) / (yDomain[1] - yDomain[0]);
+    return VB.h - VB.pad - t * (VB.h - VB.pad * 2 - 20);
+  }
+
+  function cheapestFor(modelId, mode){
+    var pairs = (DERIVED.pairs || []).filter(function(p){
+      return p.model_id === modelId && state.selectedPlans.indexOf(p.plan_id) !== -1;
+    });
+    if (mode === "list") return null; // list mode uses model.api_cost_per_task_usd directly
+    if (!pairs.length) return null;
+    return pairs.reduce(function(a,b){ return b.cost_per_task_usd < a.cost_per_task_usd ? b : a; });
+  }
+
+  function confidenceClass(pair){
+    if (!pair) return "derived";
+    var conf = pair.confidence;
+    if (conf === "measured") return "measured";
+    if (conf === "high" || conf === "medium") return "published";
+    return "derived";
+  }
+
+  function drawGrid(){
+    gridLayer.innerHTML = "";
+    var xs = [0.01, 0.1, 1, 10];
+    xs.forEach(function(v){
+      var x = xToPx(v);
+      var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("class", "gridline");
+      line.setAttribute("x1", x); line.setAttribute("x2", x);
+      line.setAttribute("y1", VB.pad - 10); line.setAttribute("y2", VB.h - VB.pad);
+      gridLayer.appendChild(line);
+      var t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      t.setAttribute("class", "axis-label");
+      t.setAttribute("x", x); t.setAttribute("y", VB.h - VB.pad + 18);
+      t.setAttribute("text-anchor", "middle");
+      t.textContent = "$" + v;
+      gridLayer.appendChild(t);
+    });
+    [0, 25, 50, 75, 100].forEach(function(v){
+      var y = yToPx(v);
+      var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("class", "gridline");
+      line.setAttribute("x1", VB.pad); line.setAttribute("x2", VB.w - VB.pad + 10);
+      line.setAttribute("y1", y); line.setAttribute("y2", y);
+      gridLayer.appendChild(line);
+      var t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      t.setAttribute("class", "axis-label");
+      t.setAttribute("x", VB.pad - 10); t.setAttribute("y", y + 4);
+      t.setAttribute("text-anchor", "end");
+      t.textContent = v + "%";
+      gridLayer.appendChild(t);
+    });
+  }
+
+  function buildNodes(){
+    nodesLayer.innerHTML = "";
+    N = {};
+    MODELS.forEach(function(m){
+      var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+      g.setAttribute("class", "node");
+      g.setAttribute("tabindex", "-1");
+
+      var connector = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      connector.setAttribute("class", "connector");
+      var rangeBar = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      rangeBar.setAttribute("class", "range-bar");
+      var leader = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      leader.setAttribute("class", "leader");
+      var halo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      halo.setAttribute("class", "halo");
+      halo.setAttribute("r", 16);
+      var dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      dot.setAttribute("class", "dot");
+      dot.setAttribute("r", 5);
+      var label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      label.setAttribute("class", "label");
+
+      g.appendChild(connector);
+      g.appendChild(rangeBar);
+      g.appendChild(leader);
+      g.appendChild(halo);
+      g.appendChild(dot);
+      g.appendChild(label);
+      nodesLayer.appendChild(g);
+
+      N[m.id] = { g: g, connector: connector, rangeBar: rangeBar, leader: leader, halo: halo, dot: dot, label: label };
+
+      g.addEventListener("mouseenter", function(){ setHot(m.id); });
+      g.addEventListener("mouseleave", function(){ setHot(null); });
+      g.addEventListener("click", function(){ select(m.id); });
+    });
+  }
+
+  function paint(animate){
+    var hasModels = MODELS.length > 0;
+    emptyState.style.display = hasModels ? "none" : "block";
+    if (!hasModels) return;
+
+    // recompute domain
+    var costs = [];
+    MODELS.forEach(function(m){
+      if (m.api_cost_per_task_usd) costs.push(m.api_cost_per_task_usd);
+      var cheapest = cheapestFor(m.id, "sub");
+      if (cheapest) costs.push(cheapest.cost_per_task_usd);
+    });
+    if (costs.length) {
+      xDomain = [Math.max(0.001, Math.min.apply(null, costs) * 0.7), Math.max.apply(null, costs) * 1.4];
+    }
+    drawGrid();
+
+    var placed = [];
+    MODELS.forEach(function(m, i){
+      var n = N[m.id];
+      if (!n) return;
+      var cost = m.api_cost_per_task_usd;
+      var pair = null;
+      if (state.mode === "sub") {
+        pair = cheapestFor(m.id, "sub");
+        cost = pair ? pair.cost_per_task_usd : m.api_cost_per_task_usd;
+      }
+      var x = xToPx(cost);
+      var y = yToPx(m.score_pct);
+
+      n.dot.style.cx = x + "px";
+      n.dot.style.cy = y + "px";
+      n.halo.style.cx = x + "px";
+      n.halo.style.cy = y + "px";
+      n.dot.setAttribute("class", "dot " + confidenceClass(state.mode === "sub" ? pair : { confidence: "measured" }));
+
+      if (state.mode === "sub" && pair) {
+        var xList = xToPx(m.api_cost_per_task_usd);
+        n.connector.setAttribute("x1", xList); n.connector.setAttribute("x2", x);
+        n.connector.setAttribute("y1", y); n.connector.setAttribute("y2", y);
+        n.connector.style.opacity = 1;
+      } else {
+        n.connector.style.opacity = 0;
+      }
+
+      var placeY = y;
+      var attempts = 0;
+      while (placed.some(function(p){ return Math.abs(p.y - placeY) < 14 && Math.abs(p.x - x) < 90; }) && attempts < 26) {
+        placeY += (attempts % 2 === 0 ? 1 : -1) * (7 + attempts);
+        attempts++;
+      }
+      placed.push({ x: x, y: placeY });
+
+      n.label.textContent = m.name;
+      n.label.setAttribute("x", 0);
+      n.label.setAttribute("y", 0);
+      n.label.style.transform = "translate(" + (x + 9) + "px," + (placeY + 4) + "px)";
+
+      if (Math.abs(placeY - y) > 2) {
+        n.leader.setAttribute("x1", x); n.leader.setAttribute("y1", y);
+        n.leader.setAttribute("x2", x + 6); n.leader.setAttribute("y2", placeY);
+        n.g.classList.add("leadered");
+      } else {
+        n.g.classList.remove("leadered");
+      }
+    });
+  }
+
+  function setHot(modelId){
+    state.hotId = modelId;
+    Object.keys(N).forEach(function(id){
+      var n = N[id];
+      n.g.classList.toggle("hot", id === modelId);
+      n.g.classList.toggle("dim", modelId !== null && id !== modelId);
+    });
+    var crossX = document.getElementById("crosshair-x");
+    var crossY = document.getElementById("crosshair-y");
+    if (modelId && N[modelId]) {
+      var x = parseFloat(N[modelId].dot.style.cx);
+      var y = parseFloat(N[modelId].dot.style.cy);
+      crossX.setAttribute("x1", x); crossX.setAttribute("x2", x);
+      crossX.setAttribute("y1", VB.pad - 10); crossX.setAttribute("y2", VB.h - VB.pad);
+      crossX.classList.add("on");
+      crossY.setAttribute("y1", y); crossY.setAttribute("y2", y);
+      crossY.setAttribute("x1", VB.pad); crossY.setAttribute("x2", VB.w - VB.pad);
+      crossY.classList.add("on");
+      N[modelId].dot.setAttribute("r", 8);
+    } else {
+      crossX.classList.remove("on");
+      crossY.classList.remove("on");
+      Object.keys(N).forEach(function(id){ N[id].dot.setAttribute("r", 5); });
+    }
+    setTableHot(modelId);
+  }
+
+  function select(modelId){
+    state.selectedModel = modelId;
+    writeURL();
+    openRail(modelId);
+  }
+
+  // ---------- provenance rail ----------
+  var rail = document.getElementById("rail");
+  document.getElementById("rail-close").addEventListener("click", closeRail);
+  function closeRail(){
+    rail.classList.remove("open");
+    rail.setAttribute("aria-hidden", "true");
+    state.selectedModel = null;
+    writeURL();
+  }
+  function openRail(modelId){
+    var m = modelById[modelId];
+    if (!m) return;
+    var pairs = (DERIVED.pairs || []).filter(function(p){ return p.model_id === modelId; })
+      .sort(function(a,b){ return a.cost_per_task_usd - b.cost_per_task_usd; });
+    var html = "<h3>" + m.name + "</h3>";
+    html += '<div class="rail-figs">';
+    html += '<div class="rail-fig"><div class="value">' + m.score_pct + '%</div><div class="label">score</div></div>';
+    html += '<div class="rail-fig"><div class="value">$' + m.api_cost_per_task_usd.toFixed(3) + '</div><div class="label">API list / task</div></div>';
+    html += '</div>';
+    if (pairs.length) {
+      var best = pairs[0];
+      html += '<div class="formula">cost_per_task = price_per_month / tasks_per_month\n= $' + best.price_usd_month + ' / ' + best.tasks_per_month + '\n= $' + best.cost_per_task_usd.toFixed(4) + ' on ' + best.plan_name + '</div>';
+      if (best.days_for_full_run) {
+        html += '<p style="margin-top:12px;">All 113 tasks on ' + best.plan_name + ': <strong style="color:var(--adj)">' + best.days_for_full_run + ' days</strong>.</p>';
+      }
+    } else {
+      html += '<p>No plan in the selected set prices this model yet.</p>';
+    }
+    html += '<h3 style="margin-top:24px;">Evidence</h3><ul class="evidence-list">';
+    (m.evidence || []).forEach(function(id){
+      html += '<li>' + renderSourceRef(id) + '</li>';
+    });
+    html += '</ul>';
+    document.getElementById("rail-content").innerHTML = html;
+    rail.classList.add("open");
+    rail.setAttribute("aria-hidden", "false");
+  }
+  var sourceById = {};
+  (DATA.sources || []).forEach(function(s){ sourceById[s.id] = s; });
+  function renderSourceRef(id){
+    var s = sourceById[id];
+    if (!s) return id;
+    return '<a href="' + s.url + '">' + s.title + '</a> &middot; ' + s.license;
+  }
+
+  // ---------- keyboard nav ----------
+  svg.addEventListener("keydown", function(e){
+    var ids = MODELS.map(function(m){ return m.id; });
+    if (!ids.length) return;
+    var idx = ids.indexOf(state.hotId);
+    if (e.key === "ArrowRight" || e.key === "ArrowUp") { idx = Math.min(ids.length - 1, idx + 1); setHot(ids[idx]); e.preventDefault(); }
+    if (e.key === "ArrowLeft" || e.key === "ArrowDown") { idx = Math.max(0, idx === -1 ? 0 : idx - 1); setHot(ids[idx]); e.preventDefault(); }
+    if (e.key === "Enter" && state.hotId) select(state.hotId);
+    if (e.key === "Escape") setHot(null);
+  });
+
+  // ---------- table ----------
+  var sortKey = "cost_per_task_usd";
+  var sortDir = 1;
+  function routesForTable(){
+    var rows = [];
+    MODELS.forEach(function(m){
+      var pairs = (DERIVED.pairs || []).filter(function(p){
+        return p.model_id === m.id && state.selectedPlans.indexOf(p.plan_id) !== -1;
+      });
+      if (!pairs.length) return;
+      var best = pairs.reduce(function(a,b){ return b.cost_per_task_usd < a.cost_per_task_usd ? b : a; });
+      rows.push(best);
+    });
+    rows.sort(function(a,b){
+      var av = a[sortKey], bv = b[sortKey];
+      if (typeof av === "string") return sortDir * av.localeCompare(bv);
+      return sortDir * ((av||0) - (bv||0));
+    });
+    return rows;
+  }
+  function renderTable(){
+    var rows = routesForTable();
+    var body = document.getElementById("routes-body");
+    if (!rows.length) {
+      body.innerHTML = '<tr><td colspan="6" data-label="">No priced routes yet for the selected plans.</td></tr>';
+      return;
+    }
+    body.innerHTML = rows.map(function(r){
+      return "<tr data-model=\"" + r.model_id + "\">" +
+        '<td data-label="Model">' + r.model_name + "</td>" +
+        '<td data-label="Score">' + r.score_pct + "%</td>" +
+        '<td data-label="API list">$' + r.api_cost_per_task_usd.toFixed(3) + "</td>" +
+        '<td data-label="Plan">' + r.plan_name + "</td>" +
+        '<td data-label="Plan cost / task"><span class="confidence-dot ' + confidenceClass(r) + '"></span>$' + r.cost_per_task_usd.toFixed(4) + "</td>" +
+        '<td data-label="Days for full run">' + (r.days_for_full_run || "—") + "</td>" +
+        "</tr>";
+    }).join("");
+    Array.prototype.forEach.call(body.querySelectorAll("tr[data-model]"), function(tr){
+      tr.addEventListener("mouseenter", function(){ setHot(tr.getAttribute("data-model")); });
+      tr.addEventListener("mouseleave", function(){ setHot(null); });
+      tr.addEventListener("click", function(){ select(tr.getAttribute("data-model")); });
+    });
+  }
+  function setTableHot(modelId){
+    var body = document.getElementById("routes-body");
+    Array.prototype.forEach.call(body.querySelectorAll("tr[data-model]"), function(tr){
+      tr.style.background = tr.getAttribute("data-model") === modelId ? "var(--sunk)" : "";
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll("table.routes th[data-key]"), function(th){
+    th.addEventListener("click", function(){
+      var key = th.getAttribute("data-key");
+      if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = 1; }
+      Array.prototype.forEach.call(document.querySelectorAll("table.routes th"), function(t){ t.removeAttribute("aria-sort"); });
+      th.setAttribute("aria-sort", sortDir === 1 ? "ascending" : "descending");
+      renderTable();
+    });
+  });
+
+  // ---------- runtime chart ----------
+  function renderRuntime(){
+    var svgR = document.getElementById("runtime-svg");
+    var rows = (DERIVED.best_routes || []).filter(function(r){ return r.days_for_full_run; })
+      .sort(function(a,b){ return a.days_for_full_run - b.days_for_full_run; });
+    var rowH = 28;
+    svgR.setAttribute("viewBox", "0 0 960 " + Math.max(40, rows.length * rowH + 20));
+    if (!rows.length) {
+      svgR.innerHTML = '<text class="empty-state" x="480" y="24" text-anchor="middle">No runtime data yet.</text>';
+      return;
+    }
+    var maxDays = Math.max.apply(null, rows.map(function(r){ return r.days_for_full_run; }));
+    var scaleMax = Math.max(maxDays, 90);
+    var caps = [1, 7, 30, 90];
+    var html = "";
+    caps.forEach(function(c){
+      var x = 200 + (Math.log10(c) / Math.log10(scaleMax)) * 700;
+      html += '<line class="gridline" x1="' + x + '" x2="' + x + '" y1="0" y2="' + (rows.length * rowH) + '"></line>';
+    });
+    rows.forEach(function(r, i){
+      var y = i * rowH + 14;
+      var w = Math.max(2, (Math.log10(Math.max(r.days_for_full_run,0.1)) / Math.log10(scaleMax)) * 700);
+      var color = r.days_for_full_run <= 7 ? "var(--measured)" : (r.days_for_full_run <= 30 ? "var(--adj)" : "#B5533D");
+      html += '<text class="axis-label" x="0" y="' + (y+4) + '">' + r.model_name + " · " + r.plan_name + '</text>';
+      html += '<rect x="200" y="' + (y-6) + '" width="' + w + '" height="12" rx="6" fill="' + color + '"></rect>';
+      html += '<text class="axis-label" x="' + (206+w) + '" y="' + (y+4) + '">' + r.days_for_full_run + 'd</text>';
+    });
+    svgR.innerHTML = html;
+  }
+
+  // ---------- method cards ----------
+  function renderMethodCards(){
+    var wrap = document.getElementById("method-cards");
+    var budget = PLANS.find(function(p){ return p.quota_model === "budget" && p.confidence === "measured"; });
+    var requests = PLANS.find(function(p){ return p.quota_model === "requests"; });
+    var credits = PLANS.find(function(p){ return p.quota_model === "credits"; });
+    var cards = [];
+    if (budget) {
+      cards.push({
+        title: "Budget quota &middot; " + budget.name,
+        body: "tasks_per_month = quota_usd_month / DeepSWE cost per task\n\nquota_usd_month = $" + budget.quota_usd_month
+      });
+    }
+    if (requests) {
+      cards.push({
+        title: "Request quota &middot; " + requests.name,
+        body: "tasks_per_month = requests_month / agent_steps_per_task\n\nrequests_month = " + requests.requests_month
+      });
+    }
+    if (credits) {
+      cards.push({
+        title: "Credit quota &middot; " + credits.name,
+        body: "credits_per_task = (input_tokens + output_tokens × weight) / 10,000\n\nweight is unresolved for this plan; see known_gaps"
+      });
+    }
+    wrap.innerHTML = cards.map(function(c){
+      return '<div class="card"><h3>' + c.title + '</h3><div class="formula">' + c.body + '</div></div>';
+    }).join("") || '<div class="card">No plans priced yet.</div>';
+  }
+
+  // ---------- cross check ----------
+  function renderCrossCheck(){
+    var svgC = document.getElementById("cross-svg");
+    var rows = (DERIVED.cross_check && DERIVED.cross_check.pairs) || [];
+    var summary = (DERIVED.cross_check && DERIVED.cross_check.summary) || {};
+    if (!rows.length) {
+      svgC.innerHTML = '<text class="empty-state" x="480" y="80" text-anchor="middle">No cross-check pairs yet. Needs models.json populated.</text>';
+      document.getElementById("cross-summary").textContent = "";
+      return;
+    }
+    var maxRatio = Math.max.apply(null, rows.map(function(r){ return r.ratio; }));
+    var html = "";
+    rows.forEach(function(r, i){
+      var x = 60 + (r.ratio / maxRatio) * 820;
+      var y = 30 + (i % 4) * 30;
+      html += '<circle cx="' + x + '" cy="' + y + '" r="5" fill="var(--adj)" opacity="0.8"></circle>';
+    });
+    if (summary.median_ratio) {
+      var mx = 60 + (summary.median_ratio / maxRatio) * 820;
+      html += '<line x1="' + mx + '" x2="' + mx + '" y1="0" y2="160" stroke="var(--measured)" stroke-width="1.5" stroke-dasharray="4 3"></line>';
+    }
+    svgC.innerHTML = html;
+    document.getElementById("cross-summary").textContent = summary.median_ratio
+      ? ("Median ratio " + summary.median_ratio + "x across " + summary.pair_count + " pairs, range " + summary.min_ratio + "x to " + summary.max_ratio + "x.")
+      : "";
+  }
+
+  // ---------- sources ----------
+  function renderSources(){
+    var wrap = document.getElementById("source-cards");
+    wrap.innerHTML = (DATA.sources || []).map(function(s){
+      var open = /CC BY|MIT|Apache/.test(s.license);
+      return '<div class="card"><h3>' + s.title + '</h3>' +
+        '<p><span class="license-badge' + (open ? ' open' : '') + '">' + s.license + '</span></p>' +
+        '<p style="font-size:.88rem;">' + s.covers + '</p>' +
+        '<p><a href="' + s.url + '">' + s.url + '</a></p>' +
+        '</div>';
+    }).join("");
+  }
+
+  // ---------- copy link ----------
+  document.getElementById("copy-link").addEventListener("click", function(){
+    writeURL();
+    if (navigator.clipboard) navigator.clipboard.writeText(location.href);
+  });
+
+  // ---------- resize ----------
+  var lastBreakpoint = window.innerWidth <= 620;
+  window.addEventListener("resize", function(){
+    var isMobile = window.innerWidth <= 620;
+    if (isMobile !== lastBreakpoint) {
+      lastBreakpoint = isMobile;
+      svg.setAttribute("viewBox", isMobile ? "0 0 420 660" : "0 0 960 520");
+      VB = isMobile ? { w:420, h:660, pad:40 } : { w:960, h:520, pad:56 };
+      paint(false);
+    }
+  });
+
+  function recompute(){
+    document.getElementById("plan-picker-summary").textContent =
+      "Plans: " + state.selectedPlans.length + " of " + PLANS.length + " on";
+    paint(true);
+    renderTable();
+    renderRuntime();
+  }
+
+  // ---------- init ----------
+  buildNodes();
+  paint(!skipOpeningAnimation);
+  renderTable();
+  renderRuntime();
+  renderMethodCards();
+  renderCrossCheck();
+  renderSources();
+  if (state.selectedModel) openRail(state.selectedModel);
+})();
+</script>
+</body>
+</html>

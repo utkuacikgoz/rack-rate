@@ -1,0 +1,9 @@
+{
+  "source": "DeepSWE",
+  "source_url": "https://deepswe.datacurve.ai/",
+  "repo_url": "https://github.com/datacurve-ai/deep-swe",
+  "license": "Apache-2.0",
+  "task_count": 113,
+  "models": [],
+  "note": "Empty. deepswe.datacurve.ai is blocked by this build environment's network egress, and no per-model score, cost per task, output tokens or agent steps could be retrieved with a real citation. See known_gaps in data/plans.json and CONTRIBUTING.md item 1. Run scripts/fetch_deepswe.py from a network that can reach the site, once its real data endpoint is confirmed (ENDPOINTS in that script are unverified guesses)."
+}

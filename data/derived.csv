@@ -1,0 +1,1 @@
+model_id,model_name,score_pct,plan_id,plan_name,provider,price_usd_month,api_cost_per_task_usd,tasks_per_month,cost_per_task_usd,days_for_full_run,quota_method,confidence
