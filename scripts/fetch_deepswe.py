@@ -4,12 +4,19 @@
     python scripts/fetch_deepswe.py --diff   # print what moved, write nothing
     python scripts/fetch_deepswe.py          # write data/models.json
 
-VERIFIED. ENDPOINTS[0] and the response shape below were confirmed against a
-real fetch of the live site: `curl -s <url> | head -c 2000` was run outside
-this build environment (which cannot reach deepswe.datacurve.ai at all) and
-the result matched exactly, field for field, the "rows" schema this file
-expects. The other entries in ENDPOINTS are older, unconfirmed guesses kept
-only as a fallback if the confirmed one ever moves.
+PARTIALLY VERIFIED. The v1 endpoint (now ENDPOINTS[1]) and the response
+shape below were confirmed against a real fetch of the live site: `curl -s
+<url> | head -c 2000` was run outside this build environment (which cannot
+reach deepswe.datacurve.ai at all) and the result matched exactly, field for
+field, the "rows" schema this file expects. DeepSWE also runs a newer,
+actively-scored "v1.1" version at the URL now first in ENDPOINTS, which
+carries models v1 never got (e.g. gpt-6-astra) — its response shape is
+assumed identical to v1's since it is the same artifact format, but that
+assumption itself is unverified. If normalize() prints a "no
+MODEL_NAME_MAP/MODEL_PROVIDER_MAP entry" warning, or the resulting numbers
+look wrong, the v1.1 shape may have actually diverged; check a raw response
+before trusting the output. The remaining entries in ENDPOINTS are older,
+unconfirmed guesses kept only as a last-resort fallback.
 
 Each row is one (model, harness, reasoning_effort) configuration. Per model,
 only the highest pass_rate configuration is kept, per CONTRIBUTING item 7 —
@@ -40,7 +47,8 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 
 ENDPOINTS = [
-    "https://deepswe.datacurve.ai/artifacts/v1/leaderboard-live.json",  # confirmed against a real fetch
+    "https://deepswe.datacurve.ai/artifacts/v1.1/leaderboard-live.json",  # the live, actively-scored version; found via browser network tab
+    "https://deepswe.datacurve.ai/artifacts/v1/leaderboard-live.json",  # older scoring version, confirmed working but stale since 2026-06-20
     "https://deepswe.datacurve.ai/api/leaderboard",
     "https://deepswe.datacurve.ai/leaderboard.json",
     "https://api.datacurve.ai/deepswe/leaderboard",
