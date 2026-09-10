@@ -97,7 +97,7 @@
   }
   @keyframes heroIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
   .wordmark{
-    position:relative; display:inline-block; font-family:"JetBrains Mono",monospace; font-size:.85rem;
+    position:relative; z-index:10; display:inline-block; font-family:"JetBrains Mono",monospace; font-size:.85rem;
     letter-spacing:.14em; text-transform:uppercase; margin-bottom:18px; cursor:help;
     background:#F4F1EA; color:#12151B; padding:4px 10px; border-radius:6px;
     transition:background .15s ease;
@@ -125,7 +125,7 @@
   .budget-tool label{ font-size:1.1rem; color:var(--ink); display:flex; align-items:center; flex-wrap:wrap; gap:2px; }
   .budget-input-wrap{ display:inline-flex; align-items:center; font-family:"JetBrains Mono",monospace; color:var(--adj); font-weight:500; }
   #budget-input{
-    box-sizing:border-box; width:3.8ch; text-align:center; line-height:1.2;
+    box-sizing:content-box; width:3ch; text-align:center; line-height:1.2;
     margin-left:2px; background:var(--sunk); border:1px solid var(--rule); border-radius:6px;
     color:var(--adj); font-family:"JetBrains Mono",monospace; font-size:1.05rem; font-weight:600;
     padding:4px 6px; -moz-appearance:textfield;
@@ -261,7 +261,7 @@
     <div class="hero-tool">
       <div class="budget-tool">
         <div class="budget-tool-kicker">Try it</div>
-        <label for="budget-input">What does <span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" step="1" inputmode="numeric"></span> a month get you?</label>
+        <label for="budget-input">What does <span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="999" step="1" maxlength="3" inputmode="numeric"></span> a month get you?</label>
         <div class="budget-result" id="budget-result" aria-live="polite"></div>
       </div>
     </div>
@@ -491,7 +491,12 @@
   (function initBudgetTool(){
     var input = document.getElementById("budget-input");
     if (!input) return;
-    input.addEventListener("input", renderBudgetTool);
+    input.addEventListener("input", function(){
+      var digits = input.value.replace(/[^0-9]/g, "").slice(0, 3);
+      var next = digits === "" ? "" : String(Number(digits));
+      if (input.value !== next) input.value = next;
+      renderBudgetTool();
+    });
     renderBudgetTool();
   })();
 
