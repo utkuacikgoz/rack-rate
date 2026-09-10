@@ -12,8 +12,16 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  /* Nimbus Sans L, self-hosted. (URW)++ Design & Development, 2014. Free,
+     metric-compatible with Helvetica. Only Regular/Italic/Bold/Bold Italic
+     exist, no 500/600 weight, so font-weight in this file only ever asks
+     for 400 or 600 (which the browser synthesizes as bold from these). */
+  @font-face{ font-family:"Nimbus Sans L"; src:url("fonts/NimbusSanL-Regular.woff2") format("woff2"); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face{ font-family:"Nimbus Sans L"; src:url("fonts/NimbusSanL-Italic.woff2") format("woff2"); font-weight:400; font-style:italic; font-display:swap; }
+  @font-face{ font-family:"Nimbus Sans L"; src:url("fonts/NimbusSanL-Bold.woff2") format("woff2"); font-weight:600 700; font-style:normal; font-display:swap; }
+  @font-face{ font-family:"Nimbus Sans L"; src:url("fonts/NimbusSanL-BoldItalic.woff2") format("woff2"); font-weight:600 700; font-style:italic; font-display:swap; }
   :root{
     --bg:#0A0E15;
     --panel:#111825;
@@ -37,11 +45,13 @@
   }
   *{ box-sizing:border-box; }
   html{ background:var(--bg); }
+  @media (prefers-reduced-motion: no-preference){ html{ scroll-behavior:smooth; } }
+  section[id]{ scroll-margin-top:56px; }
   body{
     margin:0;
     background:var(--bg);
     color:var(--ink-dim);
-    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-family:"Nimbus Sans L","Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size:17.5px;
     line-height:1.62;
     text-wrap:pretty;
@@ -112,7 +122,7 @@
   .crosshair-chip{ fill:var(--sunk); stroke:var(--rule); }
   .crosshair-chip text{ fill:var(--adj); font-family:"JetBrains Mono",monospace; font-size:11px; }
   .empty-state{ fill:var(--ink-faint); font-size:13px; }
-  .runtime-row, .cross-dot{ cursor:pointer; }
+  .runtime-row, .cross-point{ cursor:pointer; }
   .runtime-row:hover .runtime-bar{ filter:brightness(1.25); }
   .runtime-row:focus-visible{ outline:2px solid var(--adj); outline-offset:2px; }
   .cross-dot{ transition:r var(--dur-hover) var(--ease); }
@@ -131,6 +141,10 @@
   .rail .formula{ background:var(--sunk); border:1px solid var(--rule); border-radius:8px; padding:14px; font-size:.85rem; white-space:pre-wrap; }
   .rail .evidence-list{ list-style:none; padding:0; margin:12px 0 0; }
   .rail .evidence-list li{ padding:8px 0; border-top:1px solid var(--rule-soft); font-size:.85rem; }
+  .rail-effort-table{ width:100%; border-collapse:collapse; font-size:.8rem; }
+  .rail-effort-table th{ text-align:left; color:var(--ink-faint); font-weight:500; padding:4px 6px; border-bottom:1px solid var(--rule); }
+  .rail-effort-table td{ padding:5px 6px; border-bottom:1px solid var(--rule-soft); color:var(--ink-dim); }
+  .rail-effort-table tr.active td{ color:var(--adj); }
 
   table.routes{ width:100%; border-collapse:collapse; font-size:.85rem; }
   table.routes th{ text-align:left; color:var(--ink-faint); font-weight:500; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; padding:10px 12px; border-bottom:1px solid var(--rule); cursor:pointer; user-select:none; white-space:nowrap; }
@@ -683,6 +697,22 @@
     } else {
       html += '<p>No plan in the selected set prices this model yet.</p>';
     }
+    if (m.effort_variants && m.effort_variants.length) {
+      html += '<h3 style="margin-top:24px;">Reasoning effort</h3>';
+      html += '<p style="font-size:.82rem; margin-bottom:10px;">DeepSWE ran this model at ' + m.effort_variants.length + ' effort levels. The chart uses the highest-scoring one.</p>';
+      html += '<table class="rail-effort-table">';
+      html += '<thead><tr><th>Effort</th><th>Score</th><th>Cost</th><th>Steps</th></tr></thead><tbody>';
+      m.effort_variants.forEach(function(v){
+        var active = v.score_pct === m.score_pct;
+        html += '<tr' + (active ? ' class="active"' : '') + '>' +
+          '<td>' + (v.reasoning_effort || '—') + '</td>' +
+          '<td>' + v.score_pct + '%</td>' +
+          '<td>$' + v.api_cost_per_task_usd.toFixed(2) + '</td>' +
+          '<td>' + v.agent_steps_per_task + '</td>' +
+          '</tr>';
+      });
+      html += '</tbody></table>';
+    }
     html += '<h3 style="margin-top:24px;">Evidence</h3><ul class="evidence-list">';
     (m.evidence || []).forEach(function(id){
       html += '<li>' + renderSourceRef(id) + '</li>';
@@ -861,24 +891,42 @@
       return;
     }
     var maxRatio = Math.max.apply(null, rows.map(function(r){ return r.ratio; }));
+    var LANES = [26, 58, 90, 122, 154, 186];
+    var laneLastX = [];
+    function placeLane(x){
+      for (var li = 0; li < LANES.length; li++){
+        if (laneLastX[li] === undefined || x - laneLastX[li] > 130) {
+          laneLastX[li] = x;
+          return LANES[li];
+        }
+      }
+      laneLastX[LANES.length - 1] = x;
+      return LANES[LANES.length - 1];
+    }
+    var viewH = LANES[LANES.length - 1] + 30;
+    svgC.setAttribute("viewBox", "0 0 960 " + viewH);
     var html = "";
-    rows.forEach(function(r, i){
-      var x = 60 + (r.ratio / maxRatio) * 820;
-      var y = 30 + (i % 4) * 30;
-      html += '<circle class="cross-dot" data-model="' + r.model_id + '" cx="' + x + '" cy="' + y + '" r="6" fill="var(--adj)" opacity="0.8">' +
+    rows.slice().sort(function(a, b){ return a.ratio - b.ratio; }).forEach(function(r){
+      var x = 60 + (r.ratio / maxRatio) * 780;
+      var y = placeLane(x);
+      html += '<g class="cross-point" data-model="' + r.model_id + '">';
+      html += '<circle class="cross-dot" cx="' + x + '" cy="' + y + '" r="6" fill="var(--adj)" opacity="0.85">' +
         '<title>' + r.model_name + ' on ' + r.plan_name + ': ' + r.ratio + 'x gap between the dollar and token count (' +
         r.tasks_by_dollars + ' vs ' + r.tasks_by_tokens + ' tasks/month)</title></circle>';
+      html += '<text class="axis-label" x="' + (x + 11) + '" y="' + (y + 4) + '">' + r.model_name + '</text>';
+      html += '</g>';
     });
     if (summary.median_ratio) {
-      var mx = 60 + (summary.median_ratio / maxRatio) * 820;
-      html += '<line x1="' + mx + '" x2="' + mx + '" y1="0" y2="160" stroke="var(--measured)" stroke-width="1.5" stroke-dasharray="4 3"></line>';
+      var mx = 60 + (summary.median_ratio / maxRatio) * 780;
+      html += '<line x1="' + mx + '" x2="' + mx + '" y1="0" y2="' + viewH + '" stroke="var(--measured)" stroke-width="1.5" stroke-dasharray="4 3"></line>';
     }
     svgC.innerHTML = html;
-    Array.prototype.forEach.call(svgC.querySelectorAll(".cross-dot"), function(dot){
-      var modelId = dot.getAttribute("data-model");
-      dot.addEventListener("mouseenter", function(){ dot.setAttribute("r", 8); setHot(modelId); });
-      dot.addEventListener("mouseleave", function(){ dot.setAttribute("r", 6); setHot(null); });
-      dot.addEventListener("click", function(){ select(modelId); });
+    Array.prototype.forEach.call(svgC.querySelectorAll(".cross-point"), function(g){
+      var modelId = g.getAttribute("data-model");
+      var dot = g.querySelector(".cross-dot");
+      g.addEventListener("mouseenter", function(){ dot.setAttribute("r", 8); setHot(modelId); });
+      g.addEventListener("mouseleave", function(){ dot.setAttribute("r", 6); setHot(null); });
+      g.addEventListener("click", function(){ select(modelId); });
     });
     document.getElementById("cross-summary").textContent = summary.median_ratio
       ? ("Median ratio " + summary.median_ratio + "x across " + summary.pair_count + " pairs, range " + summary.min_ratio + "x to " + summary.max_ratio + "x.")

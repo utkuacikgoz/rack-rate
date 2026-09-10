@@ -2399,6 +2399,7 @@
         "plan_id": "claude-pro",
         "plan_name": "Claude Pro",
         "model_id": "claude-opus-4.8",
+        "model_name": "claude-opus-4.8",
         "tasks_by_dollars": 112.89,
         "tasks_by_tokens": 121.75,
         "ratio": 1.078
@@ -2407,6 +2408,7 @@
         "plan_id": "claude-pro",
         "plan_name": "Claude Pro",
         "model_id": "claude-opus-4.7",
+        "model_name": "claude-opus-4.7",
         "tasks_by_dollars": 79.84,
         "tasks_by_tokens": 65.95,
         "ratio": 1.211
@@ -2415,6 +2417,7 @@
         "plan_id": "claude-pro",
         "plan_name": "Claude Pro",
         "model_id": "claude-sonnet-4.6",
+        "model_name": "claude-sonnet-4.6",
         "tasks_by_dollars": 268.03,
         "tasks_by_tokens": 154.12,
         "ratio": 1.739
@@ -2423,6 +2426,7 @@
         "plan_id": "claude-pro",
         "plan_name": "Claude Pro",
         "model_id": "claude-opus-4.6",
+        "model_name": "claude-opus-4.6",
         "tasks_by_dollars": 273.16,
         "tasks_by_tokens": 263.24,
         "ratio": 1.038
@@ -2431,6 +2435,7 @@
         "plan_id": "claude-pro",
         "plan_name": "Claude Pro",
         "model_id": "claude-haiku-4.5",
+        "model_name": "claude-haiku-4.5",
         "tasks_by_dollars": 1639.34,
         "tasks_by_tokens": 333.61,
         "ratio": 4.914
@@ -2439,6 +2444,7 @@
         "plan_id": "chatgpt-plus",
         "plan_name": "ChatGPT Plus",
         "model_id": "gpt-5.5",
+        "model_name": "gpt-5.5",
         "tasks_by_dollars": 75.84,
         "tasks_by_tokens": 95.76,
         "ratio": 1.263
@@ -2447,6 +2453,7 @@
         "plan_id": "chatgpt-plus",
         "plan_name": "ChatGPT Plus",
         "model_id": "gpt-5.4",
+        "model_name": "gpt-5.4",
         "tasks_by_dollars": 132.01,
         "tasks_by_tokens": 95.11,
         "ratio": 1.388
@@ -2455,6 +2462,7 @@
         "plan_id": "chatgpt-plus",
         "plan_name": "ChatGPT Plus",
         "model_id": "gpt-5.4-mini",
+        "model_name": "gpt-5.4-mini",
         "tasks_by_dollars": 215.25,
         "tasks_by_tokens": 52.94,
         "ratio": 4.066
