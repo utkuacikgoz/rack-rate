@@ -2489,11 +2489,6 @@
       "reason": "SuperGrok's usage pool is shared across chat, image generation and agentic coding with no separate coding quota published. Any agentic-only cost per task would be invented."
     },
     {
-      "plan": "DeepSWE model rate cards (data/models.json)",
-      "provider": "Datacurve",
-      "reason": "deepswe.datacurve.ai is blocked by this build environment's network egress. No per-model score, cost per task, output tokens or agent steps could be retrieved with a citation. This is the highest priority open item; see CONTRIBUTING item 1 and 6."
-    },
-    {
       "plan": "MiniMax Coding Plan Plus",
       "provider": "MiniMax",
       "reason": "A real measured quota exists in Awesome Coding Plan (CNY 49/month, 54,400 requests, CNY 4,344 value) but has not yet been added to plans.json."

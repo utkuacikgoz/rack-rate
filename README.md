@@ -36,12 +36,14 @@ flight for the honest version of this table.
 has 21 real models from a DeepSWE results snapshot (dated 2026-06-20).
 
 `deepswe.datacurve.ai`, the live leaderboard, is still blocked by this build
-environment's network egress. The snapshot in `data/models.json` was supplied
-directly rather than fetched by `scripts/fetch_deepswe.py`, whose `ENDPOINTS`
-are still unverified guesses; see `src-deepswe-data` in `data/sources.json`
-for exactly what that snapshot covers and how it differs from a live pull.
-Refreshing it once the real endpoint is confirmed is the single highest value
-contribution right now. See CONTRIBUTING.md.
+environment's network egress, so the snapshot in `data/models.json` was
+supplied directly rather than fetched here. `scripts/fetch_deepswe.py`'s
+endpoint and field mapping are now confirmed against that exact data (a real
+fetch outside this build environment matched it exactly), so running it from
+an unblocked network is a plain refresh, not a fix. See `src-deepswe-data` in
+`data/sources.json`. The snapshot's own timestamp is 2026-06-20, about three
+months old; keeping it current is the easiest high-value contribution right
+now. See CONTRIBUTING.md.
 
 ## The method
 
@@ -76,8 +78,9 @@ a real cost-per-task figure to divide the quota by.
 ## Where this is weakest
 
 - **DeepSWE model data is a real snapshot, not a live pull.** See "Where this
-  stands right now" above. It is roughly three months old and
-  `scripts/fetch_deepswe.py` cannot refresh it yet.
+  stands right now" above. It is roughly three months old; the fetch script
+  itself is confirmed working, it just hasn't been re-run from a network that
+  can reach the site.
 - **Only the best reasoning-effort configuration per model is captured.**
   DeepSWE published more configurations than that (some models were run at
   four effort levels); this repo keeps only the highest-scoring one per
@@ -100,12 +103,12 @@ priced, with the reason.
 ## Layout
 
 ```
-data/models.json     DeepSWE snapshot, API rate cards, blended token rates. Currently empty.
+data/models.json     DeepSWE snapshot: 21 models, best config per model, dated 2026-06-20
 data/plans.json      Plans, quota models, evidence, confidence, known_gaps
 data/sources.json    Full citation record for every external dataset
 data/derived.csv     Every model and plan pair, cheapest first. Generated.
 data/derived.json    The same, plus best routes and the cross-check. Generated.
-scripts/fetch_deepswe.py   Refresh models.json from the live leaderboard. Endpoints unverified, see the script.
+scripts/fetch_deepswe.py   Refresh models.json from the live leaderboard. Endpoint confirmed working.
 scripts/validate.py        Schema, sanity and citation checks. Runs in CI.
 scripts/compute.py         Join, derive, write derived.* and site/index.html
 scripts/make_og.py         Render the social card from derived.json
@@ -118,7 +121,7 @@ site/index.html      Built output, one self contained file. Generated.
 No dependencies for the core pipeline. Python 3.9 or newer.
 
 ```bash
-python scripts/fetch_deepswe.py --diff   # see what moved upstream (endpoints unverified)
+python scripts/fetch_deepswe.py --diff   # see what moved upstream
 python scripts/validate.py               # catch a broken plan before it ships
 python scripts/compute.py                # rebuild derived.* and the site
 ```
@@ -134,10 +137,10 @@ wrong numbers quietly.
 
 Two things, in order:
 
-1. **A working path to DeepSWE's real leaderboard data.** Whoever can reach
-   `deepswe.datacurve.ai` from an unrestricted network, find its real data
-   endpoint, and fix `ENDPOINTS` in `scripts/fetch_deepswe.py` unblocks
-   everything else in this repo at once.
+1. **A current run of `scripts/fetch_deepswe.py`.** The endpoint and field
+   mapping are confirmed working; the snapshot in `data/models.json` is just
+   three months old. Anyone who can reach `deepswe.datacurve.ai` can refresh
+   it with `python scripts/fetch_deepswe.py`.
 2. **Measured plan quotas.** Most of what is priced here is measured by one
    external contributor (Awesome Coding Plan) or scaled from their
    measurement by a vendor's advertised multiplier. If you have run a plan to

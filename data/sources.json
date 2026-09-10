@@ -8,17 +8,17 @@
       "retrieved": "2026-09-09",
       "covers": "Benchmark methodology, task count (113 tasks), harness (Pier + mini-swe-agent on Modal), and license. Read directly by cloning the repository; the live leaderboard site is blocked from this build environment.",
       "changes": "None. Cited for methodology only, no data copied.",
-      "notes": "The live leaderboard at deepswe.datacurve.ai could not be reached from this build environment (network egress blocked, confirmed on every path tried including the endpoint below). Per-model scores, cost per task, output tokens and agent steps in data/models.json come from a snapshot supplied directly instead; see src-deepswe-data. A maintainer found the live data endpoint (https://deepswe.datacurve.ai/artifacts/v1/leaderboard-live.json) via the site's own network tab and it is now first in scripts/fetch_deepswe.py's ENDPOINTS, but its response shape has not been confirmed against normalize() in that script since it still cannot be fetched from here; see known_gaps."
+      "notes": "The live leaderboard at deepswe.datacurve.ai could not be reached from this build environment (network egress blocked, confirmed on every path tried). scripts/fetch_deepswe.py now works: its endpoint (https://deepswe.datacurve.ai/artifacts/v1/leaderboard-live.json) and normalize()'s field mapping were both confirmed against a real fetch run outside this build environment, and reproduce data/models.json exactly. See src-deepswe-data for the snapshot currently in data/models.json, and re-run scripts/fetch_deepswe.py periodically to keep it current."
     },
     {
       "id": "src-deepswe-data",
       "title": "DeepSWE benchmark results, per-configuration snapshot",
-      "url": "https://deepswe.datacurve.ai/",
+      "url": "https://deepswe.datacurve.ai/artifacts/v1/leaderboard-live.json",
       "license": "Apache-2.0",
       "retrieved": "2026-09-10",
       "covers": "Per-model, per-reasoning-effort results for all 113 tasks: pass@1, pass@4, cost per attempt, output tokens, input tokens and agent steps, aggregated as means and medians over every scored attempt (imported Pier jobs, mini-swe-agent harness). 21 models, matching the site's stated model count.",
       "changes": "For each model, only the highest-scoring reasoning-effort configuration was kept in data/models.json, per CONTRIBUTING item 7 (effort levels are a known simplification). api_cost_per_task_usd, output_tokens_per_task, input_tokens_per_task and agent_steps_per_task use the median over scored attempts rather than the mean, to resist a few very expensive stuck runs skewing the figure.",
-      "notes": "deepswe.datacurve.ai itself is blocked by this build environment's network egress (see src-deepswe-repo), so this snapshot was supplied directly rather than fetched by scripts/fetch_deepswe.py. The data's own generated_at timestamp is 2026-06-20, roughly three months before this repo's other figures; a fresher pull should replace it once fetch_deepswe.py's endpoint is confirmed against the live site."
+      "notes": "deepswe.datacurve.ai itself is blocked by this build environment's network egress (see src-deepswe-repo), so this specific snapshot was supplied directly rather than fetched here. scripts/fetch_deepswe.py's endpoint and field mapping are now confirmed against this exact data and reproduce data/models.json exactly, so a maintainer running it from an unblocked network keeps this current. The data's own generated_at timestamp is 2026-06-20, roughly three months before this repo's other figures, and is exactly what a fresh run would update."
     },
     {
       "id": "src-awesome-coding-plan",
