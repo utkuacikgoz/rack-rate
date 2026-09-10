@@ -170,6 +170,7 @@ def cross_check(models, plans):
                 "plan_id": plan["id"],
                 "plan_name": plan["name"],
                 "model_id": model["id"],
+                "model_name": model["name"],
                 "tasks_by_dollars": round(tasks_dollars, 2),
                 "tasks_by_tokens": round(tasks_tokens, 2),
                 "ratio": round(ratio, 3),

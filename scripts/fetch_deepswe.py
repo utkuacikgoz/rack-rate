@@ -114,12 +114,24 @@ def normalize(raw):
     Each row is one (model, harness, reasoning_effort) configuration; keep
     only the best-scoring configuration per model."""
     best = {}
+    by_model = {}
     for row in raw.get("rows", []):
         raw_id = row.get("model")
         if raw_id is None:
             continue
+        by_model.setdefault(raw_id, []).append(row)
         if raw_id not in best or row.get("pass_rate", 0) > best[raw_id].get("pass_rate", 0):
             best[raw_id] = row
+
+    def variant(row):
+        return {
+            "reasoning_effort": row.get("reasoning_effort"),
+            "score_pct": round(row["pass_rate"] * 100, 2),
+            "api_cost_per_task_usd": round(row["median_cost_usd"], 4),
+            "output_tokens_per_task": round(row["median_output_tokens"]),
+            "input_tokens_per_task": round(row["median_input_tokens"]),
+            "agent_steps_per_task": round(row["median_agent_steps"], 1),
+        }
 
     task_count = raw.get("n_tasks_in_set")
     out = []
@@ -130,7 +142,7 @@ def normalize(raw):
         provider = MODEL_PROVIDER_MAP.get(mid)
         if provider is None:
             print(f"fetch_deepswe.py: warning, no MODEL_PROVIDER_MAP entry for '{mid}'")
-        out.append({
+        model = {
             "id": mid,
             "name": mid,
             "provider": provider,
@@ -143,7 +155,11 @@ def normalize(raw):
             "agent_steps_per_task": round(row["median_agent_steps"], 1),
             "n_tasks_attempted": row.get("n_tasks_attempted"),
             "evidence": ["src-deepswe-data"],
-        })
+        }
+        variants = sorted((variant(r) for r in by_model[raw_id]), key=lambda v: -v["score_pct"])
+        if len(variants) > 1:
+            model["effort_variants"] = variants
+        out.append(model)
     out.sort(key=lambda m: -m["score_pct"])
     return out, task_count
 
