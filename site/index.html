@@ -452,9 +452,15 @@
         return br > ar ? b : a;
       });
       var mult = biggest.api_cost_per_task_usd / biggest.cost_per_task_usd;
-      figs.push({ label: biggest.model_name + " · " + biggest.plan_name, value: Math.round(mult) + "x cheaper" });
+      figs.push({
+        label: "than API list price — " + biggest.model_name + " on " + biggest.plan_name,
+        value: Math.round(mult) + "x cheaper",
+      });
       var cheapest = routes.reduce(function(a,b){ return b.cost_per_task_usd < a.cost_per_task_usd ? b : a; });
-      figs.push({ label: cheapest.model_name + " · " + cheapest.plan_name, value: "$" + cheapest.cost_per_task_usd.toFixed(3) + "/task" });
+      figs.push({
+        label: "cheapest subscription route — " + cheapest.model_name + " on " + cheapest.plan_name,
+        value: "$" + cheapest.cost_per_task_usd.toFixed(3) + "/task",
+      });
     }
     el.innerHTML = figs.map(function(f){
       return '<div class="hero-fig"><div class="value">' + f.value + '</div><div class="label">' + f.label + '</div></div>';
