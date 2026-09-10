@@ -112,10 +112,10 @@
   .node .range-bar{ stroke:var(--api); stroke-width:3; stroke-linecap:round; opacity:.5; }
   .node .halo{ fill:var(--adj); opacity:0; transition:opacity var(--dur-hover) var(--ease); }
   .node.hot .halo{ opacity:.16; }
-  .node .dot{ transition:cx var(--dur-reprice) var(--ease), cy var(--dur-reprice) var(--ease), r var(--dur-hover) var(--ease); cursor:pointer; }
-  .node .dot.measured{ fill:var(--measured); stroke:none; }
-  .node .dot.published{ fill:var(--adj); stroke:none; }
-  .node .dot.derived{ fill:none; stroke:var(--adj); stroke-width:1.6; }
+  .node .dot{ transition:cx var(--dur-reprice) var(--ease), cy var(--dur-reprice) var(--ease), r var(--dur-hover) var(--ease); cursor:pointer; filter:url(#ballShadow); }
+  .node .dot.measured{ fill:url(#ballGreen); stroke:none; }
+  .node .dot.published{ fill:url(#ballAmber); stroke:none; }
+  .node .dot.derived{ fill:none; stroke:var(--adj); stroke-width:1.6; filter:none; }
   .node .leader{ stroke:var(--ink-faint); stroke-width:1; opacity:0; transition:opacity var(--dur-hover) var(--ease); }
   .node.leadered .leader{ opacity:.6; }
   .node .label{ fill:var(--ink-dim); font-size:12px; font-family:"JetBrains Mono",monospace; transition:transform var(--dur-reprice) var(--ease), fill var(--dur-hover) var(--ease); }
@@ -232,6 +232,21 @@
       </div>
       <div class="chart-wrap">
         <svg class="chart" id="chart-svg" viewBox="0 0 960 520" tabindex="0" role="img" aria-label="Score against cost per task for every model">
+          <defs>
+            <radialGradient id="ballGreen" cx="35%" cy="30%" r="75%">
+              <stop offset="0%" stop-color="#B9FBD3"></stop>
+              <stop offset="35%" stop-color="#45D97F"></stop>
+              <stop offset="100%" stop-color="#189955"></stop>
+            </radialGradient>
+            <radialGradient id="ballAmber" cx="35%" cy="30%" r="75%">
+              <stop offset="0%" stop-color="#FFE4A8"></stop>
+              <stop offset="35%" stop-color="#FFB020"></stop>
+              <stop offset="100%" stop-color="#C67900"></stop>
+            </radialGradient>
+            <filter id="ballShadow" x="-60%" y="-60%" width="220%" height="220%">
+              <feDropShadow dx="0" dy="1.5" stdDeviation="1.6" flood-color="#000" flood-opacity="0.45"></feDropShadow>
+            </filter>
+          </defs>
           <g id="gridlines"></g>
           <g id="nodes"></g>
           <line class="crosshair" id="crosshair-x" x1="0" y1="0" x2="0" y2="0"></line>
@@ -509,10 +524,10 @@
       leader.setAttribute("class", "leader");
       var halo = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       halo.setAttribute("class", "halo");
-      halo.setAttribute("r", 16);
+      halo.setAttribute("r", 19);
       var dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
       dot.setAttribute("class", "dot");
-      dot.setAttribute("r", 5);
+      dot.setAttribute("r", 6.5);
       var label = document.createElementNS("http://www.w3.org/2000/svg", "text");
       label.setAttribute("class", "label");
 
@@ -663,11 +678,11 @@
       crossY.setAttribute("y1", y); crossY.setAttribute("y2", y);
       crossY.setAttribute("x1", VB.pad); crossY.setAttribute("x2", VB.w - VB.pad);
       crossY.classList.add("on");
-      N[modelId].dot.setAttribute("r", 8);
+      N[modelId].dot.setAttribute("r", 10);
     } else {
       crossX.classList.remove("on");
       crossY.classList.remove("on");
-      Object.keys(N).forEach(function(id){ N[id].dot.setAttribute("r", 5); });
+      Object.keys(N).forEach(function(id){ N[id].dot.setAttribute("r", 6.5); });
     }
     setTableHot(modelId);
   }
@@ -919,7 +934,7 @@
       var x = 60 + (r.ratio / maxRatio) * 780;
       var y = placeLane(x);
       html += '<g class="cross-point" data-model="' + r.model_id + '">';
-      html += '<circle class="cross-dot" cx="' + x + '" cy="' + y + '" r="6" fill="var(--adj)" opacity="0.85">' +
+      html += '<circle class="cross-dot" cx="' + x + '" cy="' + y + '" r="7" fill="url(#ballAmber)" filter="url(#ballShadow)">' +
         '<title>' + r.model_name + ' on ' + r.plan_name + ': ' + r.ratio + 'x gap between the dollar and token count (' +
         r.tasks_by_dollars + ' vs ' + r.tasks_by_tokens + ' tasks/month)</title></circle>';
       html += '<text class="axis-label" x="' + (x + 11) + '" y="' + (y + 4) + '">' + r.model_name + '</text>';
@@ -933,8 +948,8 @@
     Array.prototype.forEach.call(svgC.querySelectorAll(".cross-point"), function(g){
       var modelId = g.getAttribute("data-model");
       var dot = g.querySelector(".cross-dot");
-      g.addEventListener("mouseenter", function(){ dot.setAttribute("r", 8); setHot(modelId); });
-      g.addEventListener("mouseleave", function(){ dot.setAttribute("r", 6); setHot(null); });
+      g.addEventListener("mouseenter", function(){ dot.setAttribute("r", 10); setHot(modelId); });
+      g.addEventListener("mouseleave", function(){ dot.setAttribute("r", 7); setHot(null); });
       g.addEventListener("click", function(){ select(modelId); });
     });
     document.getElementById("cross-summary").textContent = summary.median_ratio
