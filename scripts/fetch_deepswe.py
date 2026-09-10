@@ -78,6 +78,27 @@ MODEL_NAME_MAP = {
     "qwen3-6-plus": "qwen-3.6-plus",
     "claude-haiku-4-5": "claude-haiku-4.5",
     "minimax-m2-7": "minimax-m2.7",
+    # added for the v1.1 leaderboard refresh
+    "claude-fable-5": "claude-fable-5",
+    "claude-opus-5": "claude-opus-5",
+    "claude-sonnet-5": "claude-sonnet-5",
+    "deepseek-v4-flash": "deepseek-v4-flash",
+    "gemini-3-6-flash": "gemini-3.6-flash",
+    "gemini-3-7-flash": "gemini-3.7-flash",
+    "gemini-3-8-flash": "gemini-3.8-flash",
+    "glm-5-3": "glm-5.3",
+    "glm-5-3-flash": "glm-5.3-flash",
+    "gpt-5-6-luna": "gpt-5.6-luna",
+    "gpt-5-6-sol": "gpt-5.6-sol",
+    "gpt-5-6-terra": "gpt-5.6-terra",
+    "gpt-6-astra": "gpt-6-astra",
+    "grok-4-5": "grok-4.5",
+    "grok-4-6": "grok-4.6",
+    "kimi-k2-7-code": "kimi-k2.7-code",
+    "kimi-k3": "kimi-k3",
+    "muse-spark-1-1": "muse-spark-1.1",
+    "muse-spark-1-2": "muse-spark-1.2",
+    "qwen3-8-max": "qwen-3.8-max",
 }
 
 MODEL_PROVIDER_MAP = {
@@ -92,6 +113,18 @@ MODEL_PROVIDER_MAP = {
     "qwen-3.7-max": "Alibaba", "qwen-3.6-plus": "Alibaba",
     "grok-build-0.1": "xAI",
     "deepseek-v4-pro": "DeepSeek",
+    # added for the v1.1 leaderboard refresh
+    "claude-fable-5": "Anthropic", "claude-opus-5": "Anthropic", "claude-sonnet-5": "Anthropic",
+    "deepseek-v4-flash": "DeepSeek",
+    "gemini-3.6-flash": "Google", "gemini-3.7-flash": "Google", "gemini-3.8-flash": "Google",
+    "glm-5.3": "Zhipu (Z.ai)", "glm-5.3-flash": "Zhipu (Z.ai)",
+    "gpt-5.6-luna": "OpenAI", "gpt-5.6-sol": "OpenAI", "gpt-5.6-terra": "OpenAI", "gpt-6-astra": "OpenAI",
+    "grok-4.5": "xAI", "grok-4.6": "xAI",
+    "kimi-k2.7-code": "Moonshot AI", "kimi-k3": "Moonshot AI",
+    "qwen-3.8-max": "Alibaba",
+    # muse-spark-1.1 / muse-spark-1.2: provider unknown, deliberately left unmapped
+    # rather than guessed — normalize() will print a warning and ship them with
+    # provider: null until a maintainer confirms who makes them.
 }
 
 

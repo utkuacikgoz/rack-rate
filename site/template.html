@@ -614,8 +614,8 @@
         var left = onRight ? anchorX : anchorX - labelW;
         return { left: left, right: left + labelW, top: py - LABEL_H / 2, bottom: py + LABEL_H / 2 };
       }
-      while (placed.some(function(p){ return rectsOverlap(p, rectAt(placeY)); }) && attempts < 26) {
-        placeY = y + (attempts % 2 === 0 ? 1 : -1) * (7 + attempts * 3);
+      while (placed.some(function(p){ return rectsOverlap(p, rectAt(placeY)); }) && attempts < 60) {
+        placeY = y + (attempts % 2 === 0 ? 1 : -1) * (9 + attempts * 4);
         attempts++;
       }
       placed.push(rectAt(placeY));
@@ -891,7 +891,7 @@
       return;
     }
     var maxRatio = Math.max.apply(null, rows.map(function(r){ return r.ratio; }));
-    var LANES = [26, 58, 90, 122, 154, 186];
+    var LANES = [26, 58, 90, 122, 154, 186, 218, 250, 282, 314];
     var laneLastX = [];
     function placeLane(x){
       for (var li = 0; li < LANES.length; li++){
