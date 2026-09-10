@@ -13,12 +13,12 @@ DATA = ROOT / "data"
 QUOTA_FIELDS = {
     "budget": ["quota_usd_month"],
     "credits": ["credits_month"],
-    "requests": ["requests_month", "agent_steps_per_task_assumed"],
+    "requests": ["requests_month"],
     "tokens_total": ["tokens_month"],
 }
 
 REQUIRED_PLAN_FIELDS = [
-    "id", "name", "provider", "price_usd_month", "quota_model",
+    "id", "name", "provider", "price_usd_month", "quota_model", "model_scope",
     "confidence", "method", "evidence", "sources", "available",
 ]
 

@@ -21,6 +21,14 @@ def load(name):
     return json.loads((DATA / name).read_text())
 
 
+def total_tokens_per_task(model):
+    input_tokens = model.get("input_tokens_per_task")
+    output_tokens = model.get("output_tokens_per_task")
+    if not input_tokens or not output_tokens:
+        return None
+    return input_tokens + output_tokens
+
+
 def tasks_per_month(model, plan):
     """Return (tasks_per_month, method_used) or (None, reason) if the pair
     cannot be priced."""
@@ -35,19 +43,12 @@ def tasks_per_month(model, plan):
 
     if quota_model == "credits":
         credits = plan.get("credits_month")
+        input_tokens = model.get("input_tokens_per_task")
+        output_tokens = model.get("output_tokens_per_task")
         input_rate = model.get("input_rate_per_mtok_usd")
         output_rate = model.get("output_rate_per_mtok_usd")
-        output_tokens = model.get("output_tokens_per_task")
-        cost = model.get("api_cost_per_task_usd")
-        if not all([credits, input_rate, output_rate, output_tokens, cost]):
-            return None, "missing token rate card fields for credit conversion"
-        # Input tokens per task recovered from the published cost per task:
-        # cost = input_tokens/1e6 * input_rate + output_tokens/1e6 * output_rate
-        output_cost = output_tokens / 1_000_000 * output_rate
-        input_cost = cost - output_cost
-        if input_cost <= 0:
-            return None, "output cost alone exceeds reported cost per task"
-        input_tokens = input_cost / input_rate * 1_000_000
+        if not all([credits, input_tokens, output_tokens, input_rate, output_rate]):
+            return None, "missing credits_month or token rate card fields for credit conversion"
         output_weight = output_rate / input_rate
         credits_per_task = (input_tokens + output_tokens * output_weight) / 10_000
         if credits_per_task <= 0:
@@ -63,9 +64,9 @@ def tasks_per_month(model, plan):
 
     if quota_model == "tokens_total":
         tokens = plan.get("tokens_month")
-        tokens_per_task = model.get("tokens_per_task_measured")
+        tokens_per_task = total_tokens_per_task(model)
         if not tokens or not tokens_per_task:
-            return None, "missing tokens_month or tokens_per_task_measured"
+            return None, "missing tokens_month, or model has no input/output tokens per task"
         return tokens / tokens_per_task, "tokens_total"
 
     return None, f"unknown quota_model '{quota_model}'"
@@ -87,12 +88,24 @@ def days_for_full_run(plan, model, tpm, task_count):
     return task_count / tasks_per_day
 
 
+def model_allowed(model, plan):
+    """A plan only prices models its vendor actually lets you run. 'any'
+    covers multi-model aggregator plans (Cursor, Ollama, GitHub Copilot);
+    otherwise model_scope is a list of provider names or exact model ids."""
+    scope = plan.get("model_scope")
+    if scope is None or scope == "any":
+        return True
+    return model.get("provider") in scope or model.get("id") in scope
+
+
 def build_pairs(models, plans, task_count):
     pairs = []
     for plan in plans:
         if not plan.get("available", True):
             continue
         for model in models:
+            if not model_allowed(model, plan):
+                continue
             tpm, method = tasks_per_month(model, plan)
             if tpm is None or tpm <= 0:
                 continue
@@ -139,7 +152,9 @@ def cross_check(models, plans):
         if not tokens_month:
             continue
         for model in models:
-            tokens_per_task = model.get("tokens_per_task_measured")
+            if not model_allowed(model, plan):
+                continue
+            tokens_per_task = total_tokens_per_task(model)
             if not tokens_per_task:
                 continue
             quota = plan.get("quota_usd_month")

@@ -1,1 +1,139 @@
 model_id,model_name,score_pct,plan_id,plan_name,provider,price_usd_month,api_cost_per_task_usd,tasks_per_month,cost_per_task_usd,days_for_full_run,quota_method,confidence
+claude-haiku-4.5,claude-haiku-4.5,0.22,claude-max-20x,Claude Max 20x,Anthropic,200.0,0.7769,32786.72,0.0061,0.1,budget,medium
+claude-haiku-4.5,claude-haiku-4.5,0.22,claude-pro,Claude Pro,Anthropic,20.0,0.7769,1639.34,0.0122,2.07,budget,measured
+claude-haiku-4.5,claude-haiku-4.5,0.22,claude-max-5x,Claude Max 5x,Anthropic,100.0,0.7769,8196.68,0.0122,0.41,budget,medium
+claude-opus-4.6,claude-opus-4.6,27.6,claude-max-20x,Claude Max 20x,Anthropic,200.0,4.6625,5463.16,0.0366,0.62,budget,medium
+claude-sonnet-4.6,claude-sonnet-4.6,31.77,claude-max-20x,Claude Max 20x,Anthropic,200.0,4.7517,5360.61,0.0373,0.63,budget,medium
+gpt-5.4-mini,gpt-5.4-mini,24.34,chatgpt-pro-20x,ChatGPT Pro 20x,OpenAI,200.0,2.0278,4304.96,0.0465,0.79,budget,medium
+claude-opus-4.6,claude-opus-4.6,27.6,claude-pro,Claude Pro,Anthropic,20.0,4.6625,273.16,0.0732,12.41,budget,measured
+claude-opus-4.6,claude-opus-4.6,27.6,claude-max-5x,Claude Max 5x,Anthropic,100.0,4.6625,1365.79,0.0732,2.48,budget,medium
+claude-sonnet-4.6,claude-sonnet-4.6,31.77,claude-pro,Claude Pro,Anthropic,20.0,4.7517,268.03,0.0746,12.65,budget,measured
+claude-sonnet-4.6,claude-sonnet-4.6,31.77,claude-max-5x,Claude Max 5x,Anthropic,100.0,4.7517,1340.15,0.0746,2.53,budget,medium
+gpt-5.4,gpt-5.4,55.53,chatgpt-pro-20x,ChatGPT Pro 20x,OpenAI,200.0,3.3064,2640.21,0.0758,1.28,budget,medium
+claude-opus-4.8,claude-opus-4.8,58.19,claude-max-20x,Claude Max 20x,Anthropic,200.0,11.2814,2257.88,0.0886,1.5,budget,medium
+minimax-m2.7,minimax-m2.7,0.22,opencode-go,OpenCode Go,OpenCode,10.0,0.5399,111.13,0.09,30.5,budget,high
+gpt-5.4-mini,gpt-5.4-mini,24.34,chatgpt-plus,ChatGPT Plus,OpenAI,20.0,2.0278,215.25,0.0929,15.75,budget,measured
+kimi-k2.6,kimi-k2.6,23.89,kimi-code-allegretto,Kimi Code Allegretto,Moonshot AI,29.36,2.6951,265.88,0.1104,12.75,requests,measured
+claude-opus-4.7,claude-opus-4.7,54.2,claude-max-20x,Claude Max 20x,Anthropic,200.0,15.951,1596.89,0.1252,2.12,budget,medium
+gpt-5.5,gpt-5.5,70.05,chatgpt-pro-20x,ChatGPT Pro 20x,OpenAI,200.0,5.7556,1516.71,0.1319,2.24,budget,medium
+gpt-5.4,gpt-5.4,55.53,chatgpt-plus,ChatGPT Plus,OpenAI,20.0,3.3064,132.01,0.1515,25.68,budget,measured
+claude-opus-4.8,claude-opus-4.8,58.19,claude-pro,Claude Pro,Anthropic,20.0,11.2814,112.89,0.1772,30.03,budget,measured
+claude-opus-4.8,claude-opus-4.8,58.19,claude-max-5x,Claude Max 5x,Anthropic,100.0,11.2814,564.47,0.1772,6.01,budget,medium
+minimax-m2.7,minimax-m2.7,0.22,ollama-pro,Ollama Pro,Ollama,20.0,0.5399,111.13,0.18,30.5,budget,high
+glm-5.2,glm-5.2,41.52,glm-coding-pro,GLM Coding Plan Pro,Zhipu (Z.ai),21.98,3.3501,104.35,0.2106,32.49,requests,measured
+claude-opus-4.7,claude-opus-4.7,54.2,claude-pro,Claude Pro,Anthropic,20.0,15.951,79.84,0.2505,42.46,budget,measured
+claude-opus-4.7,claude-opus-4.7,54.2,claude-max-5x,Claude Max 5x,Anthropic,100.0,15.951,399.22,0.2505,8.49,budget,medium
+claude-haiku-4.5,claude-haiku-4.5,0.22,ollama-pro,Ollama Pro,Ollama,20.0,0.7769,77.23,0.259,43.89,budget,high
+gpt-5.5,gpt-5.5,70.05,chatgpt-plus,ChatGPT Plus,OpenAI,20.0,5.7556,75.84,0.2637,44.7,budget,measured
+minimax-m2.7,minimax-m2.7,0.22,cursor-ultra,Cursor Ultra,Cursor,200.0,0.5399,740.88,0.27,4.58,budget,low
+mimo-v2.5-pro,mimo-v2.5-pro,19.47,opencode-go,OpenCode Go,OpenCode,10.0,1.6825,35.66,0.2804,95.06,budget,high
+glm-5.1,glm-5.1,17.52,glm-coding-pro,GLM Coding Plan Pro,Zhipu (Z.ai),21.98,6.7032,71.43,0.3077,47.46,requests,measured
+glm-5.2,glm-5.2,41.52,glm-coding-lite,GLM Coding Plan Lite,Zhipu (Z.ai),7.23,3.3501,20.87,0.3464,162.44,requests,measured
+gemini-3-flash-preview,gemini-3-flash-preview,5.14,ollama-pro,Ollama Pro,Ollama,20.0,1.0449,57.42,0.3483,59.04,budget,high
+minimax-m2.7,minimax-m2.7,0.22,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,0.5399,27.78,0.3599,122.02,budget,high
+kimi-k2.6,kimi-k2.6,23.89,kimi-code-andante,Kimi Code Andante,Moonshot AI,7.23,2.6951,18.73,0.3861,181.04,requests,measured
+claude-haiku-4.5,claude-haiku-4.5,0.22,cursor-ultra,Cursor Ultra,Cursor,200.0,0.7769,514.87,0.3885,6.58,budget,low
+kimi-k2.6,kimi-k2.6,23.89,opencode-go,OpenCode Go,OpenCode,10.0,2.6951,22.26,0.4492,152.27,budget,high
+glm-5.1,glm-5.1,17.52,glm-coding-lite,GLM Coding Plan Lite,Zhipu (Z.ai),7.23,6.7032,14.29,0.5061,237.3,requests,measured
+gemini-3.1-pro-preview,gemini-3.1-pro-preview,9.73,ollama-pro,Ollama Pro,Ollama,20.0,1.5215,39.43,0.5072,85.96,budget,high
+claude-haiku-4.5,claude-haiku-4.5,0.22,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,0.7769,19.31,0.5179,175.58,budget,high
+gemini-3-flash-preview,gemini-3-flash-preview,5.14,cursor-ultra,Cursor Ultra,Cursor,200.0,1.0449,382.81,0.5224,8.86,budget,low
+minimax-m2.7,minimax-m2.7,0.22,cursor-pro,Cursor Pro,Cursor,20.0,0.5399,37.04,0.5399,91.51,budget,high
+minimax-m2.7,minimax-m2.7,0.22,cursor-pro-plus,Cursor Pro+,Cursor,60.0,0.5399,111.13,0.5399,30.5,budget,low
+mimo-v2.5-pro,mimo-v2.5-pro,19.47,ollama-pro,Ollama Pro,Ollama,20.0,1.6825,35.66,0.5608,95.06,budget,high
+deepseek-v4-pro,deepseek-v4-pro,7.52,opencode-go,OpenCode Go,OpenCode,10.0,3.5375,16.96,0.5896,199.87,budget,high
+qwen-3.6-plus,qwen-3.6-plus,2.65,opencode-go,OpenCode Go,OpenCode,10.0,3.6144,16.6,0.6024,204.21,budget,high
+qwen-3.7-max,qwen-3.7-max,17.7,ollama-pro,Ollama Pro,Ollama,20.0,1.8699,32.09,0.6233,105.65,budget,high
+gpt-5.4-mini,gpt-5.4-mini,24.34,ollama-pro,Ollama Pro,Ollama,20.0,2.0278,29.59,0.6759,114.57,budget,high
+gemini-3-flash-preview,gemini-3-flash-preview,5.14,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,1.0449,14.36,0.6966,236.15,budget,high
+gemini-3.1-pro-preview,gemini-3.1-pro-preview,9.73,cursor-ultra,Cursor Ultra,Cursor,200.0,1.5215,262.9,0.7608,12.89,budget,low
+claude-haiku-4.5,claude-haiku-4.5,0.22,cursor-pro,Cursor Pro,Cursor,20.0,0.7769,25.74,0.7769,131.68,budget,high
+claude-haiku-4.5,claude-haiku-4.5,0.22,cursor-pro-plus,Cursor Pro+,Cursor,60.0,0.7769,77.23,0.7769,43.89,budget,low
+mimo-v2.5-pro,mimo-v2.5-pro,19.47,cursor-ultra,Cursor Ultra,Cursor,200.0,1.6825,237.74,0.8413,14.26,budget,low
+kimi-k2.6,kimi-k2.6,23.89,ollama-pro,Ollama Pro,Ollama,20.0,2.6951,22.26,0.8984,152.27,budget,high
+qwen-3.7-max,qwen-3.7-max,17.7,cursor-ultra,Cursor Ultra,Cursor,200.0,1.8699,213.92,0.9349,15.85,budget,low
+gpt-5.4-mini,gpt-5.4-mini,24.34,cursor-ultra,Cursor Ultra,Cursor,200.0,2.0278,197.26,1.0139,17.19,budget,low
+gemini-3.1-pro-preview,gemini-3.1-pro-preview,9.73,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,1.5215,9.86,1.0143,343.86,budget,high
+gemini-3-flash-preview,gemini-3-flash-preview,5.14,cursor-pro,Cursor Pro,Cursor,20.0,1.0449,19.14,1.0449,177.11,budget,high
+gemini-3-flash-preview,gemini-3-flash-preview,5.14,cursor-pro-plus,Cursor Pro+,Cursor,60.0,1.0449,57.42,1.0449,59.04,budget,low
+gpt-5.4,gpt-5.4,55.53,ollama-pro,Ollama Pro,Ollama,20.0,3.3064,18.15,1.1021,186.81,budget,high
+glm-5.2,glm-5.2,41.52,ollama-pro,Ollama Pro,Ollama,20.0,3.3501,17.91,1.1167,189.28,budget,high
+glm-5.1,glm-5.1,17.52,opencode-go,OpenCode Go,OpenCode,10.0,6.7032,8.95,1.1172,378.73,budget,high
+mimo-v2.5-pro,mimo-v2.5-pro,19.47,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,1.6825,8.92,1.1217,380.25,budget,high
+deepseek-v4-pro,deepseek-v4-pro,7.52,ollama-pro,Ollama Pro,Ollama,20.0,3.5375,16.96,1.1792,199.87,budget,high
+qwen-3.6-plus,qwen-3.6-plus,2.65,ollama-pro,Ollama Pro,Ollama,20.0,3.6144,16.6,1.2048,204.21,budget,high
+qwen-3.7-max,qwen-3.7-max,17.7,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,1.8699,8.02,1.2466,422.6,budget,high
+kimi-k2.6,kimi-k2.6,23.89,cursor-ultra,Cursor Ultra,Cursor,200.0,2.6951,148.42,1.3476,22.84,budget,low
+gpt-5.4-mini,gpt-5.4-mini,24.34,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,2.0278,7.4,1.3519,458.28,budget,high
+gemini-3.1-pro-preview,gemini-3.1-pro-preview,9.73,cursor-pro,Cursor Pro,Cursor,20.0,1.5215,13.14,1.5215,257.89,budget,high
+gemini-3.1-pro-preview,gemini-3.1-pro-preview,9.73,cursor-pro-plus,Cursor Pro+,Cursor,60.0,1.5215,39.43,1.5215,85.96,budget,low
+claude-opus-4.6,claude-opus-4.6,27.6,ollama-pro,Ollama Pro,Ollama,20.0,4.6625,12.87,1.5542,263.43,budget,high
+claude-sonnet-4.6,claude-sonnet-4.6,31.77,ollama-pro,Ollama Pro,Ollama,20.0,4.7517,12.63,1.5839,268.47,budget,high
+gpt-5.4,gpt-5.4,55.53,cursor-ultra,Cursor Ultra,Cursor,200.0,3.3064,120.98,1.6532,28.02,budget,low
+glm-5.2,glm-5.2,41.52,cursor-ultra,Cursor Ultra,Cursor,200.0,3.3501,119.4,1.675,28.39,budget,low
+minimax-m3,minimax-m3,20.44,ollama-pro,Ollama Pro,Ollama,20.0,5.0435,11.9,1.6812,284.96,budget,high
+mimo-v2.5-pro,mimo-v2.5-pro,19.47,cursor-pro,Cursor Pro,Cursor,20.0,1.6825,11.89,1.6825,285.18,budget,high
+mimo-v2.5-pro,mimo-v2.5-pro,19.47,cursor-pro-plus,Cursor Pro+,Cursor,60.0,1.6825,35.66,1.6825,95.06,budget,low
+deepseek-v4-pro,deepseek-v4-pro,7.52,cursor-ultra,Cursor Ultra,Cursor,200.0,3.5375,113.07,1.7688,29.98,budget,low
+kimi-k2.6,kimi-k2.6,23.89,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,2.6951,5.57,1.7967,609.09,budget,high
+qwen-3.6-plus,qwen-3.6-plus,2.65,cursor-ultra,Cursor Ultra,Cursor,200.0,3.6144,110.67,1.8072,30.63,budget,low
+qwen-3.7-max,qwen-3.7-max,17.7,cursor-pro,Cursor Pro,Cursor,20.0,1.8699,10.7,1.8699,316.95,budget,high
+qwen-3.7-max,qwen-3.7-max,17.7,cursor-pro-plus,Cursor Pro+,Cursor,60.0,1.8699,32.09,1.8699,105.65,budget,low
+gemini-3.5-flash,gemini-3.5-flash,28.32,ollama-pro,Ollama Pro,Ollama,20.0,5.6732,10.58,1.8911,320.54,budget,high
+gpt-5.5,gpt-5.5,70.05,ollama-pro,Ollama Pro,Ollama,20.0,5.7556,10.42,1.9185,325.19,budget,high
+gpt-5.4-mini,gpt-5.4-mini,24.34,cursor-pro,Cursor Pro,Cursor,20.0,2.0278,9.86,2.0278,343.71,budget,high
+gpt-5.4-mini,gpt-5.4-mini,24.34,cursor-pro-plus,Cursor Pro+,Cursor,60.0,2.0278,29.59,2.0278,114.57,budget,low
+grok-build-0.1,grok-build-0.1,13.08,ollama-pro,Ollama Pro,Ollama,20.0,6.1737,9.72,2.0579,348.81,budget,high
+gpt-5.4,gpt-5.4,55.53,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,3.3064,4.54,2.2043,747.25,budget,high
+glm-5.2,glm-5.2,41.52,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,3.3501,4.48,2.2334,757.12,budget,high
+glm-5.1,glm-5.1,17.52,ollama-pro,Ollama Pro,Ollama,20.0,6.7032,8.95,2.2344,378.73,budget,high
+claude-opus-4.6,claude-opus-4.6,27.6,cursor-ultra,Cursor Ultra,Cursor,200.0,4.6625,85.79,2.3312,39.51,budget,low
+deepseek-v4-pro,deepseek-v4-pro,7.52,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,3.5375,4.24,2.3583,799.48,budget,high
+claude-sonnet-4.6,claude-sonnet-4.6,31.77,cursor-ultra,Cursor Ultra,Cursor,200.0,4.7517,84.18,2.3758,40.27,budget,low
+qwen-3.6-plus,qwen-3.6-plus,2.65,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,3.6144,4.15,2.4096,816.85,budget,high
+minimax-m3,minimax-m3,20.44,cursor-ultra,Cursor Ultra,Cursor,200.0,5.0435,79.31,2.5217,42.74,budget,low
+kimi-k2.6,kimi-k2.6,23.89,cursor-pro,Cursor Pro,Cursor,20.0,2.6951,7.42,2.6951,456.82,budget,high
+kimi-k2.6,kimi-k2.6,23.89,cursor-pro-plus,Cursor Pro+,Cursor,60.0,2.6951,22.26,2.6951,152.27,budget,low
+gemini-3.5-flash,gemini-3.5-flash,28.32,cursor-ultra,Cursor Ultra,Cursor,200.0,5.6732,70.51,2.8366,48.08,budget,low
+gpt-5.5,gpt-5.5,70.05,cursor-ultra,Cursor Ultra,Cursor,200.0,5.7556,69.5,2.8778,48.78,budget,low
+grok-build-0.1,grok-build-0.1,13.08,cursor-ultra,Cursor Ultra,Cursor,200.0,6.1737,64.79,3.0869,52.32,budget,low
+claude-opus-4.6,claude-opus-4.6,27.6,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,4.6625,3.22,3.1083,1053.72,budget,high
+claude-sonnet-4.6,claude-sonnet-4.6,31.77,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,4.7517,3.16,3.1678,1073.88,budget,high
+gpt-5.4,gpt-5.4,55.53,cursor-pro,Cursor Pro,Cursor,20.0,3.3064,6.05,3.3064,560.43,budget,high
+gpt-5.4,gpt-5.4,55.53,cursor-pro-plus,Cursor Pro+,Cursor,60.0,3.3064,18.15,3.3064,186.81,budget,low
+glm-5.2,glm-5.2,41.52,cursor-pro,Cursor Pro,Cursor,20.0,3.3501,5.97,3.3501,567.84,budget,high
+glm-5.2,glm-5.2,41.52,cursor-pro-plus,Cursor Pro+,Cursor,60.0,3.3501,17.91,3.3501,189.28,budget,low
+glm-5.1,glm-5.1,17.52,cursor-ultra,Cursor Ultra,Cursor,200.0,6.7032,59.67,3.3516,56.81,budget,low
+minimax-m3,minimax-m3,20.44,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,5.0435,2.97,3.3623,1139.83,budget,high
+deepseek-v4-pro,deepseek-v4-pro,7.52,cursor-pro,Cursor Pro,Cursor,20.0,3.5375,5.65,3.5375,599.61,budget,high
+deepseek-v4-pro,deepseek-v4-pro,7.52,cursor-pro-plus,Cursor Pro+,Cursor,60.0,3.5375,16.96,3.5375,199.87,budget,low
+qwen-3.6-plus,qwen-3.6-plus,2.65,cursor-pro,Cursor Pro,Cursor,20.0,3.6144,5.53,3.6144,612.64,budget,high
+qwen-3.6-plus,qwen-3.6-plus,2.65,cursor-pro-plus,Cursor Pro+,Cursor,60.0,3.6144,16.6,3.6144,204.21,budget,low
+claude-opus-4.8,claude-opus-4.8,58.19,ollama-pro,Ollama Pro,Ollama,20.0,11.2814,5.32,3.7605,637.4,budget,high
+gemini-3.5-flash,gemini-3.5-flash,28.32,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,5.6732,2.64,3.7821,1282.14,budget,high
+gpt-5.5,gpt-5.5,70.05,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,5.7556,2.61,3.8371,1300.77,budget,high
+grok-build-0.1,grok-build-0.1,13.08,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,6.1737,2.43,4.1158,1395.26,budget,high
+glm-5.1,glm-5.1,17.52,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,6.7032,2.24,4.4688,1514.92,budget,high
+claude-opus-4.6,claude-opus-4.6,27.6,cursor-pro,Cursor Pro,Cursor,20.0,4.6625,4.29,4.6625,790.29,budget,high
+claude-opus-4.6,claude-opus-4.6,27.6,cursor-pro-plus,Cursor Pro+,Cursor,60.0,4.6625,12.87,4.6625,263.43,budget,low
+claude-sonnet-4.6,claude-sonnet-4.6,31.77,cursor-pro,Cursor Pro,Cursor,20.0,4.7517,4.21,4.7517,805.41,budget,high
+claude-sonnet-4.6,claude-sonnet-4.6,31.77,cursor-pro-plus,Cursor Pro+,Cursor,60.0,4.7517,12.63,4.7517,268.47,budget,low
+minimax-m3,minimax-m3,20.44,cursor-pro,Cursor Pro,Cursor,20.0,5.0435,3.97,5.0435,854.87,budget,high
+minimax-m3,minimax-m3,20.44,cursor-pro-plus,Cursor Pro+,Cursor,60.0,5.0435,11.9,5.0435,284.96,budget,low
+claude-opus-4.7,claude-opus-4.7,54.2,ollama-pro,Ollama Pro,Ollama,20.0,15.951,3.76,5.317,901.23,budget,high
+claude-opus-4.8,claude-opus-4.8,58.19,cursor-ultra,Cursor Ultra,Cursor,200.0,11.2814,35.46,5.6407,95.61,budget,low
+gemini-3.5-flash,gemini-3.5-flash,28.32,cursor-pro,Cursor Pro,Cursor,20.0,5.6732,3.53,5.6732,961.61,budget,high
+gemini-3.5-flash,gemini-3.5-flash,28.32,cursor-pro-plus,Cursor Pro+,Cursor,60.0,5.6732,10.58,5.6732,320.54,budget,low
+gpt-5.5,gpt-5.5,70.05,cursor-pro,Cursor Pro,Cursor,20.0,5.7556,3.47,5.7556,975.57,budget,high
+gpt-5.5,gpt-5.5,70.05,cursor-pro-plus,Cursor Pro+,Cursor,60.0,5.7556,10.42,5.7556,325.19,budget,low
+grok-build-0.1,grok-build-0.1,13.08,cursor-pro,Cursor Pro,Cursor,20.0,6.1737,3.24,6.1737,1046.44,budget,high
+grok-build-0.1,grok-build-0.1,13.08,cursor-pro-plus,Cursor Pro+,Cursor,60.0,6.1737,9.72,6.1737,348.81,budget,low
+glm-5.1,glm-5.1,17.52,cursor-pro,Cursor Pro,Cursor,20.0,6.7032,2.98,6.7032,1136.19,budget,high
+glm-5.1,glm-5.1,17.52,cursor-pro-plus,Cursor Pro+,Cursor,60.0,6.7032,8.95,6.7032,378.73,budget,low
+claude-opus-4.8,claude-opus-4.8,58.19,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,11.2814,1.33,7.5209,2549.6,budget,high
+claude-opus-4.7,claude-opus-4.7,54.2,cursor-ultra,Cursor Ultra,Cursor,200.0,15.951,25.08,7.9755,135.18,budget,low
+claude-opus-4.7,claude-opus-4.7,54.2,github-copilot-pro,GitHub Copilot Pro,GitHub,10.0,15.951,0.94,10.634,3604.93,budget,high
+claude-opus-4.8,claude-opus-4.8,58.19,cursor-pro,Cursor Pro,Cursor,20.0,11.2814,1.77,11.2814,1912.2,budget,high
+claude-opus-4.8,claude-opus-4.8,58.19,cursor-pro-plus,Cursor Pro+,Cursor,60.0,11.2814,5.32,11.2814,637.4,budget,low
+claude-opus-4.7,claude-opus-4.7,54.2,cursor-pro,Cursor Pro,Cursor,20.0,15.951,1.25,15.951,2703.69,budget,high
+claude-opus-4.7,claude-opus-4.7,54.2,cursor-pro-plus,Cursor Pro+,Cursor,60.0,15.951,3.76,15.951,901.23,budget,low

@@ -12,23 +12,36 @@ Nobody buys coding tokens at list rates. People pay $10 to $200 a month and work
 
 This repo joins the two: same scores, real prices, every number cited.
 
+## What it shows
+
+21 models, 16 plans, 138 model-and-plan pairs that are actually possible (a
+Claude subscription cannot run a Kimi model, and `data/plans.json`'s
+`model_scope` field enforces that).
+
+| Model | Score | API list | Cheapest usable plan | |
+|---|---|---|---|---|
+| gpt-5.5 | 70.05% | $5.76 | $0.132 on ChatGPT Pro 20x | 44x |
+| gpt-5.4 | 55.53% | $3.31 | $0.076 on ChatGPT Pro 20x | 44x |
+| claude-opus-4.8 | 58.19% | $11.28 | $0.089 on Claude Max 20x | 127x |
+| claude-haiku-4.5 | 0.22% | $0.78 | $0.006 on Claude Max 20x | 127x |
+
+The cheapest route on the page is claude-haiku-4.5, and it barely solves
+anything: 0.22% on this benchmark. The empty corner is the finding. Almost
+nothing is both cheap and good; see the chart's list-price-to-subscription
+flight for the honest version of this table.
+
 ## Where this stands right now
 
-`data/plans.json` has 16 real, cited subscription plans. `data/models.json` is
-empty.
+`data/plans.json` has 16 real, cited subscription plans, and `data/models.json`
+has 21 real models from a DeepSWE results snapshot (dated 2026-06-20).
 
-The reason is specific: `deepswe.datacurve.ai`, the live leaderboard, is
-blocked by this build environment's network egress, and no per-model score,
-cost per task, output tokens or agent steps could be found anywhere with a
-citation solid enough to publish. Third-party mirrors of the leaderboard
-disagreed with each other and with DeepSWE's own GitHub issues about which
-models are even on the board. Rather than guess, `data/models.json` ships
-empty with the reason recorded in `known_gaps`.
-
-Once a real, reachable data source for DeepSWE scores exists, `scripts/fetch_deepswe.py`
-joins them against the plans already here and every chart on the page comes
-alive. That is the single highest value contribution right now. See
-CONTRIBUTING.md.
+`deepswe.datacurve.ai`, the live leaderboard, is still blocked by this build
+environment's network egress. The snapshot in `data/models.json` was supplied
+directly rather than fetched by `scripts/fetch_deepswe.py`, whose `ENDPOINTS`
+are still unverified guesses; see `src-deepswe-data` in `data/sources.json`
+for exactly what that snapshot covers and how it differs from a live pull.
+Refreshing it once the real endpoint is confirmed is the single highest value
+contribution right now. See CONTRIBUTING.md.
 
 ## The method
 
@@ -62,8 +75,13 @@ a real cost-per-task figure to divide the quota by.
 
 ## Where this is weakest
 
-- **DeepSWE model data.** See "Where this stands right now" above. This is
-  the top priority.
+- **DeepSWE model data is a real snapshot, not a live pull.** See "Where this
+  stands right now" above. It is roughly three months old and
+  `scripts/fetch_deepswe.py` cannot refresh it yet.
+- **Only the best reasoning-effort configuration per model is captured.**
+  DeepSWE published more configurations than that (some models were run at
+  four effort levels); this repo keeps only the highest-scoring one per
+  model, per CONTRIBUTING item 7.
 - **Google.** AI Pro and AI Ultra are metered in AI credits with no published
   conversion to tokens or dollars anywhere found. AI Pro is priced as a
   placeholder, drawn hollow once the chart has data. AI Ultra's price itself

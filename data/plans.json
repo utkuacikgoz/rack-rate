@@ -7,13 +7,13 @@
       "credits_month"
     ],
     "requests": [
-      "requests_month",
-      "agent_steps_per_task_assumed"
+      "requests_month"
     ],
     "tokens_total": [
       "tokens_month"
     ],
-    "_note": "A plan may set quota_unresolved: true to skip the required-field check above when the conversion genuinely does not exist yet. Explain why in known_gaps."
+    "_note": "A plan may set quota_unresolved: true to skip the required-field check above when the conversion genuinely does not exist yet. Explain why in known_gaps. requests_month's tasks_per_month divides by agent_steps_per_task from the matching model in data/models.json; agent_steps_per_task_assumed is only a plan-level fallback for a model DeepSWE hasn't measured, and is not itself required.",
+    "model_scope": "Every plan also needs model_scope: either the string 'any' for a multi-model aggregator plan (Cursor, Ollama, GitHub Copilot), or a list of provider names (matching a model's provider field) or exact model ids (for a plan with a fixed included list, like OpenCode Go) that plan can actually run. scripts/compute.py only prices a model against a plan whose model_scope allows it \u2014 a Claude subscription cannot run a Kimi model, however the arithmetic would come out."
   },
   "plans": [
     {
@@ -34,7 +34,11 @@
       "sources": [
         "src-awesome-coding-plan"
       ],
-      "available": true
+      "available": true,
+      "model_scope": [
+        "Anthropic"
+      ],
+      "cross_check_tokens_month": 1588000000
     },
     {
       "id": "claude-max-5x",
@@ -55,7 +59,10 @@
         "src-awesome-coding-plan",
         "src-anthropic-max-pricing-search"
       ],
-      "available": true
+      "available": true,
+      "model_scope": [
+        "Anthropic"
+      ]
     },
     {
       "id": "claude-max-20x",
@@ -76,7 +83,10 @@
         "src-awesome-coding-plan",
         "src-anthropic-max-pricing-search"
       ],
-      "available": true
+      "available": true,
+      "model_scope": [
+        "Anthropic"
+      ]
     },
     {
       "id": "chatgpt-plus",
@@ -94,7 +104,11 @@
       "sources": [
         "src-awesome-coding-plan"
       ],
-      "available": true
+      "available": true,
+      "model_scope": [
+        "OpenAI"
+      ],
+      "cross_check_tokens_month": 616000000
     },
     {
       "id": "chatgpt-pro-20x",
@@ -113,7 +127,10 @@
         "src-awesome-coding-plan",
         "src-openai-pro-pricing-search"
       ],
-      "available": true
+      "available": true,
+      "model_scope": [
+        "OpenAI"
+      ]
     },
     {
       "id": "cursor-pro",
@@ -132,7 +149,8 @@
         "src-awesome-coding-plan",
         "src-cursor-pricing-search"
       ],
-      "available": true
+      "available": true,
+      "model_scope": "any"
     },
     {
       "id": "cursor-pro-plus",
@@ -149,7 +167,8 @@
       "sources": [
         "src-cursor-pricing-search"
       ],
-      "available": true
+      "available": true,
+      "model_scope": "any"
     },
     {
       "id": "cursor-ultra",
@@ -166,7 +185,8 @@
       "sources": [
         "src-cursor-pricing-search"
       ],
-      "available": true
+      "available": true,
+      "model_scope": "any"
     },
     {
       "id": "opencode-go",
@@ -183,7 +203,16 @@
       "sources": [
         "src-awesome-coding-plan"
       ],
-      "available": true
+      "available": true,
+      "model_scope": [
+        "glm-5.1",
+        "kimi-k2.6",
+        "mimo-v2.5-pro",
+        "deepseek-v4-pro",
+        "qwen-3.6-plus",
+        "minimax-m2.7"
+      ],
+      "model_scope_note": "model_scope is the exact model list OpenCode Go's own page names as included, not every model DeepSWE tracks."
     },
     {
       "id": "ollama-pro",
@@ -200,7 +229,8 @@
       "sources": [
         "src-awesome-coding-plan"
       ],
-      "available": true
+      "available": true,
+      "model_scope": "any"
     },
     {
       "id": "github-copilot-pro",
@@ -217,7 +247,8 @@
       "sources": [
         "src-awesome-coding-plan"
       ],
-      "available": true
+      "available": true,
+      "model_scope": "any"
     },
     {
       "id": "kimi-code-andante",
@@ -236,7 +267,9 @@
         "src-awesome-coding-plan"
       ],
       "available": true,
-      "quota_unresolved": true
+      "model_scope": [
+        "Moonshot AI"
+      ]
     },
     {
       "id": "kimi-code-allegretto",
@@ -255,7 +288,9 @@
         "src-awesome-coding-plan"
       ],
       "available": true,
-      "quota_unresolved": true
+      "model_scope": [
+        "Moonshot AI"
+      ]
     },
     {
       "id": "glm-coding-lite",
@@ -274,7 +309,9 @@
         "src-awesome-coding-plan"
       ],
       "available": true,
-      "quota_unresolved": true
+      "model_scope": [
+        "Zhipu (Z.ai)"
+      ]
     },
     {
       "id": "glm-coding-pro",
@@ -293,7 +330,9 @@
         "src-awesome-coding-plan"
       ],
       "available": true,
-      "quota_unresolved": true
+      "model_scope": [
+        "Zhipu (Z.ai)"
+      ]
     },
     {
       "id": "google-ai-pro",
@@ -311,7 +350,10 @@
       "sources": [
         "src-google-ai-pricing-search"
       ],
-      "available": true
+      "available": true,
+      "model_scope": [
+        "Google"
+      ]
     }
   ],
   "known_gaps": [

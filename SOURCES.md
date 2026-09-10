@@ -10,14 +10,15 @@ id that is not listed here.
 - Repository: [github.com/datacurve-ai/deep-swe](https://github.com/datacurve-ai/deep-swe)
 - Live leaderboard: [deepswe.datacurve.ai](https://deepswe.datacurve.ai/)
 - License: Apache-2.0
-- Used for: benchmark methodology, task count (113 tasks), and, once
-  `data/models.json` is populated, model scores, cost per task at API rates,
-  output tokens and agent steps.
-- **Status: the live leaderboard is currently blocked by this build
-  environment's network egress.** `data/models.json` ships empty as a result.
-  Methodology facts above were confirmed by cloning the repository directly,
-  which was reachable. See `known_gaps` in `data/plans.json` and
-  CONTRIBUTING.md item 1.
+- Used for: benchmark methodology and task count (113 tasks). Methodology
+  facts above were confirmed by cloning the repository directly, which was
+  reachable even though the live leaderboard site was not.
+- **Status: the live leaderboard is still blocked by this build
+  environment's network egress.** `data/models.json`'s actual scores, costs,
+  tokens and agent steps come from a snapshot supplied directly instead; see
+  `src-deepswe-data` below. `scripts/fetch_deepswe.py`'s endpoint is still
+  unverified against the live site, so it cannot refresh that snapshot yet.
+  See `known_gaps` in `data/plans.json` and CONTRIBUTING.md item 1.
 - DeepSWE task content is never mirrored here. The benchmark carries a canary
   string specifically to catch that, and contamination would ruin the
   benchmark this project depends on.

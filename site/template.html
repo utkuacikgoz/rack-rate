@@ -511,18 +511,47 @@
     }
     drawGrid();
 
-    var placed = [];
-    MODELS.forEach(function(m, i){
-      var n = N[m.id];
-      if (!n) return;
+    var CHAR_W = 6.6, LABEL_H = 13, DOT_R = 7;
+    function rectsOverlap(a, b){
+      return a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+    }
+    var geometry = MODELS.map(function(m){
       var cost = m.api_cost_per_task_usd;
       var pair = null;
       if (state.mode === "sub") {
         pair = cheapestFor(m.id, "sub");
         cost = pair ? pair.cost_per_task_usd : m.api_cost_per_task_usd;
       }
-      var x = xToPx(cost);
-      var y = yToPx(m.score_pct);
+      return { m: m, pair: pair, x: xToPx(cost), y: yToPx(m.score_pct) };
+    }).sort(function(a, b){ return b.m.score_pct - a.m.score_pct; });
+
+    // Mobile: only the Pareto frontier is labelled (cheapest first, keeping
+    // any model that beats every cheaper one on score). Everyone else still
+    // gets a dot; tap it and the rail shows the rest.
+    var isMobile = VB.w < 500;
+    var frontierIds = null;
+    if (isMobile) {
+      frontierIds = {};
+      var maxScoreSoFar = -Infinity;
+      geometry.slice().sort(function(a, b){ return a.x - b.x; }).forEach(function(g){
+        if (g.m.score_pct > maxScoreSoFar) {
+          frontierIds[g.m.id] = true;
+          maxScoreSoFar = g.m.score_pct;
+        }
+      });
+    }
+
+    // Every dot reserves a box before any label is positioned, so a label
+    // never lands on top of a dot that isn't its own.
+    var placed = geometry.map(function(g){
+      return { left: g.x - DOT_R, right: g.x + DOT_R, top: g.y - DOT_R, bottom: g.y + DOT_R };
+    });
+
+    geometry.forEach(function(g){
+      var m = g.m, x = g.x, y = g.y, pair = g.pair;
+      var n = N[m.id];
+      if (!n) return;
+      var shouldLabel = !isMobile || frontierIds[m.id];
 
       n.dot.style.cx = x + "px";
       n.dot.style.cy = y + "px";
@@ -539,22 +568,38 @@
         n.connector.style.opacity = 0;
       }
 
+      if (!shouldLabel) {
+        n.label.textContent = "";
+        n.leader.style.opacity = 0;
+        n.g.classList.remove("leadered");
+        return;
+      }
+
+      var labelW = m.name.length * CHAR_W + 8;
+      var onRight = x < VB.w - VB.pad - labelW - 12;
+      var anchorX = onRight ? x + 9 : x - 9;
+
       var placeY = y;
       var attempts = 0;
-      while (placed.some(function(p){ return Math.abs(p.y - placeY) < 14 && Math.abs(p.x - x) < 90; }) && attempts < 26) {
-        placeY += (attempts % 2 === 0 ? 1 : -1) * (7 + attempts);
+      function rectAt(py){
+        var left = onRight ? anchorX : anchorX - labelW;
+        return { left: left, right: left + labelW, top: py - LABEL_H / 2, bottom: py + LABEL_H / 2 };
+      }
+      while (placed.some(function(p){ return rectsOverlap(p, rectAt(placeY)); }) && attempts < 26) {
+        placeY = y + (attempts % 2 === 0 ? 1 : -1) * (7 + attempts * 3);
         attempts++;
       }
-      placed.push({ x: x, y: placeY });
+      placed.push(rectAt(placeY));
 
       n.label.textContent = m.name;
+      n.label.setAttribute("text-anchor", onRight ? "start" : "end");
       n.label.setAttribute("x", 0);
       n.label.setAttribute("y", 0);
-      n.label.style.transform = "translate(" + (x + 9) + "px," + (placeY + 4) + "px)";
+      n.label.style.transform = "translate(" + anchorX + "px," + (placeY + 4) + "px)";
 
       if (Math.abs(placeY - y) > 2) {
         n.leader.setAttribute("x1", x); n.leader.setAttribute("y1", y);
-        n.leader.setAttribute("x2", x + 6); n.leader.setAttribute("y2", placeY);
+        n.leader.setAttribute("x2", onRight ? x + 6 : x - 6); n.leader.setAttribute("y2", placeY);
         n.g.classList.add("leadered");
       } else {
         n.g.classList.remove("leadered");
@@ -816,17 +861,17 @@
     if (navigator.clipboard) navigator.clipboard.writeText(location.href);
   });
 
-  // ---------- resize ----------
-  var lastBreakpoint = window.innerWidth <= 620;
-  window.addEventListener("resize", function(){
+  // ---------- responsive breakpoint ----------
+  var lastBreakpoint = null;
+  function applyBreakpoint(animate){
     var isMobile = window.innerWidth <= 620;
-    if (isMobile !== lastBreakpoint) {
-      lastBreakpoint = isMobile;
-      svg.setAttribute("viewBox", isMobile ? "0 0 420 660" : "0 0 960 520");
-      VB = isMobile ? { w:420, h:660, pad:40 } : { w:960, h:520, pad:56 };
-      paint(false);
-    }
-  });
+    if (isMobile === lastBreakpoint) return;
+    lastBreakpoint = isMobile;
+    svg.setAttribute("viewBox", isMobile ? "0 0 420 660" : "0 0 960 520");
+    VB = isMobile ? { w:420, h:660, pad:40 } : { w:960, h:520, pad:56 };
+    paint(animate);
+  }
+  window.addEventListener("resize", function(){ applyBreakpoint(false); });
 
   function recompute(){
     document.getElementById("plan-picker-summary").textContent =
@@ -838,6 +883,9 @@
 
   // ---------- init ----------
   buildNodes();
+  lastBreakpoint = window.innerWidth <= 620;
+  svg.setAttribute("viewBox", lastBreakpoint ? "0 0 420 660" : "0 0 960 520");
+  VB = lastBreakpoint ? { w:420, h:660, pad:40 } : { w:960, h:520, pad:56 };
   paint(!skipOpeningAnimation);
   renderTable();
   renderRuntime();
