@@ -81,7 +81,22 @@
   @media (min-width:1500px){ h1{ font-size:4.2rem; } }
 
   header.site{ padding:56px 0 36px; border-bottom:1px solid var(--rule); }
-  .wordmark{ font-family:"JetBrains Mono",monospace; font-size:.85rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:18px; }
+  .wordmark{
+    position:relative; display:inline-block; font-family:"JetBrains Mono",monospace; font-size:.85rem;
+    letter-spacing:.14em; text-transform:uppercase; margin-bottom:18px; cursor:help;
+    background:#F4F1EA; color:#12151B; padding:4px 10px; border-radius:6px;
+    transition:background .15s ease;
+  }
+  .wordmark:hover, .wordmark:focus-visible{ background:#FFFFFF; }
+  .wordmark::after{
+    content:attr(data-tooltip); position:absolute; top:calc(100% + 10px); left:0; z-index:5;
+    width:260px; padding:10px 12px; border-radius:8px; background:var(--sunk); border:1px solid var(--rule);
+    color:var(--ink-dim); font-family:"Nimbus Sans L","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size:.82rem; text-transform:none; letter-spacing:normal; line-height:1.45;
+    opacity:0; transform:translateY(-4px); pointer-events:none; transition:opacity .15s ease, transform .15s ease;
+  }
+  .wordmark:hover::after, .wordmark:focus-visible::after{ opacity:1; transform:translateY(0); }
+  .wordmark:focus-visible{ outline:2px solid var(--adj); outline-offset:3px; }
   .lede-payoff{ font-size:1.2rem; color:var(--ink); max-width:56ch; }
   .hero-figs{ display:flex; gap:36px; flex-wrap:wrap; margin-top:28px; }
   .hero-fig{ min-width:140px; }
@@ -93,6 +108,12 @@
   .panel{ background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:28px; }
   section.chart-section{ padding:40px 0; }
   .chart-toolbar{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
+  .chart-legend{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; font-size:.8rem; color:var(--ink-faint); }
+  .chart-legend .item{ display:flex; align-items:center; gap:6px; white-space:nowrap; }
+  .chart-legend .swatch{ width:10px; height:10px; border-radius:50%; flex:none; }
+  .chart-legend .swatch.measured{ background:var(--measured); }
+  .chart-legend .swatch.published{ background:var(--adj); }
+  .chart-legend .swatch.derived{ background:none; border:1.4px solid var(--adj); }
 
   .toggle-pill{ position:relative; display:flex; width:min(100%,320px); background:var(--sunk); border:1px solid var(--rule); border-radius:999px; padding:3px; font-family:"JetBrains Mono",monospace; font-size:.82rem; }
   .toggle-pill button{ position:relative; z-index:1; flex:1; text-align:center; white-space:nowrap; background:none; border:0; color:var(--ink-faint); padding:7px 10px; border-radius:999px; cursor:pointer; transition:color var(--dur-toggle) var(--ease); }
@@ -195,7 +216,7 @@
 
 <header class="site">
   <div class="measure">
-    <div class="wordmark">Rack Rate</div>
+    <div class="wordmark" tabindex="0" aria-label="A hotel's rack rate is the full price on the back of the door. Nobody pays it — everyone gets a discount, a corporate rate, a loyalty rate." data-tooltip="A hotel's rack rate is the full price on the back of the door. Nobody pays it — everyone gets a discount, a corporate rate, a loyalty rate.">Rack Rate</div>
     <h1>API list pricing is the rack rate.<br>Nobody pays it.</h1>
     <p class="lede lede-payoff">See what the model you'd actually pick costs on the plan you'd actually buy, not the number vendors publish.</p>
     <div class="hero-figs" id="hero-figs"></div>
@@ -229,6 +250,7 @@
           <button type="button" data-mode="list" aria-pressed="true">List price</button>
           <button type="button" data-mode="sub" aria-pressed="false">Subscription price</button>
         </div>
+        <div class="chart-legend" id="chart-legend"></div>
       </div>
       <div class="chart-wrap">
         <svg class="chart" id="chart-svg" viewBox="0 0 960 520" tabindex="0" role="img" aria-label="Score against cost per task for every model">
@@ -467,6 +489,19 @@
     return pairs.reduce(function(a,b){ return b.cost_per_task_usd < a.cost_per_task_usd ? b : a; });
   }
 
+  function updateLegend(){
+    var el = document.getElementById("chart-legend");
+    if (!el) return;
+    if (state.mode === "sub") {
+      el.innerHTML =
+        '<span class="item"><span class="swatch measured"></span>plan quota measured directly</span>' +
+        '<span class="item"><span class="swatch published"></span>plan quota from vendor’s published figures</span>' +
+        '<span class="item"><span class="swatch derived"></span>no plan prices this model here</span>';
+    } else {
+      el.innerHTML = '<span class="item"><span class="swatch measured"></span>cost measured directly by DeepSWE</span>';
+    }
+  }
+
   function confidenceClass(pair){
     if (!pair) return "derived";
     var conf = pair.confidence;
@@ -658,6 +693,7 @@
         n.g.classList.remove("leadered");
       }
     });
+    updateLegend();
   }
 
   function setHot(modelId){
