@@ -82,10 +82,13 @@
 
   header.site{ padding:56px 0 36px; border-bottom:1px solid var(--rule); }
   .wordmark{ font-family:"JetBrains Mono",monospace; font-size:.85rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:18px; }
+  .lede-payoff{ font-size:1.2rem; color:var(--ink); max-width:56ch; }
   .hero-figs{ display:flex; gap:36px; flex-wrap:wrap; margin-top:28px; }
   .hero-fig{ min-width:140px; }
   .hero-fig .value{ font-family:"JetBrains Mono",monospace; font-size:1.6rem; color:var(--adj); font-weight:500; }
   .hero-fig .label{ color:var(--ink-faint); font-size:.85rem; margin-top:2px; }
+  .hero-cite{ font-size:.85rem; color:var(--ink-faint); margin-top:22px; }
+  .hero-cite a{ color:var(--ink-faint); text-decoration-color:rgba(115,130,160,.5); }
 
   .panel{ background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:28px; }
   section.chart-section{ padding:40px 0; }
@@ -194,8 +197,9 @@
   <div class="measure">
     <div class="wordmark">Rack Rate</div>
     <h1>API list pricing is the rack rate.<br>Nobody pays it.</h1>
-    <p class="lede"><a href="https://deepswe.datacurve.ai/">DeepSWE</a> benchmark scores, repriced by what people actually pay.</p>
+    <p class="lede lede-payoff">See what the model you'd actually pick costs on the plan you'd actually buy, not the number vendors publish.</p>
     <div class="hero-figs" id="hero-figs"></div>
+    <p class="hero-cite">Scored by <a href="https://deepswe.datacurve.ai/">DeepSWE</a>, a public coding benchmark. <span id="hero-meta"></span></p>
   </div>
 </header>
 
@@ -359,18 +363,23 @@
     var el = document.getElementById("hero-figs");
     var routes = DERIVED.best_routes || [];
     var pairCount = (DERIVED.pairs || []).length;
-    var figs = [
-      { label: "models", value: MODELS.length },
-      { label: "plans", value: PLANS.length },
-      { label: "pairs priced", value: pairCount },
-    ];
+    var figs = [];
     if (routes.length) {
+      var biggest = routes.reduce(function(a, b){
+        var ar = a.api_cost_per_task_usd / a.cost_per_task_usd;
+        var br = b.api_cost_per_task_usd / b.cost_per_task_usd;
+        return br > ar ? b : a;
+      });
+      var mult = biggest.api_cost_per_task_usd / biggest.cost_per_task_usd;
+      figs.push({ label: biggest.model_name + " · " + biggest.plan_name, value: Math.round(mult) + "x cheaper" });
       var cheapest = routes.reduce(function(a,b){ return b.cost_per_task_usd < a.cost_per_task_usd ? b : a; });
       figs.push({ label: cheapest.model_name + " · " + cheapest.plan_name, value: "$" + cheapest.cost_per_task_usd.toFixed(3) + "/task" });
     }
     el.innerHTML = figs.map(function(f){
       return '<div class="hero-fig"><div class="value">' + f.value + '</div><div class="label">' + f.label + '</div></div>';
     }).join("");
+    document.getElementById("hero-meta").textContent =
+      MODELS.length + " models, " + PLANS.length + " plans, " + pairCount + " pairs priced, every number cited.";
   })();
 
   // ---------- plan chips ----------
