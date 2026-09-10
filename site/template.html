@@ -125,12 +125,13 @@
   .budget-tool label{ font-size:1.1rem; color:var(--ink); display:flex; align-items:center; flex-wrap:wrap; gap:2px; }
   .budget-input-wrap{ display:inline-flex; align-items:center; font-family:"JetBrains Mono",monospace; color:var(--adj); font-weight:500; }
   #budget-input{
-    width:4.5ch; margin-left:2px; background:var(--sunk); border:1px solid var(--rule); border-radius:6px;
-    color:var(--adj); font-family:"JetBrains Mono",monospace; font-size:1rem; font-weight:500;
-    padding:2px 6px; -moz-appearance:textfield;
+    box-sizing:border-box; width:3.8ch; text-align:center; line-height:1.2;
+    margin-left:2px; background:var(--sunk); border:1px solid var(--rule); border-radius:6px;
+    color:var(--adj); font-family:"JetBrains Mono",monospace; font-size:1.05rem; font-weight:600;
+    padding:4px 6px; -moz-appearance:textfield;
   }
   #budget-input::-webkit-outer-spin-button, #budget-input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
-  #budget-input:focus-visible{ outline:2px solid var(--adj); outline-offset:2px; }
+  #budget-input:focus-visible{ outline:none; border-color:var(--adj); box-shadow:0 0 0 3px rgba(255,176,32,.25); }
   .budget-result{ margin-top:12px; font-size:.95rem; color:var(--ink-dim); min-height:1.4em; }
   .budget-result strong{ color:var(--ink); }
   .budget-result .none{ color:var(--ink-faint); }
@@ -476,8 +477,8 @@
       var cheapestPlan = PLANS.filter(function(p){ return state.selectedPlans.indexOf(p.id) !== -1; })
         .reduce(function(a,b){ return (!a || b.price_usd_month < a.price_usd_month) ? b : a; }, null);
       out.innerHTML = cheapestPlan
-        ? '<span class="none">Nothing at that budget. The cheapest plan here is ' + cheapestPlan.name + ', $' + cheapestPlan.price_usd_month + '/mo.</span>'
-        : '<span class="none">Nothing at that budget in the currently selected plans.</span>';
+        ? '<span class="none">🍌 Nothing at that budget — not even close. The cheapest plan here is ' + cheapestPlan.name + ', $' + cheapestPlan.price_usd_month + '/mo.</span>'
+        : '<span class="none">🍌 Nothing at that budget in the currently selected plans.</span>';
       return;
     }
     var best = candidates.reduce(function(a, b){
