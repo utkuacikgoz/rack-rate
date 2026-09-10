@@ -8,7 +8,8 @@
       "retrieved": "2026-09-09",
       "covers": "Benchmark methodology, task count (113 tasks), harness (Pier + mini-swe-agent on Modal), and license. Read directly by cloning the repository; the live leaderboard site is blocked from this build environment.",
       "changes": "None. Cited for methodology only, no data copied.",
-      "notes": "The live leaderboard at deepswe.datacurve.ai could not be reached from this build environment (network egress blocked, confirmed on every path tried). scripts/fetch_deepswe.py now works: its endpoint (https://deepswe.datacurve.ai/artifacts/v1/leaderboard-live.json) and normalize()'s field mapping were both confirmed against a real fetch run outside this build environment, and reproduce data/models.json exactly. See src-deepswe-data for the snapshot currently in data/models.json, and re-run scripts/fetch_deepswe.py periodically to keep it current."
+      "notes": "The live leaderboard at deepswe.datacurve.ai could not be reached from this build environment (network egress blocked, confirmed on every path tried). scripts/fetch_deepswe.py now works: its endpoint (https://deepswe.datacurve.ai/artifacts/v1/leaderboard-live.json) and normalize()'s field mapping were both confirmed against a real fetch run outside this build environment, and reproduce data/models.json exactly. See src-deepswe-data for the snapshot currently in data/models.json, and re-run scripts/fetch_deepswe.py periodically to keep it current.",
+      "summary": "Benchmark methodology, task count and license."
     },
     {
       "id": "src-deepswe-data",
@@ -18,7 +19,8 @@
       "retrieved": "2026-09-10",
       "covers": "Per-model, per-reasoning-effort results for all 113 tasks: pass@1, pass@4, cost per attempt, output tokens, input tokens and agent steps, aggregated as means and medians over every scored attempt (imported Pier jobs, mini-swe-agent harness). 21 models, matching the site's stated model count.",
       "changes": "For each model, only the highest-scoring reasoning-effort configuration was kept in data/models.json, per CONTRIBUTING item 7 (effort levels are a known simplification). api_cost_per_task_usd, output_tokens_per_task, input_tokens_per_task and agent_steps_per_task use the median over scored attempts rather than the mean, to resist a few very expensive stuck runs skewing the figure.",
-      "notes": "deepswe.datacurve.ai itself is blocked by this build environment's network egress (see src-deepswe-repo), so this specific snapshot was supplied directly rather than fetched here. scripts/fetch_deepswe.py's endpoint and field mapping are now confirmed against this exact data and reproduce data/models.json exactly, so a maintainer running it from an unblocked network keeps this current. The data's own generated_at timestamp is 2026-06-20, roughly three months before this repo's other figures, and is exactly what a fresh run would update."
+      "notes": "deepswe.datacurve.ai itself is blocked by this build environment's network egress (see src-deepswe-repo), so this specific snapshot was supplied directly rather than fetched here. scripts/fetch_deepswe.py's endpoint and field mapping are now confirmed against this exact data and reproduce data/models.json exactly, so a maintainer running it from an unblocked network keeps this current. The data's own generated_at timestamp is 2026-06-20, roughly three months before this repo's other figures, and is exactly what a fresh run would update.",
+      "summary": "Score, cost, tokens and steps for all 21 models."
     },
     {
       "id": "src-awesome-coding-plan",
@@ -29,7 +31,8 @@
       "covers": "Measured monthly quotas and their value at API rates for Claude Pro, ChatGPT Plus, Ollama Pro, OpenCode Go, Kimi Code Andante, Kimi Code Allegretto, GLM Coding Plan Lite, GLM Coding Plan Pro, Cursor Pro (floor value) and GitHub Copilot Pro.",
       "changes": "Selected rows were converted from the source's table into this project's plan schema (price_usd_month, quota_usd_month or requests_month, confidence, method). CNY figures were kept as reported by the source and are not independently re-measured in USD here. Higher-tier plans (Claude Max 5x/20x, ChatGPT Pro) are this project's own scaling of the measured entry-tier row by the vendor's advertised multiplier, not a value from this source.",
       "attribution": "Identification of the creator: mahonzhan@gmail.com. License notice: Licensed under the Creative Commons Attribution 4.0 International License. Link to the license: https://creativecommons.org/licenses/by/4.0/",
-      "credited_contributor": "mahonzhan"
+      "credited_contributor": "mahonzhan",
+      "summary": "Measured monthly quotas for 9 of the 16 plans here."
     },
     {
       "id": "src-real-api-pricing",
@@ -38,57 +41,64 @@
       "license": "MIT (project software); underlying third-party data keeps its own terms, see the project's own SOURCES.md",
       "retrieved": "2026-09-09",
       "covers": "An independent per-token pricing comparison across other leaderboards, reaching a similar conclusion to this project by a different route. Credited in README.md. No figures from this source are copied into data/plans.json.",
-      "changes": "None. Credit only."
+      "changes": "None. Credit only.",
+      "summary": "Independent per-token pricing comparison. Credit only.",
+      "license_short": "MIT"
     },
     {
       "id": "src-anthropic-max-pricing-search",
-      "title": "Claude Max plan pricing and usage multipliers (search-corroborated)",
+      "title": "Claude Max pricing",
       "url": "https://www.anthropic.com/pricing",
       "license": "Not applicable, pricing page",
       "retrieved": "2026-09-09",
       "covers": "Claude Max 5x is $100/month and Max 20x is $200/month, each a multiplier on Claude Pro's usage limits per the vendor's own naming.",
       "changes": "None.",
-      "notes": "The vendor's own pricing page is blocked from this build environment. This citation is corroborated through search-result summaries of the vendor's page and third-party coverage, not a direct fetch. A contributor without that network restriction should confirm directly and update this record's retrieval method."
+      "notes": "The vendor's own pricing page is blocked from this build environment. This citation is corroborated through search-result summaries of the vendor's page and third-party coverage, not a direct fetch. A contributor without that network restriction should confirm directly and update this record's retrieval method.",
+      "summary": "Claude Max 5x/20x pricing and their multipliers."
     },
     {
       "id": "src-openai-pro-pricing-search",
-      "title": "ChatGPT Pro plan pricing and usage multiplier (search-corroborated)",
+      "title": "ChatGPT Pro pricing",
       "url": "https://openai.com/chatgpt/pricing/",
       "license": "Not applicable, pricing page",
       "retrieved": "2026-09-09",
       "covers": "ChatGPT Pro is $200/month, described by OpenAI as roughly 20x the usage of ChatGPT Plus ($20/month).",
       "changes": "None.",
-      "notes": "Vendor page blocked from this build environment. Corroborated through search-result summaries and the OpenAI Help Center, not a direct fetch."
+      "notes": "Vendor page blocked from this build environment. Corroborated through search-result summaries and the OpenAI Help Center, not a direct fetch.",
+      "summary": "ChatGPT Pro's price and multiplier over Plus."
     },
     {
       "id": "src-cursor-pricing-search",
-      "title": "Cursor pricing tiers (search-corroborated)",
+      "title": "Cursor pricing",
       "url": "https://cursor.com/pricing",
       "license": "Not applicable, pricing page",
       "retrieved": "2026-09-09",
       "covers": "Cursor Pro $20/month with a $20 included usage pool (matches the measured floor in Awesome Coding Plan). Pro+ $60/month at roughly 3x Pro's pool, Ultra $200/month at roughly 20x.",
       "changes": "None.",
-      "notes": "Vendor page blocked from this build environment. Pro's figure is corroborated by src-awesome-coding-plan directly. Pro+ and Ultra multipliers come from third-party aggregator summaries only and are marked low confidence in plans.json."
+      "notes": "Vendor page blocked from this build environment. Pro's figure is corroborated by src-awesome-coding-plan directly. Pro+ and Ultra multipliers come from third-party aggregator summaries only and are marked low confidence in plans.json.",
+      "summary": "Cursor's three tiers and included usage pools."
     },
     {
       "id": "src-glm-zai-pricing-search",
-      "title": "Z.ai GLM Coding Plan (international, USD) pricing (search-corroborated, unresolved)",
+      "title": "Z.ai international GLM plan",
       "url": "https://z.ai/subscribe",
       "license": "Not applicable, pricing page",
       "retrieved": "2026-09-09",
       "covers": "Attempted lookup of Z.ai's international USD-denominated GLM Coding Plan (Lite/Pro/Max) and its credit formula.",
       "changes": "None.",
-      "notes": "Vendor page and vendor docs (docs.z.ai) are blocked from this build environment. Aggregator sites disagreed with each other on the USD price of every tier. Not used in plans.json; recorded in known_gaps instead. The plans priced in this repo's data (GLM Coding Plan Lite/Pro) are the CNY-denominated domestic product measured directly in src-awesome-coding-plan, a different product from the one this source describes."
+      "notes": "Vendor page and vendor docs (docs.z.ai) are blocked from this build environment. Aggregator sites disagreed with each other on the USD price of every tier. Not used in plans.json; recorded in known_gaps instead. The plans priced in this repo's data (GLM Coding Plan Lite/Pro) are the CNY-denominated domestic product measured directly in src-awesome-coding-plan, a different product from the one this source describes.",
+      "summary": "Z.ai's international GLM plan. Not used; see known_gaps."
     },
     {
       "id": "src-google-ai-pricing-search",
-      "title": "Google AI Pro and AI Ultra pricing and credits (search-corroborated, unresolved)",
+      "title": "Google AI Pro and Ultra",
       "url": "https://gemini.google/subscriptions/",
       "license": "Not applicable, pricing page",
       "retrieved": "2026-09-09",
       "covers": "Google AI Pro is $19.99/month with 1,000 AI credits/month. Google AI Ultra's price and credit allotment could not be resolved: sources disagreed between $99.99, $199.99 and the original $249.99 launch price, and between 25,000 and 35,000 credits.",
       "changes": "None.",
-      "notes": "Vendor page blocked from this build environment. No published conversion from AI credits to tokens or dollars exists anywhere found. These rows are the weakest on the page by design; see known_gaps."
+      "notes": "Vendor page blocked from this build environment. No published conversion from AI credits to tokens or dollars exists anywhere found. These rows are the weakest on the page by design; see known_gaps.",
+      "summary": "Google AI Pro/Ultra pricing and credits. Weakest data on the page."
     }
   ]
 }

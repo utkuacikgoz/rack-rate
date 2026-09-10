@@ -65,17 +65,19 @@
     font-variant-numeric: tabular-nums;
   }
   .measure{ max-width:var(--measure); margin-left:auto; margin-right:auto; padding:0 24px; }
-  @media (min-width:1500px){ .measure{ max-width:1240px; } h1{ font-size:4.2rem; } }
+  .lede{ max-width:62ch; }
+  @media (min-width:1500px){ .measure{ max-width:1600px; } h1{ font-size:4.2rem; } }
+  @media (min-width:2000px){ .measure{ max-width:1880px; } }
 
-  header.site{ padding:64px 0 40px; border-bottom:1px solid var(--rule); }
-  .wordmark{ font-family:"JetBrains Mono",monospace; font-size:.85rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:20px; }
-  .hero-figs{ display:flex; gap:36px; flex-wrap:wrap; margin-top:36px; }
+  header.site{ padding:56px 0 36px; border-bottom:1px solid var(--rule); }
+  .wordmark{ font-family:"JetBrains Mono",monospace; font-size:.85rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:18px; }
+  .hero-figs{ display:flex; gap:36px; flex-wrap:wrap; margin-top:28px; }
   .hero-fig{ min-width:140px; }
   .hero-fig .value{ font-family:"JetBrains Mono",monospace; font-size:1.6rem; color:var(--adj); font-weight:500; }
   .hero-fig .label{ color:var(--ink-faint); font-size:.85rem; margin-top:2px; }
 
   .panel{ background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:28px; }
-  section.chart-section{ padding:56px 0; }
+  section.chart-section{ padding:40px 0; }
   .chart-toolbar{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
 
   .toggle-pill{ position:relative; display:flex; width:min(100%,320px); background:var(--sunk); border:1px solid var(--rule); border-radius:999px; padding:3px; font-family:"JetBrains Mono",monospace; font-size:.82rem; }
@@ -149,7 +151,8 @@
 
   .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:20px; }
   @media (max-width:620px){ .cards{ grid-template-columns:1fr; } }
-  .card{ background:var(--panel); border:1px solid var(--rule); border-radius:12px; padding:20px; }
+  .card{ background:var(--panel); border:1px solid var(--rule); border-radius:12px; padding:20px; min-width:0; overflow-wrap:anywhere; }
+  .card a{ overflow-wrap:anywhere; word-break:break-word; }
   .license-badge{ display:inline-block; font-family:"JetBrains Mono",monospace; font-size:.72rem; padding:3px 8px; border-radius:5px; background:var(--sunk); border:1px solid var(--rule); color:var(--ink-faint); }
   .license-badge.open{ color:var(--measured); border-color:var(--measured); }
 
@@ -167,7 +170,7 @@
   <div class="measure">
     <div class="wordmark">Rack Rate</div>
     <h1>API list pricing is the rack rate.<br>Nobody pays it.</h1>
-    <p>A hotel's rack rate is the price on the back of the door. <a href="https://deepswe.datacurve.ai/">DeepSWE</a> scores 21 coding models on 113 original engineering tasks and prices every one at API list rates. This page rejoins those scores to what a coding subscription actually charges, and cites every number.</p>
+    <p class="lede">A hotel's rack rate is the price on the back of the door. <a href="https://deepswe.datacurve.ai/">DeepSWE</a> scores coding models at API list rates. This page joins those scores to what a real subscription charges, and cites every number.</p>
     <div class="hero-figs" id="hero-figs"></div>
   </div>
 </header>
@@ -214,10 +217,10 @@
   </div>
 </section>
 
-<section id="routes" style="padding:0 0 56px;">
+<section id="routes" style="padding:0 0 40px;">
   <div class="measure">
     <h2>Every route</h2>
-    <p>One row per model, its cheapest plan among the ones selected above, and how that compares to API list price.</p>
+    <p class="lede">One row per model: its cheapest plan among the ones selected above, against API list price.</p>
     <div style="overflow-x:auto;">
       <table class="routes" id="routes-table">
         <thead>
@@ -236,35 +239,35 @@
   </div>
 </section>
 
-<section id="runtime" style="padding:0 0 56px;">
+<section id="runtime" style="padding:0 0 40px;">
   <div class="measure">
     <h2>How long a quota lasts</h2>
-    <p>A price per task hides the ceiling. This is how long all 113 tasks would take on each route, limited by whichever cap bites first: the monthly quota or the rolling five hour window.</p>
+    <p class="lede">A price per task hides the ceiling. This is how long a full run takes on each route, capped by the monthly quota or the rolling five hour window, whichever bites first.</p>
     <svg class="chart" id="runtime-svg" viewBox="0 0 960 40" width="100%" role="img" aria-label="Days to run all tasks per route"></svg>
   </div>
 </section>
 
-<section id="method" style="padding:0 0 56px;">
+<section id="method" style="padding:0 0 40px;">
   <div class="measure">
     <h2>The method</h2>
-    <p><code>cost_per_task = price_per_month / tasks_per_month</code>. What counts as a task depends on which unit the vendor publishes its quota in.</p>
+    <p class="lede"><code>cost_per_task = price_per_month / tasks_per_month</code>. What counts as a task depends on the unit the vendor publishes.</p>
     <div class="cards" id="method-cards"></div>
   </div>
 </section>
 
-<section id="cross-check" style="padding:0 0 56px;">
+<section id="cross-check" style="padding:0 0 40px;">
   <div class="measure">
     <h2>The cross check</h2>
-    <p>Two vendors publish their measured quota twice, once in dollars and once in tokens. Counting both ways shares no input, since tokens per task come from a separate agent run. A stable gap between the two answers points at a systematic cause rather than noise.</p>
+    <p class="lede">Two plans publish their measured quota twice, once in dollars and once in tokens, counted here two independent ways. A stable gap between the two points at a systematic cause, not noise.</p>
     <svg class="chart" id="cross-svg" viewBox="0 0 960 160" width="100%" role="img" aria-label="Cross check ratio strip plot"></svg>
     <p id="cross-summary" class="mono" style="color:var(--ink-faint); font-size:.85rem;"></p>
   </div>
 </section>
 
-<section id="sources" style="padding:0 0 56px;">
+<section id="sources" style="padding:0 0 40px;">
   <div class="measure">
     <h2>Sources</h2>
-    <p>Every figure on this page traces to one of these records. Full detail in <a href="SOURCES.md">SOURCES.md</a>.</p>
+    <p class="lede">Every figure traces to one of these records. Full detail in <a href="SOURCES.md">SOURCES.md</a>.</p>
     <div class="cards" id="source-cards"></div>
   </div>
 </section>
@@ -331,13 +334,13 @@
     var routes = DERIVED.best_routes || [];
     var pairCount = (DERIVED.pairs || []).length;
     var figs = [
-      { label: MODELS.length + " model" + (MODELS.length === 1 ? "" : "s"), value: MODELS.length ? MODELS.length : "0" },
-      { label: "plans tracked", value: PLANS.length },
-      { label: "model × plan pairs priced", value: pairCount },
+      { label: "models", value: MODELS.length },
+      { label: "plans", value: PLANS.length },
+      { label: "pairs priced", value: pairCount },
     ];
     if (routes.length) {
       var cheapest = routes.reduce(function(a,b){ return b.cost_per_task_usd < a.cost_per_task_usd ? b : a; });
-      figs.push({ label: "cheapest route, " + cheapest.model_name + " on " + cheapest.plan_name, value: "$" + cheapest.cost_per_task_usd.toFixed(3) + "/task" });
+      figs.push({ label: cheapest.model_name + " · " + cheapest.plan_name, value: "$" + cheapest.cost_per_task_usd.toFixed(3) + "/task" });
     }
     el.innerHTML = figs.map(function(f){
       return '<div class="hero-fig"><div class="value">' + f.value + '</div><div class="label">' + f.label + '</div></div>';
@@ -846,10 +849,14 @@
   function renderSources(){
     var wrap = document.getElementById("source-cards");
     wrap.innerHTML = (DATA.sources || []).map(function(s){
-      var open = /CC BY|MIT|Apache/.test(s.license);
+      var badgeText = s.license_short || (s.license && s.license.length <= 16 ? s.license : null);
+      var open = badgeText && /CC BY|MIT|Apache/.test(badgeText);
+      var badge = badgeText
+        ? '<p><span class="license-badge' + (open ? ' open' : '') + '">' + badgeText + '</span></p>'
+        : "";
       return '<div class="card"><h3>' + s.title + '</h3>' +
-        '<p><span class="license-badge' + (open ? ' open' : '') + '">' + s.license + '</span></p>' +
-        '<p style="font-size:.88rem;">' + s.covers + '</p>' +
+        badge +
+        '<p style="font-size:.88rem;">' + (s.summary || s.covers) + '</p>' +
         '<p><a href="' + s.url + '">' + s.url + '</a></p>' +
         '</div>';
     }).join("");
