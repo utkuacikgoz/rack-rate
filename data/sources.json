@@ -8,7 +8,7 @@
       "retrieved": "2026-09-09",
       "covers": "Benchmark methodology, task count (113 tasks), harness (Pier + mini-swe-agent on Modal), and license. Read directly by cloning the repository; the live leaderboard site is blocked from this build environment.",
       "changes": "None. Cited for methodology only, no data copied.",
-      "notes": "The live leaderboard at deepswe.datacurve.ai could not be reached from this build environment (network egress blocked). Per-model scores, cost per task, output tokens and agent steps in data/models.json come from a snapshot supplied directly instead; see src-deepswe-data. scripts/fetch_deepswe.py still needs its endpoint confirmed against the live site to pull future updates automatically; see known_gaps."
+      "notes": "The live leaderboard at deepswe.datacurve.ai could not be reached from this build environment (network egress blocked, confirmed on every path tried including the endpoint below). Per-model scores, cost per task, output tokens and agent steps in data/models.json come from a snapshot supplied directly instead; see src-deepswe-data. A maintainer found the live data endpoint (https://deepswe.datacurve.ai/artifacts/v1/leaderboard-live.json) via the site's own network tab and it is now first in scripts/fetch_deepswe.py's ENDPOINTS, but its response shape has not been confirmed against normalize() in that script since it still cannot be fetched from here; see known_gaps."
     },
     {
       "id": "src-deepswe-data",

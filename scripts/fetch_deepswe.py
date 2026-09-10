@@ -4,12 +4,13 @@
     python scripts/fetch_deepswe.py --diff   # print what moved, write nothing
     python scripts/fetch_deepswe.py          # write data/models.json
 
-UNVERIFIED. The endpoints below have not been confirmed against the live
-site. deepswe.datacurve.ai renders as a JavaScript SPA, so a plain request
-to the page itself returns an empty shell, not leaderboard data. Whoever
-opens the site's network tab and finds the real JSON endpoint should replace
-ENDPOINTS below and delete this notice. See CONTRIBUTING.md and the open
-work list for this task.
+PARTIALLY VERIFIED. ENDPOINTS[0] was found by a maintainer opening the live
+site's network tab directly (this repo's own build environment cannot reach
+deepswe.datacurve.ai at all, so it could not be fetched here to confirm the
+response shape matches normalize() below). If the field names in normalize()
+turn out wrong once this actually runs, fix them there rather than guessing
+again. The other entries in ENDPOINTS are older, unconfirmed guesses kept as
+a fallback. See CONTRIBUTING.md and the open work list for this task.
 
 This script never touches DeepSWE task content, only leaderboard metadata
 (model id, score, cost per task, output tokens, agent steps). The benchmark
@@ -25,6 +26,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 
 ENDPOINTS = [
+    "https://deepswe.datacurve.ai/artifacts/v1/leaderboard-live.json",  # found via the live site's network tab
     "https://deepswe.datacurve.ai/api/leaderboard",
     "https://deepswe.datacurve.ai/leaderboard.json",
     "https://api.datacurve.ai/deepswe/leaderboard",
