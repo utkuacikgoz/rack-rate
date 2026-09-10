@@ -81,6 +81,21 @@
   @media (min-width:1500px){ h1{ font-size:4.2rem; } }
 
   header.site{ padding:56px 0 36px; border-bottom:1px solid var(--rule); }
+  .hero-grid{ display:grid; grid-template-columns:1fr; gap:40px; max-width:1360px; }
+  .hero-tool{ display:flex; }
+  @media (min-width:960px){
+    .hero-grid{ grid-template-columns:minmax(0,1fr) minmax(340px,420px); align-items:center; gap:64px; }
+    .hero-tool{ align-items:center; }
+  }
+  @media (prefers-reduced-motion: no-preference){
+    header.site .wordmark{ animation:heroIn .5s .02s var(--ease) both; }
+    header.site h1{ animation:heroIn .6s .07s var(--ease) both; }
+    header.site .lede-payoff{ animation:heroIn .6s .16s var(--ease) both; }
+    header.site .hero-figs{ animation:heroIn .6s .24s var(--ease) both; }
+    header.site .budget-tool{ animation:heroIn .6s .32s var(--ease) both; }
+    header.site .hero-cite{ animation:heroIn .6s .4s var(--ease) both; }
+  }
+  @keyframes heroIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
   .wordmark{
     position:relative; display:inline-block; font-family:"JetBrains Mono",monospace; font-size:.85rem;
     letter-spacing:.14em; text-transform:uppercase; margin-bottom:18px; cursor:help;
@@ -104,6 +119,21 @@
   .hero-fig .label{ color:var(--ink-faint); font-size:.85rem; margin-top:2px; }
   .hero-cite{ font-size:.85rem; color:var(--ink-faint); margin-top:22px; }
   .hero-cite a{ color:var(--ink-faint); text-decoration-color:rgba(115,130,160,.5); }
+
+  .budget-tool{ width:100%; padding:24px 26px; background:var(--panel); border:1px solid var(--rule); border-radius:14px; box-shadow:0 24px 60px -30px rgba(0,0,0,.6); }
+  .budget-tool-kicker{ font-family:"JetBrains Mono",monospace; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--adj); margin-bottom:10px; }
+  .budget-tool label{ font-size:1.1rem; color:var(--ink); display:flex; align-items:center; flex-wrap:wrap; gap:2px; }
+  .budget-input-wrap{ display:inline-flex; align-items:center; font-family:"JetBrains Mono",monospace; color:var(--adj); font-weight:500; }
+  #budget-input{
+    width:4.5ch; margin-left:2px; background:var(--sunk); border:1px solid var(--rule); border-radius:6px;
+    color:var(--adj); font-family:"JetBrains Mono",monospace; font-size:1rem; font-weight:500;
+    padding:2px 6px; -moz-appearance:textfield;
+  }
+  #budget-input::-webkit-outer-spin-button, #budget-input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+  #budget-input:focus-visible{ outline:2px solid var(--adj); outline-offset:2px; }
+  .budget-result{ margin-top:12px; font-size:.95rem; color:var(--ink-dim); min-height:1.4em; }
+  .budget-result strong{ color:var(--ink); }
+  .budget-result .none{ color:var(--ink-faint); }
 
   .panel{ background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:28px; }
   section.chart-section{ padding:40px 0; }
@@ -133,7 +163,11 @@
   .node .range-bar{ stroke:var(--api); stroke-width:3; stroke-linecap:round; opacity:.5; }
   .node .halo{ fill:var(--adj); opacity:0; transition:opacity var(--dur-hover) var(--ease); }
   .node.hot .halo{ opacity:.16; }
-  .node .dot{ transition:cx var(--dur-reprice) var(--ease), cy var(--dur-reprice) var(--ease), r var(--dur-hover) var(--ease); cursor:pointer; filter:url(#ballShadow); }
+  .node .dot{ transition:cx var(--dur-reprice) var(--ease), cy var(--dur-reprice) var(--ease), r var(--dur-hover) var(--ease); cursor:pointer; filter:url(#ballShadow); transform-box:fill-box; transform-origin:center; }
+  @media (prefers-reduced-motion: no-preference){
+    .node.enter .dot{ animation:dotPop .5s cubic-bezier(.34,1.56,.64,1) both; }
+  }
+  @keyframes dotPop{ from{ opacity:0; transform:scale(.15); } to{ opacity:1; transform:scale(1); } }
   .node .dot.measured{ fill:url(#ballGreen); stroke:none; }
   .node .dot.published{ fill:url(#ballAmber); stroke:none; }
   .node .dot.derived{ fill:none; stroke:var(--adj); stroke-width:1.6; filter:none; }
@@ -215,12 +249,21 @@
 <body>
 
 <header class="site">
-  <div class="measure">
-    <div class="wordmark" tabindex="0" aria-label="A hotel's rack rate is the full price on the back of the door. Nobody pays it — everyone gets a discount, a corporate rate, a loyalty rate." data-tooltip="A hotel's rack rate is the full price on the back of the door. Nobody pays it — everyone gets a discount, a corporate rate, a loyalty rate.">Rack Rate</div>
-    <h1>API list pricing is the rack rate.<br>Nobody pays it.</h1>
-    <p class="lede lede-payoff">See what the model you'd actually pick costs on the plan you'd actually buy, not the number vendors publish.</p>
-    <div class="hero-figs" id="hero-figs"></div>
-    <p class="hero-cite">Scored by <a href="https://deepswe.datacurve.ai/">DeepSWE</a>, a public coding benchmark. <span id="hero-meta"></span></p>
+  <div class="measure hero-grid">
+    <div class="hero-copy">
+      <div class="wordmark" tabindex="0" aria-label="A hotel's rack rate is the full price on the back of the door. Nobody pays it — everyone gets a discount, a corporate rate, a loyalty rate." data-tooltip="A hotel's rack rate is the full price on the back of the door. Nobody pays it — everyone gets a discount, a corporate rate, a loyalty rate.">Rack Rate</div>
+      <h1>API list pricing is the rack rate.<br>Nobody pays it.</h1>
+      <p class="lede lede-payoff">See what the model you'd actually pick costs on the plan you'd actually buy, not the number vendors publish.</p>
+      <div class="hero-figs" id="hero-figs"></div>
+      <p class="hero-cite">Scored by <a href="https://deepswe.datacurve.ai/">DeepSWE</a>, a public coding benchmark. <span id="hero-meta"></span></p>
+    </div>
+    <div class="hero-tool">
+      <div class="budget-tool">
+        <div class="budget-tool-kicker">Try it</div>
+        <label for="budget-input">What does <span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" step="1" inputmode="numeric"></span> a month get you?</label>
+        <div class="budget-result" id="budget-result" aria-live="polite"></div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -419,6 +462,38 @@
       MODELS.length + " models, " + PLANS.length + " plans, " + pairCount + " pairs priced, every number cited.";
   })();
 
+  // ---------- budget tool ----------
+  function renderBudgetTool(){
+    var input = document.getElementById("budget-input");
+    var out = document.getElementById("budget-result");
+    if (!input || !out) return;
+    var budget = parseFloat(input.value);
+    if (!budget || budget <= 0) { out.innerHTML = ""; return; }
+    var candidates = (DERIVED.pairs || []).filter(function(p){
+      return state.selectedPlans.indexOf(p.plan_id) !== -1 && p.price_usd_month <= budget;
+    });
+    if (!candidates.length) {
+      var cheapestPlan = PLANS.filter(function(p){ return state.selectedPlans.indexOf(p.id) !== -1; })
+        .reduce(function(a,b){ return (!a || b.price_usd_month < a.price_usd_month) ? b : a; }, null);
+      out.innerHTML = cheapestPlan
+        ? '<span class="none">Nothing at that budget. The cheapest plan here is ' + cheapestPlan.name + ', $' + cheapestPlan.price_usd_month + '/mo.</span>'
+        : '<span class="none">Nothing at that budget in the currently selected plans.</span>';
+      return;
+    }
+    var best = candidates.reduce(function(a, b){
+      if (b.score_pct !== a.score_pct) return b.score_pct > a.score_pct ? b : a;
+      return b.cost_per_task_usd < a.cost_per_task_usd ? b : a;
+    });
+    out.innerHTML = 'Best pick: <strong>' + best.model_name + '</strong> (' + best.score_pct + '%) on <strong>' +
+      best.plan_name + '</strong> — $' + best.price_usd_month + '/mo, $' + best.cost_per_task_usd.toFixed(4) + '/task.';
+  }
+  (function initBudgetTool(){
+    var input = document.getElementById("budget-input");
+    if (!input) return;
+    input.addEventListener("input", renderBudgetTool);
+    renderBudgetTool();
+  })();
+
   // ---------- plan chips ----------
   (function renderChips(){
     var wrap = document.getElementById("plan-chips");
@@ -467,6 +542,7 @@
   var emptyState = document.getElementById("empty-state");
   var VB = { w: 960, h: 520, pad: 56 };
   var N = {}; // model id -> { g, dot, label, connector, halo }
+  var chartHasEntered = false;
   var xDomain = [0.01, 20];
   var yDomain = [0, 100];
 
@@ -586,6 +662,8 @@
     var hasModels = MODELS.length > 0;
     emptyState.style.display = hasModels ? "none" : "block";
     if (!hasModels) return;
+    var doEntrance = !!animate && !chartHasEntered;
+    if (doEntrance) chartHasEntered = true;
 
     // recompute domain
     var costs = [];
@@ -635,10 +713,19 @@
       return { left: g.x - DOT_R, right: g.x + DOT_R, top: g.y - DOT_R, bottom: g.y + DOT_R };
     });
 
-    geometry.forEach(function(g){
+    geometry.forEach(function(g, idx){
       var m = g.m, x = g.x, y = g.y, pair = g.pair;
       var n = N[m.id];
       if (!n) return;
+      if (doEntrance) {
+        n.dot.style.animationDelay = Math.min(idx * 14, 380) + "ms";
+        n.g.classList.add("enter");
+        n.dot.addEventListener("animationend", function onEnd(){
+          n.g.classList.remove("enter");
+          n.dot.style.animationDelay = "";
+          n.dot.removeEventListener("animationend", onEnd);
+        });
+      }
       var shouldLabel = !isMobile || frontierIds[m.id];
 
       n.dot.style.cx = x + "px";
@@ -1028,6 +1115,7 @@
     paint(true);
     renderTable();
     renderRuntime();
+    renderBudgetTool();
   }
 
   // ---------- init ----------
