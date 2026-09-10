@@ -27,7 +27,6 @@
     --measured:#45D97F;
     --api:#5C6A80;
     --ease:cubic-bezier(.22,.61,.36,1);
-    --measure:60ch;
     --dur-reprice:0.85s;
     --dur-rail:0.4s;
     --dur-toggle:0.32s;
@@ -64,10 +63,12 @@
   .tab-figs, table, .hero-figs, .rail-figs, .formula, code, .chart, figcaption .value{
     font-variant-numeric: tabular-nums;
   }
-  .measure{ max-width:var(--measure); margin-left:auto; margin-right:auto; padding:0 24px; }
+  /* Full width, always. Nothing here should float as a boxed column on a
+     real monitor. Only .lede caps line length, and only for the paragraphs
+     that need it to stay readable. */
+  .measure{ margin-left:auto; margin-right:auto; padding:0 clamp(20px,4vw,56px); }
   .lede{ max-width:62ch; }
-  @media (min-width:1500px){ .measure{ max-width:1600px; } h1{ font-size:4.2rem; } }
-  @media (min-width:2000px){ .measure{ max-width:1880px; } }
+  @media (min-width:1500px){ h1{ font-size:4.2rem; } }
 
   header.site{ padding:56px 0 36px; border-bottom:1px solid var(--rule); }
   .wordmark{ font-family:"JetBrains Mono",monospace; font-size:.85rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:18px; }
@@ -113,6 +114,10 @@
   .crosshair-chip{ fill:var(--sunk); stroke:var(--rule); }
   .crosshair-chip text{ fill:var(--adj); font-family:"JetBrains Mono",monospace; font-size:11px; }
   .empty-state{ fill:var(--ink-faint); font-size:13px; }
+  .runtime-row, .cross-dot{ cursor:pointer; }
+  .runtime-row:hover .runtime-bar{ filter:brightness(1.25); }
+  .runtime-row:focus-visible{ outline:2px solid var(--adj); outline-offset:2px; }
+  .cross-dot{ transition:r var(--dur-hover) var(--ease); }
 
   .plan-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
   .plan-chip{ font-family:"JetBrains Mono",monospace; font-size:.78rem; background:var(--sunk); border:1px solid var(--rule); color:var(--ink-dim); padding:6px 12px; border-radius:999px; cursor:pointer; }
@@ -156,10 +161,14 @@
   .license-badge{ display:inline-block; font-family:"JetBrains Mono",monospace; font-size:.72rem; padding:3px 8px; border-radius:5px; background:var(--sunk); border:1px solid var(--rule); color:var(--ink-faint); }
   .license-badge.open{ color:var(--measured); border-color:var(--measured); }
 
-  .jump-nav{ position:sticky; top:0; z-index:5; background:rgba(10,14,21,.9); backdrop-filter:blur(6px); border-bottom:1px solid var(--rule); padding:12px 0; overflow-x:auto; }
-  .jump-nav .measure{ display:flex; gap:20px; white-space:nowrap; }
+  .jump-nav{ position:sticky; top:0; z-index:5; background:rgba(10,14,21,.9); backdrop-filter:blur(6px); border-bottom:1px solid var(--rule); padding:12px 0; }
+  .jump-nav .measure{ display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  .jump-nav-links{ display:flex; gap:20px; overflow-x:auto; white-space:nowrap; }
   .jump-nav a{ color:var(--ink-faint); font-family:"JetBrains Mono",monospace; font-size:.8rem; }
   .jump-nav a:hover{ color:var(--ink); }
+  .repo-link{ display:flex; align-items:center; gap:6px; flex:none; }
+  .repo-link svg{ opacity:.8; }
+  @media (max-width:620px){ .repo-link span{ display:none; } }
 
   footer.site{ padding:48px 0 80px; border-top:1px solid var(--rule); color:var(--ink-faint); font-size:.85rem; }
 </style>
@@ -170,19 +179,25 @@
   <div class="measure">
     <div class="wordmark">Rack Rate</div>
     <h1>API list pricing is the rack rate.<br>Nobody pays it.</h1>
-    <p class="lede">A hotel's rack rate is the price on the back of the door. <a href="https://deepswe.datacurve.ai/">DeepSWE</a> scores coding models at API list rates. This page joins those scores to what a real subscription charges, and cites every number.</p>
+    <p class="lede">Rack Rate reprices AI coding benchmarks by what people actually pay. <a href="https://deepswe.datacurve.ai/">DeepSWE</a> scores coding models at API list rates, the sticker price nobody pays. A hotel calls that number its rack rate. This page swaps it for a real subscription price, and cites every number.</p>
     <div class="hero-figs" id="hero-figs"></div>
   </div>
 </header>
 
 <nav class="jump-nav">
   <div class="measure">
-    <a href="#chart">Chart</a>
-    <a href="#routes">Every route</a>
-    <a href="#runtime">How long a quota lasts</a>
-    <a href="#method">The method</a>
-    <a href="#cross-check">The cross check</a>
-    <a href="#sources">Sources</a>
+    <div class="jump-nav-links">
+      <a href="#chart">Chart</a>
+      <a href="#routes">Every route</a>
+      <a href="#runtime">How long a quota lasts</a>
+      <a href="#method">The method</a>
+      <a href="#cross-check">The cross check</a>
+      <a href="#sources">Sources</a>
+    </div>
+    <a class="repo-link" href="https://github.com/utkuacikgoz/rack-rate" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path></svg>
+      <span>GitHub</span>
+    </a>
   </div>
 </nav>
 
@@ -243,7 +258,7 @@
   <div class="measure">
     <h2>How long a quota lasts</h2>
     <p class="lede">A price per task hides the ceiling. This is how long a full run takes on each route, capped by the monthly quota or the rolling five hour window, whichever bites first.</p>
-    <svg class="chart" id="runtime-svg" viewBox="0 0 960 40" width="100%" role="img" aria-label="Days to run all tasks per route"></svg>
+    <svg class="chart" id="runtime-svg" viewBox="0 0 1040 40" width="100%" role="img" aria-label="Days to run all tasks per route"></svg>
   </div>
 </section>
 
@@ -764,7 +779,7 @@
     var rows = (DERIVED.best_routes || []).filter(function(r){ return r.days_for_full_run; })
       .sort(function(a,b){ return a.days_for_full_run - b.days_for_full_run; });
     var rowH = 28;
-    svgR.setAttribute("viewBox", "0 0 960 " + Math.max(40, rows.length * rowH + 20));
+    svgR.setAttribute("viewBox", "0 0 1040 " + Math.max(40, rows.length * rowH + 20));
     if (!rows.length) {
       svgR.innerHTML = '<text class="empty-state" x="480" y="24" text-anchor="middle">No runtime data yet.</text>';
       return;
@@ -772,20 +787,31 @@
     var maxDays = Math.max.apply(null, rows.map(function(r){ return r.days_for_full_run; }));
     var scaleMax = Math.max(maxDays, 90);
     var caps = [1, 7, 30, 90];
+    var LABEL_COL = 300, BAR_W = 620;
     var html = "";
     caps.forEach(function(c){
-      var x = 200 + (Math.log10(c) / Math.log10(scaleMax)) * 700;
+      var x = LABEL_COL + (Math.log10(c) / Math.log10(scaleMax)) * BAR_W;
       html += '<line class="gridline" x1="' + x + '" x2="' + x + '" y1="0" y2="' + (rows.length * rowH) + '"></line>';
     });
     rows.forEach(function(r, i){
       var y = i * rowH + 14;
-      var w = Math.max(2, (Math.log10(Math.max(r.days_for_full_run,0.1)) / Math.log10(scaleMax)) * 700);
+      var w = Math.max(2, (Math.log10(Math.max(r.days_for_full_run,0.1)) / Math.log10(scaleMax)) * BAR_W);
       var color = r.days_for_full_run <= 7 ? "var(--measured)" : (r.days_for_full_run <= 30 ? "var(--adj)" : "#B5533D");
+      html += '<g class="runtime-row" data-model="' + r.model_id + '" tabindex="0">';
       html += '<text class="axis-label" x="0" y="' + (y+4) + '">' + r.model_name + " · " + r.plan_name + '</text>';
-      html += '<rect x="200" y="' + (y-6) + '" width="' + w + '" height="12" rx="6" fill="' + color + '"></rect>';
-      html += '<text class="axis-label" x="' + (206+w) + '" y="' + (y+4) + '">' + r.days_for_full_run + 'd</text>';
+      html += '<rect class="runtime-bar" x="' + LABEL_COL + '" y="' + (y-7) + '" width="' + w + '" height="14" rx="7" fill="' + color + '"><title>' +
+        r.model_name + ' on ' + r.plan_name + ': ' + r.days_for_full_run + ' days for all tasks, $' + r.cost_per_task_usd.toFixed(4) + '/task</title></rect>';
+      html += '<text class="axis-label" x="' + (LABEL_COL + 6 + w) + '" y="' + (y+4) + '">' + r.days_for_full_run + 'd</text>';
+      html += '</g>';
     });
     svgR.innerHTML = html;
+    Array.prototype.forEach.call(svgR.querySelectorAll(".runtime-row"), function(g){
+      var modelId = g.getAttribute("data-model");
+      g.addEventListener("mouseenter", function(){ setHot(modelId); });
+      g.addEventListener("mouseleave", function(){ setHot(null); });
+      g.addEventListener("click", function(){ select(modelId); });
+      g.addEventListener("keydown", function(e){ if (e.key === "Enter") select(modelId); });
+    });
   }
 
   // ---------- method cards ----------
@@ -833,13 +859,21 @@
     rows.forEach(function(r, i){
       var x = 60 + (r.ratio / maxRatio) * 820;
       var y = 30 + (i % 4) * 30;
-      html += '<circle cx="' + x + '" cy="' + y + '" r="5" fill="var(--adj)" opacity="0.8"></circle>';
+      html += '<circle class="cross-dot" data-model="' + r.model_id + '" cx="' + x + '" cy="' + y + '" r="6" fill="var(--adj)" opacity="0.8">' +
+        '<title>' + r.model_name + ' on ' + r.plan_name + ': ' + r.ratio + 'x gap between the dollar and token count (' +
+        r.tasks_by_dollars + ' vs ' + r.tasks_by_tokens + ' tasks/month)</title></circle>';
     });
     if (summary.median_ratio) {
       var mx = 60 + (summary.median_ratio / maxRatio) * 820;
       html += '<line x1="' + mx + '" x2="' + mx + '" y1="0" y2="160" stroke="var(--measured)" stroke-width="1.5" stroke-dasharray="4 3"></line>';
     }
     svgC.innerHTML = html;
+    Array.prototype.forEach.call(svgC.querySelectorAll(".cross-dot"), function(dot){
+      var modelId = dot.getAttribute("data-model");
+      dot.addEventListener("mouseenter", function(){ dot.setAttribute("r", 8); setHot(modelId); });
+      dot.addEventListener("mouseleave", function(){ dot.setAttribute("r", 6); setHot(null); });
+      dot.addEventListener("click", function(){ select(modelId); });
+    });
     document.getElementById("cross-summary").textContent = summary.median_ratio
       ? ("Median ratio " + summary.median_ratio + "x across " + summary.pair_count + " pairs, range " + summary.min_ratio + "x to " + summary.max_ratio + "x.")
       : "";
