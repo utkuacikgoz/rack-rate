@@ -22,7 +22,7 @@
     --rule-soft:#161F2C;
     --ink:#EAEEF5;
     --ink-dim:#A3B0C4;
-    --ink-faint:#67768D;
+    --ink-faint:#7382A0;
     --adj:#FFB020;
     --measured:#45D97F;
     --api:#5C6A80;
@@ -87,8 +87,6 @@
   .toggle-pill .thumb{ position:absolute; top:3px; bottom:3px; left:3px; width:calc(50% - 3px); background:var(--adj); border-radius:999px; transition:transform var(--dur-toggle) var(--ease); }
   .toggle-pill[data-mode="sub"] .thumb{ transform:translateX(100%); }
 
-  .mode-btn{ background:var(--sunk); border:1px solid var(--rule); color:var(--ink-dim); font-size:.82rem; padding:7px 14px; border-radius:8px; cursor:pointer; font-family:"JetBrains Mono",monospace; }
-  .mode-btn:disabled{ opacity:.4; cursor:not-allowed; }
 
   .chart-wrap{ position:relative; }
   svg.chart{ width:100%; height:auto; display:block; touch-action:manipulation; }
@@ -134,11 +132,14 @@
   .rail .evidence-list{ list-style:none; padding:0; margin:12px 0 0; }
   .rail .evidence-list li{ padding:8px 0; border-top:1px solid var(--rule-soft); font-size:.85rem; }
 
-  table.routes{ width:100%; border-collapse:collapse; font-size:.92rem; }
-  table.routes th{ text-align:left; color:var(--ink-faint); font-weight:500; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; padding:10px 12px; border-bottom:1px solid var(--rule); cursor:pointer; user-select:none; }
-  table.routes th[aria-sort="ascending"]::after{ content:" \2191"; }
-  table.routes th[aria-sort="descending"]::after{ content:" \2193"; }
-  table.routes td{ padding:12px; border-bottom:1px solid var(--rule-soft); }
+  table.routes{ width:100%; border-collapse:collapse; font-size:.85rem; }
+  table.routes th{ text-align:left; color:var(--ink-faint); font-weight:500; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; padding:10px 12px; border-bottom:1px solid var(--rule); cursor:pointer; user-select:none; white-space:nowrap; }
+  table.routes th[data-key]:hover{ color:var(--ink); }
+  table.routes th[data-key]::after{ content:"\2195"; display:inline-block; margin-left:5px; opacity:.35; font-weight:400; }
+  table.routes th[aria-sort]::after{ opacity:1; color:var(--adj); }
+  table.routes th[aria-sort="ascending"]::after{ content:"\2191"; }
+  table.routes th[aria-sort="descending"]::after{ content:"\2193"; }
+  table.routes td{ padding:9px 12px; border-bottom:1px solid var(--rule-soft); }
   table.routes tr:hover td{ background:var(--sunk); }
   .confidence-dot{ display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; }
   .confidence-dot.measured{ background:var(--measured); }
@@ -179,7 +180,7 @@
   <div class="measure">
     <div class="wordmark">Rack Rate</div>
     <h1>API list pricing is the rack rate.<br>Nobody pays it.</h1>
-    <p class="lede">Rack Rate reprices AI coding benchmarks by what people actually pay. <a href="https://deepswe.datacurve.ai/">DeepSWE</a> scores coding models at API list rates, the sticker price nobody pays. A hotel calls that number its rack rate. This page swaps it for a real subscription price, and cites every number.</p>
+    <p class="lede"><a href="https://deepswe.datacurve.ai/">DeepSWE</a> benchmark scores, repriced by what people actually pay.</p>
     <div class="hero-figs" id="hero-figs"></div>
   </div>
 </header>
@@ -210,10 +211,6 @@
           <button type="button" data-mode="list" aria-pressed="true">List price</button>
           <button type="button" data-mode="sub" aria-pressed="false">Subscription price</button>
         </div>
-        <div style="display:flex; gap:8px; align-items:center;">
-          <button class="mode-btn" id="copy-link" type="button">Copy link</button>
-          <button class="mode-btn" id="mode-3d" type="button" disabled title="Three-dimensional mode is not in this build yet">3D</button>
-        </div>
       </div>
       <div class="chart-wrap">
         <svg class="chart" id="chart-svg" viewBox="0 0 960 520" tabindex="0" role="img" aria-label="Score against cost per task for every model">
@@ -235,7 +232,7 @@
 <section id="routes" style="padding:0 0 40px;">
   <div class="measure">
     <h2>Every route</h2>
-    <p class="lede">One row per model: its cheapest plan among the ones selected above, against API list price.</p>
+    <p class="lede">Each model's cheapest plan, against API list price.</p>
     <div style="overflow-x:auto;">
       <table class="routes" id="routes-table">
         <thead>
@@ -257,7 +254,7 @@
 <section id="runtime" style="padding:0 0 40px;">
   <div class="measure">
     <h2>How long a quota lasts</h2>
-    <p class="lede">A price per task hides the ceiling. This is how long a full run takes on each route, capped by the monthly quota or the rolling five hour window, whichever bites first.</p>
+    <p class="lede">A price per task hides the ceiling. This is the real one.</p>
     <svg class="chart" id="runtime-svg" viewBox="0 0 1040 40" width="100%" role="img" aria-label="Days to run all tasks per route"></svg>
   </div>
 </section>
@@ -265,7 +262,7 @@
 <section id="method" style="padding:0 0 40px;">
   <div class="measure">
     <h2>The method</h2>
-    <p class="lede"><code>cost_per_task = price_per_month / tasks_per_month</code>. What counts as a task depends on the unit the vendor publishes.</p>
+    <p class="lede"><code>cost_per_task = price_per_month / tasks_per_month</code></p>
     <div class="cards" id="method-cards"></div>
   </div>
 </section>
@@ -273,7 +270,7 @@
 <section id="cross-check" style="padding:0 0 40px;">
   <div class="measure">
     <h2>The cross check</h2>
-    <p class="lede">Two plans publish their measured quota twice, once in dollars and once in tokens, counted here two independent ways. A stable gap between the two points at a systematic cause, not noise.</p>
+    <p class="lede">Same quota, counted two independent ways. A stable gap means a real cause, not noise.</p>
     <svg class="chart" id="cross-svg" viewBox="0 0 960 160" width="100%" role="img" aria-label="Cross check ratio strip plot"></svg>
     <p id="cross-summary" class="mono" style="color:var(--ink-faint); font-size:.85rem;"></p>
   </div>
@@ -282,7 +279,7 @@
 <section id="sources" style="padding:0 0 40px;">
   <div class="measure">
     <h2>Sources</h2>
-    <p class="lede">Every figure traces to one of these records. Full detail in <a href="SOURCES.md">SOURCES.md</a>.</p>
+    <p class="lede">Every figure traces to one of these. Full detail in <a href="SOURCES.md">SOURCES.md</a>.</p>
     <div class="cards" id="source-cards"></div>
   </div>
 </section>
@@ -763,15 +760,24 @@
       tr.style.background = tr.getAttribute("data-model") === modelId ? "var(--sunk)" : "";
     });
   }
+  function markSortIndicator(){
+    Array.prototype.forEach.call(document.querySelectorAll("table.routes th[data-key]"), function(t){
+      if (t.getAttribute("data-key") === sortKey) {
+        t.setAttribute("aria-sort", sortDir === 1 ? "ascending" : "descending");
+      } else {
+        t.removeAttribute("aria-sort");
+      }
+    });
+  }
   Array.prototype.forEach.call(document.querySelectorAll("table.routes th[data-key]"), function(th){
     th.addEventListener("click", function(){
       var key = th.getAttribute("data-key");
       if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = 1; }
-      Array.prototype.forEach.call(document.querySelectorAll("table.routes th"), function(t){ t.removeAttribute("aria-sort"); });
-      th.setAttribute("aria-sort", sortDir === 1 ? "ascending" : "descending");
+      markSortIndicator();
       renderTable();
     });
   });
+  markSortIndicator();
 
   // ---------- runtime chart ----------
   function renderRuntime(){
@@ -895,12 +901,6 @@
         '</div>';
     }).join("");
   }
-
-  // ---------- copy link ----------
-  document.getElementById("copy-link").addEventListener("click", function(){
-    writeURL();
-    if (navigator.clipboard) navigator.clipboard.writeText(location.href);
-  });
 
   // ---------- responsive breakpoint ----------
   var lastBreakpoint = null;
