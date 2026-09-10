@@ -1,66 +1,116 @@
 {
   "source": "DeepSWE",
-  "source_url": "https://deepswe.datacurve.ai/",
+  "source_url": "https://deepswe.datacurve.ai/artifacts/v1.1/leaderboard-live.json",
   "repo_url": "https://github.com/datacurve-ai/deep-swe",
   "license": "Apache-2.0",
   "task_count": 113,
-  "generated_at": "2026-06-20T17:27:24.307648+00:00",
+  "generated_at": "2026-09-03T22:24:37.984682+00:00",
   "harness": "mini-swe-agent",
-  "note": "One row per model: the highest-scoring reasoning-effort configuration available for it in this snapshot, per CONTRIBUTING item 7. api_cost_per_task_usd, output_tokens_per_task, input_tokens_per_task and agent_steps_per_task are medians over scored attempts, not means, to resist a few very expensive stuck runs skewing the figure.",
+  "note": "One row per model: the highest-scoring reasoning-effort configuration available for it in this snapshot, per CONTRIBUTING item 7. api_cost_per_task_usd, output_tokens_per_task, input_tokens_per_task and agent_steps_per_task are medians over scored attempts, not means, to resist a few very expensive stuck runs skewing the figure. gpt-6-astra's cost figures are DeepSWE-reported *expected launch pricing* ($12/M uncached input, $15/M cache writes, $1.20/M cache reads, $50/M output, $2/M compute units), not confirmed GA API pricing \u2014 treat its cost_per_task numbers as provisional until the model ships.",
   "models": [
     {
-      "id": "gpt-5.5",
-      "name": "gpt-5.5",
+      "id": "gpt-6-astra",
+      "name": "gpt-6-astra",
       "provider": "OpenAI",
-      "score_pct": 70.05,
-      "score_pass_at_4_pct": 88.29,
+      "score_pct": 74.12,
+      "score_pass_at_4_pct": 80.53,
       "reasoning_effort": "xhigh",
-      "api_cost_per_task_usd": 5.7556,
-      "output_tokens_per_task": 46538,
-      "input_tokens_per_task": 6386284,
-      "agent_steps_per_task": 75.0,
-      "n_tasks_attempted": 111,
+      "api_cost_per_task_usd": 5.6717,
+      "output_tokens_per_task": 28542,
+      "input_tokens_per_task": 1163918,
+      "agent_steps_per_task": 26.0,
+      "n_tasks_attempted": 113,
       "evidence": [
         "src-deepswe-data"
       ],
       "effort_variants": [
         {
           "reasoning_effort": "xhigh",
-          "score_pct": 70.05,
-          "api_cost_per_task_usd": 5.7556,
-          "output_tokens_per_task": 46538,
-          "input_tokens_per_task": 6386284,
-          "agent_steps_per_task": 75.0
+          "score_pct": 74.12,
+          "api_cost_per_task_usd": 5.6717,
+          "output_tokens_per_task": 28542,
+          "input_tokens_per_task": 1163918,
+          "agent_steps_per_task": 26.0
         },
         {
           "reasoning_effort": "high",
-          "score_pct": 61.95,
-          "api_cost_per_task_usd": 3.9626,
-          "output_tokens_per_task": 29804,
-          "input_tokens_per_task": 3512344,
-          "agent_steps_per_task": 54.0
+          "score_pct": 73.23,
+          "api_cost_per_task_usd": 4.9623,
+          "output_tokens_per_task": 25414,
+          "input_tokens_per_task": 995020,
+          "agent_steps_per_task": 25.0
+        },
+        {
+          "reasoning_effort": "max",
+          "score_pct": 73.23,
+          "api_cost_per_task_usd": 11.0369,
+          "output_tokens_per_task": 58618,
+          "input_tokens_per_task": 1767876,
+          "agent_steps_per_task": 26.0
         },
         {
           "reasoning_effort": "medium",
-          "score_pct": 48.01,
-          "api_cost_per_task_usd": 2.002,
-          "output_tokens_per_task": 18020,
-          "input_tokens_per_task": 1646440,
-          "agent_steps_per_task": 38.5
+          "score_pct": 72.79,
+          "api_cost_per_task_usd": 3.7133,
+          "output_tokens_per_task": 19006,
+          "input_tokens_per_task": 779601,
+          "agent_steps_per_task": 24.0
+        },
+        {
+          "reasoning_effort": "low",
+          "score_pct": 67.04,
+          "api_cost_per_task_usd": 1.721,
+          "output_tokens_per_task": 9488,
+          "input_tokens_per_task": 310994,
+          "agent_steps_per_task": 17.0
         }
       ]
     },
     {
-      "id": "claude-opus-4.8",
-      "name": "claude-opus-4.8",
+      "id": "gemini-3.8-flash",
+      "name": "gemini-3.8-flash",
+      "provider": "Google",
+      "score_pct": 73.83,
+      "score_pass_at_4_pct": 85.84,
+      "reasoning_effort": "high",
+      "api_cost_per_task_usd": 2.1099,
+      "output_tokens_per_task": 138377,
+      "input_tokens_per_task": 18026661,
+      "agent_steps_per_task": 161.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ],
+      "effort_variants": [
+        {
+          "reasoning_effort": "high",
+          "score_pct": 73.83,
+          "api_cost_per_task_usd": 2.1099,
+          "output_tokens_per_task": 138377,
+          "input_tokens_per_task": 18026661,
+          "agent_steps_per_task": 161.0
+        },
+        {
+          "reasoning_effort": "medium",
+          "score_pct": 71.02,
+          "api_cost_per_task_usd": 1.7343,
+          "output_tokens_per_task": 120488,
+          "input_tokens_per_task": 13458718,
+          "agent_steps_per_task": 140.0
+        }
+      ]
+    },
+    {
+      "id": "claude-opus-5",
+      "name": "claude-opus-5",
       "provider": "Anthropic",
-      "score_pct": 58.19,
-      "score_pass_at_4_pct": 78.76,
+      "score_pct": 73.65,
+      "score_pass_at_4_pct": 88.5,
       "reasoning_effort": "max",
-      "api_cost_per_task_usd": 11.2814,
-      "output_tokens_per_task": 131041,
-      "input_tokens_per_task": 12911606,
-      "agent_steps_per_task": 104.0,
+      "api_cost_per_task_usd": 10.4282,
+      "output_tokens_per_task": 113366,
+      "input_tokens_per_task": 12130308,
+      "agent_steps_per_task": 90.5,
       "n_tasks_attempted": 113,
       "evidence": [
         "src-deepswe-data"
@@ -68,65 +118,57 @@
       "effort_variants": [
         {
           "reasoning_effort": "max",
-          "score_pct": 58.19,
-          "api_cost_per_task_usd": 11.2814,
-          "output_tokens_per_task": 131041,
-          "input_tokens_per_task": 12911606,
-          "agent_steps_per_task": 104.0
+          "score_pct": 73.65,
+          "api_cost_per_task_usd": 10.4282,
+          "output_tokens_per_task": 113366,
+          "input_tokens_per_task": 12130308,
+          "agent_steps_per_task": 90.5
         },
         {
           "reasoning_effort": "xhigh",
-          "score_pct": 57.74,
-          "api_cost_per_task_usd": 6.428,
-          "output_tokens_per_task": 79706,
-          "input_tokens_per_task": 6838370,
+          "score_pct": 73.15,
+          "api_cost_per_task_usd": 7.9288,
+          "output_tokens_per_task": 87322,
+          "input_tokens_per_task": 8932820,
           "agent_steps_per_task": 80.0
         },
         {
           "reasoning_effort": "high",
-          "score_pct": 50.66,
-          "api_cost_per_task_usd": 3.2257,
-          "output_tokens_per_task": 42484,
-          "input_tokens_per_task": 3125215,
-          "agent_steps_per_task": 58.0
+          "score_pct": 72.83,
+          "api_cost_per_task_usd": 4.9688,
+          "output_tokens_per_task": 59856,
+          "input_tokens_per_task": 5212804,
+          "agent_steps_per_task": 64.0
         },
         {
           "reasoning_effort": "medium",
-          "score_pct": 47.35,
-          "api_cost_per_task_usd": 2.6679,
-          "output_tokens_per_task": 36166,
-          "input_tokens_per_task": 2480372,
-          "agent_steps_per_task": 53.0
+          "score_pct": 68.9,
+          "api_cost_per_task_usd": 2.482,
+          "output_tokens_per_task": 33436,
+          "input_tokens_per_task": 2211638,
+          "agent_steps_per_task": 43.0
+        },
+        {
+          "reasoning_effort": "low",
+          "score_pct": 58.13,
+          "api_cost_per_task_usd": 1.2163,
+          "output_tokens_per_task": 17613,
+          "input_tokens_per_task": 872162,
+          "agent_steps_per_task": 29.0
         }
       ]
     },
     {
-      "id": "gpt-5.4",
-      "name": "gpt-5.4",
+      "id": "gpt-5.6-sol",
+      "name": "gpt-5.6-sol",
       "provider": "OpenAI",
-      "score_pct": 55.53,
-      "score_pass_at_4_pct": 76.99,
-      "reasoning_effort": "xhigh",
-      "api_cost_per_task_usd": 3.3064,
-      "output_tokens_per_task": 67424,
-      "input_tokens_per_task": 6409320,
-      "agent_steps_per_task": 62.0,
-      "n_tasks_attempted": 113,
-      "evidence": [
-        "src-deepswe-data"
-      ]
-    },
-    {
-      "id": "claude-opus-4.7",
-      "name": "claude-opus-4.7",
-      "provider": "Anthropic",
-      "score_pct": 54.2,
+      "score_pct": 72.67,
       "score_pass_at_4_pct": 85.84,
       "reasoning_effort": "max",
-      "api_cost_per_task_usd": 15.951,
-      "output_tokens_per_task": 97238,
-      "input_tokens_per_task": 23982974,
-      "agent_steps_per_task": 191.0,
+      "api_cost_per_task_usd": 6.8415,
+      "output_tokens_per_task": 58786,
+      "input_tokens_per_task": 5973866,
+      "agent_steps_per_task": 53.0,
       "n_tasks_attempted": 113,
       "evidence": [
         "src-deepswe-data"
@@ -134,225 +176,405 @@
       "effort_variants": [
         {
           "reasoning_effort": "max",
-          "score_pct": 54.2,
-          "api_cost_per_task_usd": 15.951,
-          "output_tokens_per_task": 97238,
-          "input_tokens_per_task": 23982974,
-          "agent_steps_per_task": 191.0
+          "score_pct": 72.67,
+          "api_cost_per_task_usd": 6.8415,
+          "output_tokens_per_task": 58786,
+          "input_tokens_per_task": 5973866,
+          "agent_steps_per_task": 53.0
         },
         {
           "reasoning_effort": "xhigh",
-          "score_pct": 44.69,
-          "api_cost_per_task_usd": 6.6495,
-          "output_tokens_per_task": 58170,
-          "input_tokens_per_task": 8607731,
-          "agent_steps_per_task": 115.0
+          "score_pct": 70.73,
+          "api_cost_per_task_usd": 4.117,
+          "output_tokens_per_task": 39449,
+          "input_tokens_per_task": 3343837,
+          "agent_steps_per_task": 39.0
         },
         {
           "reasoning_effort": "high",
-          "score_pct": 40.27,
-          "api_cost_per_task_usd": 3.6115,
-          "output_tokens_per_task": 40258,
-          "input_tokens_per_task": 4138415,
-          "agent_steps_per_task": 77.0
+          "score_pct": 69.4,
+          "api_cost_per_task_usd": 2.9794,
+          "output_tokens_per_task": 27700,
+          "input_tokens_per_task": 1979416,
+          "agent_steps_per_task": 32.0
         },
         {
           "reasoning_effort": "medium",
-          "score_pct": 31.64,
-          "api_cost_per_task_usd": 1.8746,
-          "output_tokens_per_task": 24102,
-          "input_tokens_per_task": 1823968,
-          "agent_steps_per_task": 50.0
+          "score_pct": 61.06,
+          "api_cost_per_task_usd": 1.5454,
+          "output_tokens_per_task": 17645,
+          "input_tokens_per_task": 1064552,
+          "agent_steps_per_task": 26.0
+        },
+        {
+          "reasoning_effort": "low",
+          "score_pct": 45.35,
+          "api_cost_per_task_usd": 0.9446,
+          "output_tokens_per_task": 10062,
+          "input_tokens_per_task": 541018,
+          "agent_steps_per_task": 21.0
         }
       ]
     },
     {
-      "id": "glm-5.2",
-      "name": "glm-5.2",
-      "provider": "Zhipu (Z.ai)",
-      "score_pct": 41.52,
-      "score_pass_at_4_pct": 69.91,
-      "reasoning_effort": "max",
-      "api_cost_per_task_usd": 3.3501,
-      "output_tokens_per_task": 78262,
-      "input_tokens_per_task": 10338940,
-      "agent_steps_per_task": 115.0,
-      "n_tasks_attempted": 113,
-      "evidence": [
-        "src-deepswe-data"
-      ]
-    },
-    {
-      "id": "claude-sonnet-4.6",
-      "name": "claude-sonnet-4.6",
+      "id": "claude-fable-5",
+      "name": "claude-fable-5",
       "provider": "Anthropic",
-      "score_pct": 31.77,
-      "score_pass_at_4_pct": 61.95,
-      "reasoning_effort": "high",
-      "api_cost_per_task_usd": 4.7517,
-      "output_tokens_per_task": 70817,
-      "input_tokens_per_task": 10232713,
-      "agent_steps_per_task": 121.0,
+      "score_pct": 69.91,
+      "score_pass_at_4_pct": 88.5,
+      "reasoning_effort": "xhigh",
+      "api_cost_per_task_usd": 11.3411,
+      "output_tokens_per_task": 76036,
+      "input_tokens_per_task": 5337564,
+      "agent_steps_per_task": 61.5,
       "n_tasks_attempted": 113,
       "evidence": [
         "src-deepswe-data"
+      ],
+      "effort_variants": [
+        {
+          "reasoning_effort": "xhigh",
+          "score_pct": 69.91,
+          "api_cost_per_task_usd": 11.3411,
+          "output_tokens_per_task": 76036,
+          "input_tokens_per_task": 5337564,
+          "agent_steps_per_task": 61.5
+        },
+        {
+          "reasoning_effort": "max",
+          "score_pct": 69.72,
+          "api_cost_per_task_usd": 19.2346,
+          "output_tokens_per_task": 115631,
+          "input_tokens_per_task": 9769438,
+          "agent_steps_per_task": 79.0
+        },
+        {
+          "reasoning_effort": "high",
+          "score_pct": 68.6,
+          "api_cost_per_task_usd": 7.3227,
+          "output_tokens_per_task": 52624,
+          "input_tokens_per_task": 3075198,
+          "agent_steps_per_task": 49.0
+        },
+        {
+          "reasoning_effort": "medium",
+          "score_pct": 65.37,
+          "api_cost_per_task_usd": 4.6222,
+          "output_tokens_per_task": 35970,
+          "input_tokens_per_task": 1732620,
+          "agent_steps_per_task": 41.0
+        },
+        {
+          "reasoning_effort": "low",
+          "score_pct": 59.58,
+          "api_cost_per_task_usd": 2.7559,
+          "output_tokens_per_task": 22339,
+          "input_tokens_per_task": 815862,
+          "agent_steps_per_task": 29.0
+        }
       ]
     },
     {
-      "id": "gemini-3.5-flash",
-      "name": "gemini-3.5-flash",
-      "provider": "Google",
-      "score_pct": 28.32,
-      "score_pass_at_4_pct": 56.64,
-      "reasoning_effort": "medium",
-      "api_cost_per_task_usd": 5.6732,
-      "output_tokens_per_task": 149236,
-      "input_tokens_per_task": 7988329,
+      "id": "gpt-5.6-terra",
+      "name": "gpt-5.6-terra",
+      "provider": "OpenAI",
+      "score_pct": 69.62,
+      "score_pass_at_4_pct": 88.5,
+      "reasoning_effort": "max",
+      "api_cost_per_task_usd": 4.1146,
+      "output_tokens_per_task": 70835,
+      "input_tokens_per_task": 7288778,
       "agent_steps_per_task": 71.0,
       "n_tasks_attempted": 113,
       "evidence": [
         "src-deepswe-data"
+      ],
+      "effort_variants": [
+        {
+          "reasoning_effort": "max",
+          "score_pct": 69.62,
+          "api_cost_per_task_usd": 4.1146,
+          "output_tokens_per_task": 70835,
+          "input_tokens_per_task": 7288778,
+          "agent_steps_per_task": 71.0
+        },
+        {
+          "reasoning_effort": "xhigh",
+          "score_pct": 60.18,
+          "api_cost_per_task_usd": 1.867,
+          "output_tokens_per_task": 38006,
+          "input_tokens_per_task": 2490234,
+          "agent_steps_per_task": 39.0
+        },
+        {
+          "reasoning_effort": "high",
+          "score_pct": 53.76,
+          "api_cost_per_task_usd": 1.0317,
+          "output_tokens_per_task": 20866,
+          "input_tokens_per_task": 1249366,
+          "agent_steps_per_task": 31.0
+        },
+        {
+          "reasoning_effort": "medium",
+          "score_pct": 35.11,
+          "api_cost_per_task_usd": 0.5461,
+          "output_tokens_per_task": 11453,
+          "input_tokens_per_task": 628495,
+          "agent_steps_per_task": 24.0
+        },
+        {
+          "reasoning_effort": "low",
+          "score_pct": 24.05,
+          "api_cost_per_task_usd": 0.399,
+          "output_tokens_per_task": 8265,
+          "input_tokens_per_task": 405397,
+          "agent_steps_per_task": 20.0
+        }
       ]
     },
     {
-      "id": "claude-opus-4.6",
-      "name": "claude-opus-4.6",
-      "provider": "Anthropic",
-      "score_pct": 27.6,
-      "score_pass_at_4_pct": 50.44,
-      "reasoning_effort": "max",
-      "api_cost_per_task_usd": 4.6625,
-      "output_tokens_per_task": 42490,
-      "input_tokens_per_task": 5990018,
-      "agent_steps_per_task": 94.0,
-      "n_tasks_attempted": 113,
-      "evidence": [
-        "src-deepswe-data"
-      ]
-    },
-    {
-      "id": "gpt-5.4-mini",
-      "name": "gpt-5.4-mini",
-      "provider": "OpenAI",
-      "score_pct": 24.34,
-      "score_pass_at_4_pct": 46.02,
-      "reasoning_effort": "xhigh",
-      "api_cost_per_task_usd": 2.0278,
-      "output_tokens_per_task": 134962,
-      "input_tokens_per_task": 11500029,
-      "agent_steps_per_task": 83.0,
-      "n_tasks_attempted": 113,
-      "evidence": [
-        "src-deepswe-data"
-      ]
-    },
-    {
-      "id": "kimi-k2.6",
-      "name": "kimi-k2.6",
-      "provider": "Moonshot AI",
-      "score_pct": 23.89,
-      "score_pass_at_4_pct": 48.67,
-      "reasoning_effort": null,
-      "api_cost_per_task_usd": 2.6951,
-      "output_tokens_per_task": 76432,
-      "input_tokens_per_task": 9789964,
-      "agent_steps_per_task": 136.5,
-      "n_tasks_attempted": 113,
-      "evidence": [
-        "src-deepswe-data"
-      ]
-    },
-    {
-      "id": "minimax-m3",
-      "name": "minimax-m3",
-      "provider": "MiniMax",
-      "score_pct": 20.44,
-      "score_pass_at_4_pct": 48.67,
-      "reasoning_effort": null,
-      "api_cost_per_task_usd": 5.0435,
-      "output_tokens_per_task": 91138,
-      "input_tokens_per_task": 36939796,
-      "agent_steps_per_task": 311.0,
-      "n_tasks_attempted": 113,
-      "evidence": [
-        "src-deepswe-data"
-      ]
-    },
-    {
-      "id": "mimo-v2.5-pro",
-      "name": "mimo-v2.5-pro",
-      "provider": "Xiaomi",
-      "score_pct": 19.47,
-      "score_pass_at_4_pct": 45.13,
-      "reasoning_effort": null,
-      "api_cost_per_task_usd": 1.6825,
-      "output_tokens_per_task": 45346,
-      "input_tokens_per_task": 7156984,
-      "agent_steps_per_task": 114.5,
-      "n_tasks_attempted": 113,
-      "evidence": [
-        "src-deepswe-data"
-      ]
-    },
-    {
-      "id": "qwen-3.7-max",
-      "name": "qwen-3.7-max",
-      "provider": "Alibaba",
-      "score_pct": 17.7,
-      "score_pass_at_4_pct": 41.59,
-      "reasoning_effort": null,
-      "api_cost_per_task_usd": 1.8699,
-      "output_tokens_per_task": 38990,
-      "input_tokens_per_task": 5510018,
-      "agent_steps_per_task": 105.0,
-      "n_tasks_attempted": 113,
-      "evidence": [
-        "src-deepswe-data"
-      ]
-    },
-    {
-      "id": "glm-5.1",
-      "name": "glm-5.1",
+      "id": "glm-5.3",
+      "name": "glm-5.3",
       "provider": "Zhipu (Z.ai)",
-      "score_pct": 17.52,
-      "score_pass_at_4_pct": 38.94,
-      "reasoning_effort": null,
-      "api_cost_per_task_usd": 6.7032,
-      "output_tokens_per_task": 45658,
-      "input_tokens_per_task": 11933906,
-      "agent_steps_per_task": 168.0,
+      "score_pct": 68.96,
+      "score_pass_at_4_pct": 87.61,
+      "reasoning_effort": "max",
+      "api_cost_per_task_usd": 3.1316,
+      "output_tokens_per_task": 74953,
+      "input_tokens_per_task": 10137783,
+      "agent_steps_per_task": 114.0,
       "n_tasks_attempted": 113,
       "evidence": [
         "src-deepswe-data"
       ]
     },
     {
-      "id": "grok-build-0.1",
-      "name": "grok-build-0.1",
+      "id": "kimi-k3",
+      "name": "kimi-k3",
+      "provider": "Moonshot AI",
+      "score_pct": 68.51,
+      "score_pass_at_4_pct": 89.38,
+      "reasoning_effort": "max",
+      "api_cost_per_task_usd": 3.6025,
+      "output_tokens_per_task": 75383,
+      "input_tokens_per_task": 6930356,
+      "agent_steps_per_task": 88.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ]
+    },
+    {
+      "id": "grok-4.6",
+      "name": "grok-4.6",
       "provider": "xAI",
-      "score_pct": 13.08,
-      "score_pass_at_4_pct": 29.2,
-      "reasoning_effort": null,
-      "api_cost_per_task_usd": 6.1737,
-      "output_tokens_per_task": 50522,
-      "input_tokens_per_task": 9544728,
-      "agent_steps_per_task": 170.0,
+      "score_pct": 67.48,
+      "score_pass_at_4_pct": 84.07,
+      "reasoning_effort": "medium",
+      "api_cost_per_task_usd": 2.9458,
+      "output_tokens_per_task": 48586,
+      "input_tokens_per_task": 4705124,
+      "agent_steps_per_task": 66.0,
       "n_tasks_attempted": 113,
       "evidence": [
         "src-deepswe-data"
+      ],
+      "effort_variants": [
+        {
+          "reasoning_effort": "medium",
+          "score_pct": 67.48,
+          "api_cost_per_task_usd": 2.9458,
+          "output_tokens_per_task": 48586,
+          "input_tokens_per_task": 4705124,
+          "agent_steps_per_task": 66.0
+        },
+        {
+          "reasoning_effort": "xhigh",
+          "score_pct": 66.74,
+          "api_cost_per_task_usd": 4.6394,
+          "output_tokens_per_task": 71285,
+          "input_tokens_per_task": 7667197,
+          "agent_steps_per_task": 81.0
+        },
+        {
+          "reasoning_effort": "high",
+          "score_pct": 65.19,
+          "api_cost_per_task_usd": 3.6936,
+          "output_tokens_per_task": 60060,
+          "input_tokens_per_task": 6003946,
+          "agent_steps_per_task": 72.0
+        },
+        {
+          "reasoning_effort": "low",
+          "score_pct": 41.65,
+          "api_cost_per_task_usd": 0.7426,
+          "output_tokens_per_task": 14937,
+          "input_tokens_per_task": 1089649,
+          "agent_steps_per_task": 39.0
+        }
       ]
     },
     {
-      "id": "gemini-3.1-pro-preview",
-      "name": "gemini-3.1-pro-preview",
+      "id": "gpt-5.6-luna",
+      "name": "gpt-5.6-luna",
+      "provider": "OpenAI",
+      "score_pct": 67.19,
+      "score_pass_at_4_pct": 90.27,
+      "reasoning_effort": "max",
+      "api_cost_per_task_usd": 2.2921,
+      "output_tokens_per_task": 70253,
+      "input_tokens_per_task": 12278493,
+      "agent_steps_per_task": 92.5,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ],
+      "effort_variants": [
+        {
+          "reasoning_effort": "max",
+          "score_pct": 67.19,
+          "api_cost_per_task_usd": 2.2921,
+          "output_tokens_per_task": 70253,
+          "input_tokens_per_task": 12278493,
+          "agent_steps_per_task": 92.5
+        },
+        {
+          "reasoning_effort": "xhigh",
+          "score_pct": 56.86,
+          "api_cost_per_task_usd": 1.2449,
+          "output_tokens_per_task": 42374,
+          "input_tokens_per_task": 5550213,
+          "agent_steps_per_task": 63.0
+        },
+        {
+          "reasoning_effort": "high",
+          "score_pct": 44.25,
+          "api_cost_per_task_usd": 0.6636,
+          "output_tokens_per_task": 24818,
+          "input_tokens_per_task": 2538826,
+          "agent_steps_per_task": 44.0
+        },
+        {
+          "reasoning_effort": "medium",
+          "score_pct": 11.28,
+          "api_cost_per_task_usd": 0.1995,
+          "output_tokens_per_task": 7918,
+          "input_tokens_per_task": 517201,
+          "agent_steps_per_task": 22.0
+        },
+        {
+          "reasoning_effort": "low",
+          "score_pct": 1.55,
+          "api_cost_per_task_usd": 0.0698,
+          "output_tokens_per_task": 3059,
+          "input_tokens_per_task": 143435,
+          "agent_steps_per_task": 12.0
+        }
+      ]
+    },
+    {
+      "id": "gpt-5.5",
+      "name": "gpt-5.5",
+      "provider": "OpenAI",
+      "score_pct": 67.04,
+      "score_pass_at_4_pct": 88.5,
+      "reasoning_effort": "xhigh",
+      "api_cost_per_task_usd": 6.1105,
+      "output_tokens_per_task": 44492,
+      "input_tokens_per_task": 6648150,
+      "agent_steps_per_task": 76.5,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ],
+      "effort_variants": [
+        {
+          "reasoning_effort": "xhigh",
+          "score_pct": 67.04,
+          "api_cost_per_task_usd": 6.1105,
+          "output_tokens_per_task": 44492,
+          "input_tokens_per_task": 6648150,
+          "agent_steps_per_task": 76.5
+        },
+        {
+          "reasoning_effort": "high",
+          "score_pct": 64.38,
+          "api_cost_per_task_usd": 4.5829,
+          "output_tokens_per_task": 30378,
+          "input_tokens_per_task": 3860162,
+          "agent_steps_per_task": 60.0
+        },
+        {
+          "reasoning_effort": "medium",
+          "score_pct": 53.98,
+          "api_cost_per_task_usd": 2.4369,
+          "output_tokens_per_task": 18737,
+          "input_tokens_per_task": 1983652,
+          "agent_steps_per_task": 43.0
+        },
+        {
+          "reasoning_effort": "low",
+          "score_pct": 26.99,
+          "api_cost_per_task_usd": 1.1081,
+          "output_tokens_per_task": 9020,
+          "input_tokens_per_task": 645288,
+          "agent_steps_per_task": 27.0
+        }
+      ]
+    },
+    {
+      "id": "gemini-3.7-flash",
+      "name": "gemini-3.7-flash",
       "provider": "Google",
-      "score_pct": 9.73,
-      "score_pass_at_4_pct": 24.78,
-      "reasoning_effort": null,
-      "api_cost_per_task_usd": 1.5215,
-      "output_tokens_per_task": 29793,
-      "input_tokens_per_task": 1385184,
-      "agent_steps_per_task": 67.0,
+      "score_pct": 65.49,
+      "score_pass_at_4_pct": 83.19,
+      "reasoning_effort": "medium",
+      "api_cost_per_task_usd": 1.6542,
+      "output_tokens_per_task": 87640,
+      "input_tokens_per_task": 11116142,
+      "agent_steps_per_task": 108.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ],
+      "effort_variants": [
+        {
+          "reasoning_effort": "medium",
+          "score_pct": 65.49,
+          "api_cost_per_task_usd": 1.6542,
+          "output_tokens_per_task": 87640,
+          "input_tokens_per_task": 11116142,
+          "agent_steps_per_task": 108.0
+        },
+        {
+          "reasoning_effort": "high",
+          "score_pct": 65.27,
+          "api_cost_per_task_usd": 1.9044,
+          "output_tokens_per_task": 99819,
+          "input_tokens_per_task": 13967882,
+          "agent_steps_per_task": 120.0
+        },
+        {
+          "reasoning_effort": "low",
+          "score_pct": 53.76,
+          "api_cost_per_task_usd": 1.3913,
+          "output_tokens_per_task": 73220,
+          "input_tokens_per_task": 9612558,
+          "agent_steps_per_task": 113.5
+        }
+      ]
+    },
+    {
+      "id": "glm-5.3-flash",
+      "name": "glm-5.3-flash",
+      "provider": "Zhipu (Z.ai)",
+      "score_pct": 63.39,
+      "score_pass_at_4_pct": 84.96,
+      "reasoning_effort": "max",
+      "api_cost_per_task_usd": 0.39,
+      "output_tokens_per_task": 67491,
+      "input_tokens_per_task": 9358476,
+      "agent_steps_per_task": 110.0,
       "n_tasks_attempted": 113,
       "evidence": [
         "src-deepswe-data"
@@ -362,77 +584,339 @@
       "id": "deepseek-v4-pro",
       "name": "deepseek-v4-pro",
       "provider": "DeepSeek",
-      "score_pct": 7.52,
-      "score_pass_at_4_pct": 18.58,
-      "reasoning_effort": null,
-      "api_cost_per_task_usd": 3.5375,
-      "output_tokens_per_task": 46316,
-      "input_tokens_per_task": 7051649,
-      "agent_steps_per_task": 103.5,
+      "score_pct": 62.83,
+      "score_pass_at_4_pct": 88.5,
+      "reasoning_effort": "max",
+      "api_cost_per_task_usd": 0.2233,
+      "output_tokens_per_task": 101214,
+      "input_tokens_per_task": 20628260,
+      "agent_steps_per_task": 146.0,
       "n_tasks_attempted": 113,
       "evidence": [
         "src-deepswe-data"
       ]
     },
     {
-      "id": "gemini-3-flash-preview",
-      "name": "gemini-3-flash-preview",
-      "provider": "Google",
-      "score_pct": 5.14,
-      "score_pass_at_4_pct": 15.04,
-      "reasoning_effort": null,
-      "api_cost_per_task_usd": 1.0449,
-      "output_tokens_per_task": 146348,
-      "input_tokens_per_task": 4451517,
-      "agent_steps_per_task": 54.0,
-      "n_tasks_attempted": 113,
-      "evidence": [
-        "src-deepswe-data"
-      ]
-    },
-    {
-      "id": "qwen-3.6-plus",
-      "name": "qwen-3.6-plus",
-      "provider": "Alibaba",
-      "score_pct": 2.65,
-      "score_pass_at_4_pct": 9.73,
-      "reasoning_effort": null,
-      "api_cost_per_task_usd": 3.6144,
-      "output_tokens_per_task": 59876,
-      "input_tokens_per_task": 10760227,
-      "agent_steps_per_task": 158.0,
-      "n_tasks_attempted": 113,
-      "evidence": [
-        "src-deepswe-data"
-      ]
-    },
-    {
-      "id": "claude-haiku-4.5",
-      "name": "claude-haiku-4.5",
+      "id": "claude-opus-4.8",
+      "name": "claude-opus-4.8",
       "provider": "Anthropic",
-      "score_pct": 0.22,
-      "score_pass_at_4_pct": 0.88,
-      "reasoning_effort": null,
-      "api_cost_per_task_usd": 0.7769,
-      "output_tokens_per_task": 37412,
-      "input_tokens_per_task": 4722642,
-      "agent_steps_per_task": 103.0,
+      "score_pct": 58.97,
+      "score_pass_at_4_pct": 79.28,
+      "reasoning_effort": "max",
+      "api_cost_per_task_usd": 12.3535,
+      "output_tokens_per_task": 129180,
+      "input_tokens_per_task": 15368311,
+      "agent_steps_per_task": 116.0,
+      "n_tasks_attempted": 111,
+      "evidence": [
+        "src-deepswe-data"
+      ],
+      "effort_variants": [
+        {
+          "reasoning_effort": "max",
+          "score_pct": 58.97,
+          "api_cost_per_task_usd": 12.3535,
+          "output_tokens_per_task": 129180,
+          "input_tokens_per_task": 15368311,
+          "agent_steps_per_task": 116.0
+        },
+        {
+          "reasoning_effort": "xhigh",
+          "score_pct": 54.36,
+          "api_cost_per_task_usd": 7.0494,
+          "output_tokens_per_task": 77961,
+          "input_tokens_per_task": 8117323,
+          "agent_steps_per_task": 90.0
+        },
+        {
+          "reasoning_effort": "high",
+          "score_pct": 51.77,
+          "api_cost_per_task_usd": 3.6635,
+          "output_tokens_per_task": 44476,
+          "input_tokens_per_task": 3814284,
+          "agent_steps_per_task": 67.0
+        },
+        {
+          "reasoning_effort": "medium",
+          "score_pct": 48.67,
+          "api_cost_per_task_usd": 2.8404,
+          "output_tokens_per_task": 36648,
+          "input_tokens_per_task": 2851276,
+          "agent_steps_per_task": 60.0
+        },
+        {
+          "reasoning_effort": "low",
+          "score_pct": 40.8,
+          "api_cost_per_task_usd": 1.824,
+          "output_tokens_per_task": 25291,
+          "input_tokens_per_task": 1658113,
+          "agent_steps_per_task": 47.0
+        }
+      ]
+    },
+    {
+      "id": "qwen-3.8-max",
+      "name": "qwen-3.8-max",
+      "provider": "Alibaba",
+      "score_pct": 57.46,
+      "score_pass_at_4_pct": 83.19,
+      "reasoning_effort": "xhigh",
+      "api_cost_per_task_usd": 3.1327,
+      "output_tokens_per_task": 89729,
+      "input_tokens_per_task": 10163801,
+      "agent_steps_per_task": 102.0,
       "n_tasks_attempted": 113,
       "evidence": [
         "src-deepswe-data"
       ]
     },
     {
-      "id": "minimax-m2.7",
-      "name": "minimax-m2.7",
-      "provider": "MiniMax",
-      "score_pct": 0.22,
-      "score_pass_at_4_pct": 0.88,
+      "id": "muse-spark-1.2",
+      "name": "muse-spark-1.2",
+      "provider": "Unknown",
+      "score_pct": 54.87,
+      "score_pass_at_4_pct": 81.42,
+      "reasoning_effort": "xhigh",
+      "api_cost_per_task_usd": 2.6841,
+      "output_tokens_per_task": 81250,
+      "input_tokens_per_task": 10339991,
+      "agent_steps_per_task": 94.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ]
+    },
+    {
+      "id": "claude-sonnet-5",
+      "name": "claude-sonnet-5",
+      "provider": "Anthropic",
+      "score_pct": 53.85,
+      "score_pass_at_4_pct": 78.76,
+      "reasoning_effort": "max",
+      "api_cost_per_task_usd": 23.2774,
+      "output_tokens_per_task": 203918,
+      "input_tokens_per_task": 62591138,
+      "agent_steps_per_task": 260.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ],
+      "effort_variants": [
+        {
+          "reasoning_effort": "max",
+          "score_pct": 53.85,
+          "api_cost_per_task_usd": 23.2774,
+          "output_tokens_per_task": 203918,
+          "input_tokens_per_task": 62591138,
+          "agent_steps_per_task": 260.0
+        },
+        {
+          "reasoning_effort": "xhigh",
+          "score_pct": 49.67,
+          "api_cost_per_task_usd": 9.9654,
+          "output_tokens_per_task": 113150,
+          "input_tokens_per_task": 24771332,
+          "agent_steps_per_task": 174.0
+        },
+        {
+          "reasoning_effort": "high",
+          "score_pct": 48.23,
+          "api_cost_per_task_usd": 5.8336,
+          "output_tokens_per_task": 77993,
+          "input_tokens_per_task": 13842595,
+          "agent_steps_per_task": 138.0
+        },
+        {
+          "reasoning_effort": "medium",
+          "score_pct": 39.78,
+          "api_cost_per_task_usd": 3.3573,
+          "output_tokens_per_task": 50414,
+          "input_tokens_per_task": 7084140,
+          "agent_steps_per_task": 100.5
+        },
+        {
+          "reasoning_effort": "low",
+          "score_pct": 30.51,
+          "api_cost_per_task_usd": 1.6765,
+          "output_tokens_per_task": 31478,
+          "input_tokens_per_task": 3126877,
+          "agent_steps_per_task": 70.0
+        }
+      ]
+    },
+    {
+      "id": "grok-4.5",
+      "name": "grok-4.5",
+      "provider": "xAI",
+      "score_pct": 53.76,
+      "score_pass_at_4_pct": 77.88,
+      "reasoning_effort": "high",
+      "api_cost_per_task_usd": 2.0231,
+      "output_tokens_per_task": 34250,
+      "input_tokens_per_task": 3293744,
+      "agent_steps_per_task": 56.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ]
+    },
+    {
+      "id": "deepseek-v4-flash",
+      "name": "deepseek-v4-flash",
+      "provider": "DeepSeek",
+      "score_pct": 53.32,
+      "score_pass_at_4_pct": 80.53,
+      "reasoning_effort": "max",
+      "api_cost_per_task_usd": 0.0912,
+      "output_tokens_per_task": 104492,
+      "input_tokens_per_task": 17312560,
+      "agent_steps_per_task": 148.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ]
+    },
+    {
+      "id": "muse-spark-1.1",
+      "name": "muse-spark-1.1",
+      "provider": "Unknown",
+      "score_pct": 53.32,
+      "score_pass_at_4_pct": 79.65,
+      "reasoning_effort": "xhigh",
+      "api_cost_per_task_usd": 1.7171,
+      "output_tokens_per_task": 66088,
+      "input_tokens_per_task": 8037064,
+      "agent_steps_per_task": 86.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ]
+    },
+    {
+      "id": "gpt-5.4",
+      "name": "gpt-5.4",
+      "provider": "OpenAI",
+      "score_pct": 51.77,
+      "score_pass_at_4_pct": 77.88,
+      "reasoning_effort": "xhigh",
+      "api_cost_per_task_usd": 4.3529,
+      "output_tokens_per_task": 67234,
+      "input_tokens_per_task": 6869950,
+      "agent_steps_per_task": 63.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ]
+    },
+    {
+      "id": "gemini-3.6-flash",
+      "name": "gemini-3.6-flash",
+      "provider": "Google",
+      "score_pct": 46.68,
+      "score_pass_at_4_pct": 75.22,
+      "reasoning_effort": "high",
+      "api_cost_per_task_usd": 3.4447,
+      "output_tokens_per_task": 86727,
+      "input_tokens_per_task": 8949018,
+      "agent_steps_per_task": 108.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ]
+    },
+    {
+      "id": "glm-5.2",
+      "name": "glm-5.2",
+      "provider": "Zhipu (Z.ai)",
+      "score_pct": 43.78,
+      "score_pass_at_4_pct": 76.99,
+      "reasoning_effort": "max",
+      "api_cost_per_task_usd": 3.4637,
+      "output_tokens_per_task": 75760,
+      "input_tokens_per_task": 11208642,
+      "agent_steps_per_task": 123.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ],
+      "effort_variants": [
+        {
+          "reasoning_effort": "max",
+          "score_pct": 43.78,
+          "api_cost_per_task_usd": 3.4637,
+          "output_tokens_per_task": 75760,
+          "input_tokens_per_task": 11208642,
+          "agent_steps_per_task": 123.0
+        },
+        {
+          "reasoning_effort": "high",
+          "score_pct": 36.28,
+          "api_cost_per_task_usd": 2.2501,
+          "output_tokens_per_task": 48956,
+          "input_tokens_per_task": 7049446,
+          "agent_steps_per_task": 112.0
+        }
+      ]
+    },
+    {
+      "id": "gemini-3.5-flash",
+      "name": "gemini-3.5-flash",
+      "provider": "Google",
+      "score_pct": 36.06,
+      "score_pass_at_4_pct": 63.72,
+      "reasoning_effort": "high",
+      "api_cost_per_task_usd": 2.8624,
+      "output_tokens_per_task": 68910,
+      "input_tokens_per_task": 5694082,
+      "agent_steps_per_task": 97.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ]
+    },
+    {
+      "id": "kimi-k2.7-code",
+      "name": "kimi-k2.7-code",
+      "provider": "Moonshot AI",
+      "score_pct": 30.53,
+      "score_pass_at_4_pct": 61.06,
       "reasoning_effort": null,
-      "api_cost_per_task_usd": 0.5399,
-      "output_tokens_per_task": 52466,
-      "input_tokens_per_task": 6873271,
-      "agent_steps_per_task": 116.0,
+      "api_cost_per_task_usd": 2.1955,
+      "output_tokens_per_task": 54054,
+      "input_tokens_per_task": 10022682,
+      "agent_steps_per_task": 139.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ]
+    },
+    {
+      "id": "claude-sonnet-4.6",
+      "name": "claude-sonnet-4.6",
+      "provider": "Anthropic",
+      "score_pct": 29.93,
+      "score_pass_at_4_pct": 56.64,
+      "reasoning_effort": "high",
+      "api_cost_per_task_usd": 4.8674,
+      "output_tokens_per_task": 70001,
+      "input_tokens_per_task": 10933709,
+      "agent_steps_per_task": 124.0,
+      "n_tasks_attempted": 113,
+      "evidence": [
+        "src-deepswe-data"
+      ]
+    },
+    {
+      "id": "gemini-3.1-pro-preview",
+      "name": "gemini-3.1-pro-preview",
+      "provider": "Google",
+      "score_pct": 11.73,
+      "score_pass_at_4_pct": 28.32,
+      "reasoning_effort": "high",
+      "api_cost_per_task_usd": 1.7235,
+      "output_tokens_per_task": 25990,
+      "input_tokens_per_task": 1834116,
+      "agent_steps_per_task": 70.0,
       "n_tasks_attempted": 113,
       "evidence": [
         "src-deepswe-data"

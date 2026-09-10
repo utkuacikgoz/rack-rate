@@ -14,26 +14,28 @@ This repo joins the two: same scores, real prices, every number cited.
 
 ## What it shows
 
-21 models, 16 plans, 138 model-and-plan pairs that are actually possible (a
+28 models, 16 plans, 178 model-and-plan pairs that are actually possible (a
 Claude subscription cannot run a Kimi model, and `data/plans.json`'s
 `model_scope` field enforces that).
 
 | Model | Score | API list | Cheapest usable plan | |
 |---|---|---|---|---|
-| gpt-5.5 | 70.05% | $5.76 | $0.132 on ChatGPT Pro 20x | 44x |
-| gpt-5.4 | 55.53% | $3.31 | $0.076 on ChatGPT Pro 20x | 44x |
-| claude-opus-4.8 | 58.19% | $11.28 | $0.089 on Claude Max 20x | 127x |
-| claude-haiku-4.5 | 0.22% | $0.78 | $0.006 on Claude Max 20x | 127x |
+| gpt-6-astra | 74.12% | $5.67 | $0.130 on ChatGPT Pro 20x | 44x |
+| claude-opus-5 | 73.65% | $10.43 | $0.082 on Claude Max 20x | 127x |
+| deepseek-v4-flash | 53.32% | $0.09 | $0.030 on Ollama Pro | 3x |
+| gemini-3.1-pro-preview | 11.73% | $1.72 | $0.575 on Ollama Pro | 3x |
 
-The cheapest route on the page is claude-haiku-4.5, and it barely solves
-anything: 0.22% on this benchmark. The empty corner is the finding. Almost
-nothing is both cheap and good; see the chart's list-price-to-subscription
-flight for the honest version of this table.
+The cheapest route on the page, deepseek-v4-flash on Ollama Pro, is also
+mid-pack on score (53%) — the frontier here isn't as one-sided as "cheap or
+good, pick one." gemini-3.1-pro-preview shows the other end: a discounted
+route that still barely solves anything. See the chart's
+list-price-to-subscription flight for the full picture across all 28 models.
 
 ## Where this stands right now
 
 `data/plans.json` has 16 real, cited subscription plans, and `data/models.json`
-has 21 real models from a DeepSWE results snapshot (dated 2026-06-20).
+has 28 real models from a DeepSWE results snapshot (the v1.1 scoring run,
+dated 2026-09-03).
 
 `deepswe.datacurve.ai`, the live leaderboard, is still blocked by this build
 environment's network egress, so the snapshot in `data/models.json` was
@@ -41,9 +43,9 @@ supplied directly rather than fetched here. `scripts/fetch_deepswe.py`'s
 endpoint and field mapping are now confirmed against that exact data (a real
 fetch outside this build environment matched it exactly), so running it from
 an unblocked network is a plain refresh, not a fix. See `src-deepswe-data` in
-`data/sources.json`. The snapshot's own timestamp is 2026-06-20, about three
-months old; keeping it current is the easiest high-value contribution right
-now. See CONTRIBUTING.md.
+`data/sources.json`. gpt-6-astra's cost figures are DeepSWE's own disclosed
+*expected launch pricing*, not confirmed GA API pricing; treat them as
+provisional. See CONTRIBUTING.md.
 
 ## The method
 
@@ -78,13 +80,19 @@ a real cost-per-task figure to divide the quota by.
 ## Where this is weakest
 
 - **DeepSWE model data is a real snapshot, not a live pull.** See "Where this
-  stands right now" above. It is roughly three months old; the fetch script
-  itself is confirmed working, it just hasn't been re-run from a network that
-  can reach the site.
+  stands right now" above. The fetch script itself is confirmed working, it
+  just hasn't been re-run from a network that can reach the site.
 - **Only the best reasoning-effort configuration per model is captured.**
   DeepSWE published more configurations than that (some models were run at
-  four effort levels); this repo keeps only the highest-scoring one per
-  model, per CONTRIBUTING item 7.
+  up to five effort levels — low, medium, high, xhigh, max); this repo keeps
+  only the highest-scoring one per model, per CONTRIBUTING item 7.
+- **gpt-6-astra's pricing is provisional.** DeepSWE scored it against its own
+  disclosed *expected launch pricing*, not a confirmed GA rate card. Treat its
+  cost-per-task figures as a forecast, not a receipt.
+- **Two models ship with `provider: "Unknown"`.** muse-spark-1.1 and
+  muse-spark-1.2 appear in the DeepSWE snapshot with no vendor identified
+  anywhere in the response. Rather than guess, this repo ships them with an
+  honest "Unknown" rather than a made-up company name.
 - **Google.** AI Pro and AI Ultra are metered in AI credits with no published
   conversion to tokens or dollars anywhere found. AI Pro is priced as a
   placeholder, drawn hollow once the chart has data. AI Ultra's price itself
@@ -103,7 +111,7 @@ priced, with the reason.
 ## Layout
 
 ```
-data/models.json     DeepSWE snapshot: 21 models, best config per model, dated 2026-06-20
+data/models.json     DeepSWE snapshot: 28 models, best config per model, dated 2026-09-03 (v1.1)
 data/plans.json      Plans, quota models, evidence, confidence, known_gaps
 data/sources.json    Full citation record for every external dataset
 data/derived.csv     Every model and plan pair, cheapest first. Generated.

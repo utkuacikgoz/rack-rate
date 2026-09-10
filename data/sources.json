@@ -14,13 +14,13 @@
     {
       "id": "src-deepswe-data",
       "title": "DeepSWE benchmark results, per-configuration snapshot",
-      "url": "https://deepswe.datacurve.ai/artifacts/v1/leaderboard-live.json",
+      "url": "https://deepswe.datacurve.ai/artifacts/v1.1/leaderboard-live.json",
       "license": "Apache-2.0",
       "retrieved": "2026-09-10",
-      "covers": "Per-model, per-reasoning-effort results for all 113 tasks: pass@1, pass@4, cost per attempt, output tokens, input tokens and agent steps, aggregated as means and medians over every scored attempt (imported Pier jobs, mini-swe-agent harness). 21 models, matching the site's stated model count.",
-      "changes": "For each model, only the highest-scoring reasoning-effort configuration was kept in data/models.json, per CONTRIBUTING item 7 (effort levels are a known simplification). api_cost_per_task_usd, output_tokens_per_task, input_tokens_per_task and agent_steps_per_task use the median over scored attempts rather than the mean, to resist a few very expensive stuck runs skewing the figure.",
-      "notes": "deepswe.datacurve.ai itself is blocked by this build environment's network egress (see src-deepswe-repo), so this specific snapshot was supplied directly rather than fetched here. scripts/fetch_deepswe.py's endpoint and field mapping are now confirmed against this exact data and reproduce data/models.json exactly, so a maintainer running it from an unblocked network keeps this current. The data's own generated_at timestamp is 2026-06-20, roughly three months before this repo's other figures, and is exactly what a fresh run would update.",
-      "summary": "Score, cost, tokens and steps for all 21 models."
+      "covers": "Per-model, per-reasoning-effort results for all 113 tasks: pass@1, pass@4, cost per attempt, output tokens, input tokens and agent steps, aggregated as means and medians over every scored attempt (imported Pier jobs, mini-swe-agent harness). 28 models, matching the site's stated model count. This is DeepSWE's v1.1 scoring run, which superseded v1 (stale since 2026-06-20) and is the only version with newer models like gpt-6-astra.",
+      "changes": "For each model, only the highest-scoring reasoning-effort configuration was kept in data/models.json, per CONTRIBUTING item 7 (effort levels are a known simplification). api_cost_per_task_usd, output_tokens_per_task, input_tokens_per_task and agent_steps_per_task use the median over scored attempts rather than the mean, to resist a few very expensive stuck runs skewing the figure. gpt-6-astra's cost figures are DeepSWE-reported *expected launch pricing*, not confirmed GA API pricing (see data/models.json's top-level note) — flagged rather than dropped, since DeepSWE itself discloses the cost basis. muse-spark-1.1 and muse-spark-1.2 ship with provider: \"Unknown\" rather than a guessed vendor name, since DeepSWE's response doesn't identify who makes them.",
+      "notes": "deepswe.datacurve.ai itself is blocked by this build environment's network egress (see src-deepswe-repo), so this specific snapshot was supplied directly rather than fetched here. scripts/fetch_deepswe.py's endpoint and field mapping are now confirmed against this exact data and reproduce data/models.json exactly, so a maintainer running it from an unblocked network keeps this current. The data's own generated_at timestamp is 2026-09-03.",
+      "summary": "Score, cost, tokens and steps for all 28 models."
     },
     {
       "id": "src-awesome-coding-plan",
