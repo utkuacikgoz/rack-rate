@@ -1,0 +1,46 @@
+name: Plan correction
+description: A price, quota or plan detail in data/plans.json is wrong or out of date.
+title: "Correction: <plan name>"
+labels: ["data", "correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For a real measurement of a plan, use the "Measured quota" template
+        instead. This one is for fixing a price, a quota figure, an availability
+        flag, or a citation that no longer matches what the vendor publishes.
+  - type: input
+    id: plan
+    attributes:
+      label: Plan
+      placeholder: GLM Coding Max, $30 a month
+    validations:
+      required: true
+  - type: textarea
+    id: whats-wrong
+    attributes:
+      label: What is wrong
+      description: Quote the current field and value in data/plans.json, and what it should be.
+      placeholder: |
+        price_usd_month is 30, vendor now lists it at 36 as of 2026-09-01
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source for the correction
+      description: A URL a maintainer can check. This becomes an entry in data/sources.json.
+      placeholder: https://z.ai/pricing
+    validations:
+      required: true
+  - type: input
+    id: retrieved
+    attributes:
+      label: Date you checked the source
+      placeholder: 2026-09-09
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else a maintainer should know

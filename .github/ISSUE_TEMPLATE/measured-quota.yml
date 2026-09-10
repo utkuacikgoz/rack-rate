@@ -1,0 +1,72 @@
+name: Measured quota
+description: You ran a plan to exhaustion and counted. This is the most valuable thing you can send.
+title: "Measured quota: <plan name>"
+labels: ["data", "measured"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Most plan quotas in this repo are derived from a vendor's advertised
+        multiplier. A real measurement replaces a whole column of arithmetic.
+
+        You do not need every field. Send what you have and say what you do not.
+  - type: input
+    id: plan
+    attributes:
+      label: Plan
+      description: Name and price as sold, monthly billing.
+      placeholder: Claude Max 20x, $200 a month
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Model you measured on
+      placeholder: claude-opus-5
+    validations:
+      required: true
+  - type: input
+    id: period
+    attributes:
+      label: Period
+      description: When, and how long. Say if the quota was saturated or not.
+      placeholder: Four weeks from 2026-08-01, saturated
+    validations:
+      required: true
+  - type: input
+    id: tokens
+    attributes:
+      label: Total tokens
+      description: Input, output and cache combined. Leave blank if you only have dollars.
+      placeholder: 1,588,000,000
+  - type: input
+    id: dollars
+    attributes:
+      label: Equivalent at API rates
+      description: What the same usage would have cost at the vendor's published rates.
+      placeholder: $1,273.60
+  - type: input
+    id: requests
+    attributes:
+      label: Requests or model calls
+      placeholder: 14,360
+  - type: input
+    id: tool
+    attributes:
+      label: How you counted
+      description: Which tool produced the numbers, and its version.
+      placeholder: ccusage 1.4.2
+    validations:
+      required: true
+  - type: textarea
+    id: caveats
+    attributes:
+      label: What would make this wrong
+      description: Rate limits you hit, off peak use, a mid month plan change, anything that makes the number less clean.
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Licensing
+      options:
+        - label: I am happy for this measurement to be published under the repo's MIT licence, credited to my GitHub handle unless I say otherwise.
+          required: true
