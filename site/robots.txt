@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rack-rate-flax.vercel.app/sitemap.xml
