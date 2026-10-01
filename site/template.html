@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rack Rate: Stop paying sticker price for AI coding</title>
+<title>Rack Rate: Find the right AI coding plan</title>
 <meta name="description" content="DeepSWE benchmark scores joined to what coding subscriptions actually charge. Every number cited.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:title" content="Rack Rate">
-<meta property="og:description" content="Same models. Same scores. The API charges full price. A monthly plan costs a fraction.">
+<meta property="og:description" content="Compare API spending and subscription estimates for your workload. Benchmark scores are measured separately.">
 <meta property="og:image" content="/og.png">
 <meta property="og:url" content="https://rack-rate-flax.vercel.app">
 <meta name="twitter:card" content="summary_large_image">
@@ -27,7 +27,7 @@
       "@type": "Dataset",
       "@id": "https://rack-rate-flax.vercel.app/#dataset",
       "name": "Rack Rate: AI coding model cost per task, API list price vs. subscription price",
-      "description": "Joins DeepSWE's public coding-agent benchmark scores to real subscription plan pricing, computing cost per task under each plan's own quota model and citing every figure to its source.",
+      "description": "Joins DeepSWE's public coding-agent benchmark scores to cited subscription plan pricing, computing cost per task under each plan's own quota model and citing every figure to its source.",
       "url": "https://rack-rate-flax.vercel.app/",
       "isAccessibleForFree": true,
       "creator": { "@type": "Organization", "name": "Rack Rate contributors", "url": "https://github.com/utkuacikgoz/rack-rate" },
@@ -410,6 +410,11 @@
   @media (prefers-reduced-motion: reduce){
     *, *::before, *::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; animation-delay:0ms !important; transition-duration:.01ms !important; transition-delay:0ms !important; scroll-behavior:auto !important; }
   }
+  #tasks-input, #region-input{max-width:100%;background:var(--sunk);color:var(--ink);border:1px solid var(--rule);border-radius:6px;padding:8px;font:inherit;}
+  #tasks-input{width:90px;margin-left:auto;} #region-input{width:100%;}
+  .budget-tool label{margin-top:12px;gap:8px;} .budget-tool .estimate-option{font-size:.85rem;display:block;}
+  .tool-note{font-size:.85rem;line-height:1.55;color:var(--ink-dim);margin:10px 0;}
+  .recommendation{padding:14px 0;border-top:1px solid var(--rule);}.recommendation p{margin:8px 0;}
 </style>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -422,16 +427,20 @@
   <div class="measure hero-grid">
     <div class="hero-copy">
       <div class="wordmark" tabindex="0" aria-label="A hotel's rack rate is the full price on the back of the door. Most guests pay less: a discount, a corporate rate, a loyalty rate." data-tooltip="A hotel's rack rate is the full price on the back of the door. Most guests pay less: a discount, a corporate rate, a loyalty rate.">Rack Rate</div>
-      <h1>Stop paying <span class="h1-mult">sticker price</span> for AI coding.</h1>
-      <p class="lede lede-payoff"><strong>Same models. Same scores.</strong> The API charges full price. A monthly plan costs a fraction.</p>
+      <h1>Your workload.<br>Your <span class="h1-mult">AI coding budget.</span></h1>
+      <p class="lede lede-payoff"><strong>Find the route that fits.</strong> Compare API spending with subscription estimates at your level of use.</p>
       <div class="hero-figs" id="hero-figs"></div>
-      <p class="hero-cite">A task is one of <a href="https://deepswe.datacurve.ai/">DeepSWE</a>’s 113 real coding challenges. Every number cited.</p>
+      <p class="hero-cite">A task is one of <a href="https://deepswe.datacurve.ai/">DeepSWE</a>’s 113 real coding challenges. Scores were measured with mini-swe-agent, not each subscription’s coding tool. Costs are estimates from benchmark medians.</p>
     </div>
     <div class="hero-tool">
       <div class="budget-tool">
         <div class="budget-tool-kicker">Try your budget</div>
-        <label for="budget-input">Spend <span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="999" step="1" maxlength="3" inputmode="numeric"></span> a month. Get this:</label>
+        <label for="budget-input">Spend <span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="300" step="1" maxlength="3" inputmode="numeric"></span> a month.</label>
         <div class="budget-slider"><input type="range" id="budget-range" min="0" max="1000" step="1" value="258" aria-label="Monthly budget in dollars"><div class="budget-ticks" id="budget-ticks" aria-hidden="true"></div></div>
+        <label for="tasks-input">Expected tasks / month <input type="number" id="tasks-input" value="10" min="1" max="10000" step="1"></label>
+        <label for="region-input">Plan eligibility <select id="region-input"><option value="other">Exclude China-only plans</option><option value="china">Include China-only plans</option></select></label>
+        <label class="estimate-option"><input type="checkbox" id="exploratory-input"> Include unverified access and low-confidence estimates</label>
+        <p class="tool-note">Other regional restrictions may apply. Check the vendor before buying. A benchmark task is only a proxy for your workload.</p>
         <div class="budget-result" id="budget-result" aria-live="polite"></div>
       </div>
     </div>
@@ -442,8 +451,8 @@
   <div class="measure">
     <div class="jump-nav-links">
       <a href="#chart">Chart</a>
-      <a href="#routes">Every route</a>
-      <a href="#runtime">How long a quota lasts</a>
+      <a href="#routes">Best plan estimates</a>
+      <a href="#runtime">Quota capacity</a>
       <a href="#method">The method</a>
       <a href="#cross-check">The cross check</a>
       <a href="#sources">Sources</a>
@@ -463,7 +472,7 @@
         <div class="toggle-pill" data-mode="list" id="toggle-pill">
           <div class="thumb"></div>
           <button type="button" data-mode="list" aria-pressed="true">List price</button>
-          <button type="button" data-mode="sub" aria-pressed="false">Subscription price</button>
+          <button type="button" data-mode="sub" aria-pressed="false">Full-use estimate</button>
         </div>
         <div class="chart-legend" id="chart-legend"></div>
       </div>
@@ -503,8 +512,8 @@
 
 <section id="routes" style="padding:0 0 40px;">
   <div class="measure">
-    <h2>Every route</h2>
-    <p class="lede">Each model's cheapest plan, against API list price.</p>
+    <h2>Best plan estimates</h2>
+    <p class="lede">Each model’s lowest full-utilization estimate among eligible selected plans. Actual cost depends on usage; use the workload tool above. Unverified access is excluded by default.</p>
     <div style="overflow-x:auto;">
       <table class="routes" id="routes-table">
         <thead>
@@ -513,8 +522,8 @@
             <th data-key="score_pct" tabindex="0" role="button">Score</th>
             <th data-key="api_cost_per_task_usd" tabindex="0" role="button">API list</th>
             <th data-key="plan_name" tabindex="0" role="button">Plan</th>
-            <th data-key="cost_per_task_usd" tabindex="0" role="button">Plan cost / task</th>
-            <th data-key="days_for_full_run" tabindex="0" role="button">Days for full run</th>
+            <th data-key="cost_per_task_usd" tabindex="0" role="button">At full use / task</th>
+            <th data-key="quota_equivalent_days" tabindex="0" role="button">Quota-equivalent days</th>
           </tr>
         </thead>
         <tbody id="routes-body"></tbody>
@@ -525,9 +534,9 @@
 
 <section id="runtime" style="padding:0 0 40px;">
   <div class="measure">
-    <h2>How long a quota lasts</h2>
-    <p class="lede">Cheap per task means nothing if the quota runs out first. Days to finish all 113 tasks, per route.</p>
-    <svg class="chart" id="runtime-svg" viewBox="0 0 1040 40" width="100%" role="img" aria-label="Days to run all tasks per route"></svg>
+    <h2>Quota capacity</h2>
+    <p class="lede">Steady-state quota-equivalent days for 113 tasks, assuming continuous full use. These are not completion times: starting allowance, resets, run duration and concurrency are not modeled.</p>
+    <svg class="chart" id="runtime-svg" viewBox="0 0 1040 40" width="100%" role="img" aria-label="Quota-equivalent days per route"></svg>
   </div>
 </section>
 
@@ -535,14 +544,16 @@
   <div class="measure">
     <h2>The method</h2>
     <p class="lede"><code>cost_per_task = price_per_month / tasks_per_month</code></p>
+    <p class="tool-note">Full-use prices assume the entire estimated quota is consumed. Your effective cost is monthly price divided by tasks actually run. API-equivalent quotas measured on one model do not establish the allowance for another. Reasoning settings, caching, tool behavior and provider rates can change the result.</p>
     <div class="cards" id="method-cards"></div>
+    <details><summary>Missing evidence and unpriced plans</summary><ul id="known-gaps"></ul></details>
   </div>
 </section>
 
 <section id="cross-check" style="padding:0 0 40px;">
   <div class="measure">
     <h2>The cross check</h2>
-    <p class="lede">Same quota, counted two independent ways. A stable gap means a real cause, not noise.</p>
+    <p class="lede">Two conversions of the same quota disagree. These estimates share source data and are not independent validation. The gap is unresolved; it should lower confidence in the conversion.</p>
     <svg class="chart" id="cross-svg" viewBox="0 0 960 160" width="100%" role="img" aria-label="Cross check ratio strip plot"></svg>
     <p id="cross-summary" class="mono" style="color:var(--ink-faint); font-size:.85rem; max-width:60ch;"></p>
   </div>
@@ -569,6 +580,7 @@
   <div id="rail-content"></div>
 </aside>
 
+<script src="decision.js"></script>
 <script id="rack-rate-data" type="application/json">__RACK_RATE_DATA__</script>
 <script>
 (function(){
@@ -591,6 +603,8 @@
     selectedPlans: PLANS.filter(function(p){ return p.available !== false; }).map(function(p){ return p.id; }),
     selectedModel: null,
     selectedPlan: null,
+    region: "other",
+    exploratory: false,
     hotId: null,
   };
 
@@ -605,6 +619,14 @@
     }
     if (params.has("model")) state.selectedModel = params.get("model");
     if (params.has("plan")) state.selectedPlan = params.get("plan");
+    state.region = params.get("region") === "china" ? "china" : "other";
+    state.exploratory = params.get("exploratory") === "1";
+    document.getElementById("region-input").value = state.region;
+    document.getElementById("exploratory-input").checked = state.exploratory;
+    ["budget", "tasks"].forEach(function(key){
+      var input = document.getElementById(key + "-input"), value = Number(params.get(key));
+      if (value > 0 && Number.isFinite(value)) input.value = Math.min(Number(input.max), Math.max(1, Math.floor(value)));
+    });
     return true;
   }
   function writeURL(){
@@ -613,6 +635,10 @@
     params.set("plans", state.selectedPlans.join(","));
     if (state.selectedModel) params.set("model", state.selectedModel);
     if (state.selectedPlan) params.set("plan", state.selectedPlan);
+    params.set("budget", document.getElementById("budget-input").value);
+    params.set("tasks", document.getElementById("tasks-input").value);
+    params.set("region", state.region);
+    if (state.exploratory) params.set("exploratory", "1");
     history.replaceState(null, "", "#" + params.toString());
   }
   var skipOpeningAnimation = readURL();
@@ -658,35 +684,23 @@
 
   // ---------- hero figures, computed live ----------
   (function renderHero(){
-    var el = document.getElementById("hero-figs");
-    var routes = DERIVED.best_routes || [];
-    var figs = [];
-    if (routes.length) {
-      var biggest = routes.reduce(function(a, b){
-        var ar = a.api_cost_per_task_usd / a.cost_per_task_usd;
-        var br = b.api_cost_per_task_usd / b.cost_per_task_usd;
-        return br > ar ? b : a;
-      });
-      var mult = biggest.api_cost_per_task_usd / biggest.cost_per_task_usd;
-      figs.push({
-        label: "than the API, per task: " + biggest.model_name + " on " + biggest.plan_name,
-        to: Math.round(mult), decimals: 0, prefix: "", suffix: "x cheaper",
-      });
-      var cheapest = routes.reduce(function(a,b){ return b.cost_per_task_usd < a.cost_per_task_usd ? b : a; });
-      figs.push({
-        label: "the cheapest route: " + cheapest.model_name + " on " + cheapest.plan_name,
-        to: cheapest.cost_per_task_usd, decimals: 3, prefix: "$", suffix: " a task",
-      });
-    }
-    el.innerHTML = figs.map(function(f){
-      return '<div class="hero-fig"><div class="value">' + f.prefix + f.to.toFixed(f.decimals) + f.suffix + '</div><div class="label">' + f.label + '</div></div>';
-    }).join("");
-    if (motionOK) {
-      Array.prototype.forEach.call(el.querySelectorAll(".value"), function(v, i){
-        countUp(v, figs[i].to, figs[i].decimals, figs[i].prefix, figs[i].suffix, 520 + i * 160, 1500);
-      });
-    }
+    var observed = (DERIVED.pairs || []).filter(function(p){ return p.access_status !== "unverified"; }).length;
+    document.getElementById("hero-figs").innerHTML =
+      '<div class="hero-fig"><div class="value">' + MODELS.length + ' models</div><div class="label">Benchmarked on 113 coding challenges</div></div>' +
+      '<div class="hero-fig"><div class="value">' + observed + ' documented routes</div><div class="label">Observed or source-listed model access; check current availability</div></div>';
+    var date = (DERIVED.generated_from.benchmark_date || "unknown").slice(0, 10);
+    document.querySelector(".hero-cite").appendChild(document.createTextNode(" Benchmark snapshot: " + date + "."));
   })();
+
+  function decisionOptions(){
+    return { plans: state.selectedPlans, region: state.region, exploratory: state.exploratory,
+      budget: Number(document.getElementById("budget-input").value), tasks: Number(document.getElementById("tasks-input").value) };
+  }
+  function eligiblePair(p){ return RackRateDecision.eligible(p, decisionOptions()); }
+  function escapeHTML(value){ var el = document.createElement("span"); el.textContent = String(value); return el.innerHTML; }
+  function evidenceSummary(p){
+    return "Access: " + p.access_status + ". Quota evidence: " + p.quota_confidence + ". Cost conversion: " + (p.confidence === "measured" ? "modeled from a same-model quota" : p.confidence === "high" ? "modeled from published inputs" : p.confidence === "medium" ? "extrapolated" : "low confidence") + ".";
+  }
 
   // ---------- budget tool ----------
   var MAX_BUDGET = 300;
@@ -703,49 +717,28 @@
   }
   function strong(text){ var el = document.createElement("strong"); el.textContent = text; return el; }
   function renderBudgetTool(){
-    var input = document.getElementById("budget-input");
-    var out = document.getElementById("budget-result");
-    if (!input || !out) return;
-    var budget = parseFloat(input.value);
-    if (!budget || budget <= 0) { out.textContent = ""; lastPick = null; return; }
-    var candidates = (DERIVED.pairs || []).filter(function(p){
-      return state.selectedPlans.indexOf(p.plan_id) !== -1 && p.price_usd_month <= budget;
+    var out = document.getElementById("budget-result"), opts = decisionOptions();
+    out.replaceChildren();
+    if (!Number.isInteger(opts.tasks) || opts.tasks < 1 || opts.tasks > 10000 || !(opts.budget > 0)) {
+      out.textContent = "Enter a positive budget and 1–10,000 whole tasks per month."; return;
+    }
+    var candidates = RackRateDecision.recommend(MODELS, DERIVED.pairs || [], opts);
+    if (!candidates.length) { out.textContent = "No route fits this workload and budget. Reduce the task count, increase the budget, or review the evidence filters."; return; }
+    candidates.slice(0, 3).forEach(function(best, i){
+      var card = document.createElement("div"); card.className = "recommendation";
+      var label = document.createElement("p"); label.className = "tool-note";
+      label.textContent = i ? "Alternative " + i : "Highest benchmark score within your limits"; card.appendChild(label);
+      card.appendChild(pickLink(best.model_id, best.model_name, best.plan_id));
+      card.appendChild(document.createTextNode(" · " + best.score_pct + "% benchmark score"));
+      var detail = document.createElement("p");
+      detail.textContent = best.plan_name + ": $" + best.monthly.toFixed(2) + "/month for " + opts.tasks + " tasks ($" + best.perTask.toFixed(3) + "/task).";
+      card.appendChild(detail);
+      var note = document.createElement("p"); note.className = "tool-note";
+      note.textContent = best.plan_id === "api" ? "API estimate uses benchmark median cost. Actual runs vary; no subscription required." : evidenceSummary(best) + " Estimated capacity: " + Math.floor(best.capacity) + " tasks/month. API for the same workload: $" + best.apiMonthly.toFixed(2) + ". Break-even: about " + best.breakEven + " tasks/month.";
+      card.appendChild(note); out.appendChild(card);
     });
-    var key, wrap = document.createElement("div");
-    if (!candidates.length) {
-      var cheapestPlan = PLANS.filter(function(p){ return state.selectedPlans.indexOf(p.id) !== -1; })
-        .reduce(function(a,b){ return (!a || b.price_usd_month < a.price_usd_month) ? b : a; }, null);
-      key = "none:" + (cheapestPlan ? cheapestPlan.id : "");
-      if (key === lastPick) return;
-      var none = document.createElement("span");
-      none.className = "none";
-      none.textContent = cheapestPlan
-        ? "🍌 Not even close. The cheapest plan here is " + cheapestPlan.name + " at $" + cheapestPlan.price_usd_month + "/mo."
-        : "🍌 Nothing at that budget in the currently selected plans.";
-      wrap.appendChild(none);
-    } else {
-      var best = candidates.reduce(function(a, b){
-        if (b.score_pct !== a.score_pct) return b.score_pct > a.score_pct ? b : a;
-        return b.cost_per_task_usd < a.cost_per_task_usd ? b : a;
-      });
-      key = best.model_id + "|" + best.plan_id;
-      if (key === lastPick) return;
-      wrap.appendChild(pickLink(best.model_id, best.model_name, best.plan_id));
-      wrap.appendChild(document.createTextNode(" scores " + best.score_pct + "% on "));
-      wrap.appendChild(strong(best.plan_name));
-      wrap.appendChild(document.createTextNode(". $" + best.price_usd_month + "/mo. $" + best.cost_per_task_usd.toFixed(4) + " a task."));
-    }
-    var first = lastPick === null;
-    lastPick = key;
-    if (out.querySelector(".pick-link:hover, .pick-link:focus")) setHot(null);
-    out.replaceChildren(wrap);
-    // Only a changed answer animates; dragging within the same pick stays still.
-    if (!first && motionOK) {
-      out.classList.add("swap");
-      clearTimeout(pickTimer);
-      pickTimer = setTimeout(function(){ out.classList.remove("swap"); }, 700);
-    }
   }
+
   (function initBudgetTool(){
     var input = document.getElementById("budget-input");
     var range = document.getElementById("budget-range");
@@ -788,14 +781,16 @@
       input.value = b;
       syncSlider(b, fromRange);
       renderBudgetTool();
+      writeURL();
     }
 
     input.addEventListener("input", function(){
       var digits = input.value.replace(/[^0-9]/g, "").slice(0, 3);
-      var next = digits === "" ? "" : String(Number(digits));
+      var next = digits === "" ? "" : String(Math.min(MAX_BUDGET, Number(digits)));
       if (input.value !== next) input.value = next;
       syncSlider(Number(next) || 0, false);
       renderBudgetTool();
+      writeURL();
     });
 
     if (range) {
@@ -873,6 +868,14 @@
     b.setAttribute("aria-pressed", b.getAttribute("data-mode") === state.mode);
   });
 
+  ["tasks-input", "region-input", "exploratory-input"].forEach(function(id){
+    document.getElementById(id).addEventListener("input", function(){
+      state.region = document.getElementById("region-input").value;
+      state.exploratory = document.getElementById("exploratory-input").checked;
+      writeURL(); recompute();
+    });
+  });
+
   // ---------- chart geometry ----------
   var svg = document.getElementById("chart-svg");
   var nodesLayer = document.getElementById("nodes");
@@ -896,7 +899,7 @@
 
   function cheapestFor(modelId, mode){
     var pairs = (DERIVED.pairs || []).filter(function(p){
-      return p.model_id === modelId && state.selectedPlans.indexOf(p.plan_id) !== -1;
+      return p.model_id === modelId && eligiblePair(p);
     });
     if (mode === "list") return null; // list mode uses model.api_cost_per_task_usd directly
     if (!pairs.length) return null;
@@ -914,7 +917,7 @@
     legendPinned = null;
     setLegendFocus(null);
     var items = state.mode === "sub"
-      ? [["measured", "plan quota measured directly"], ["published", "plan quota from vendor’s published figures"], ["derived", "no plan prices this model here"]]
+      ? [["measured", "quota observed on this model"], ["published", "published quota"], ["derived", "extrapolated, unverified or no eligible route"]]
       : [["measured", "cost measured directly by DeepSWE"]];
     el.textContent = "";
     var interactive = items.length > 1;
@@ -948,8 +951,9 @@
   function confidenceClass(pair){
     if (!pair) return "derived";
     var conf = pair.confidence;
-    if (conf === "measured") return "measured";
-    if (conf === "high" || conf === "medium") return "published";
+    if (conf === "measured" && pair.access_status !== "unverified") return "measured";
+    if (pair.access_status === "unverified") return "derived";
+    if (conf === "high") return "published";
     return "derived";
   }
 
@@ -1212,14 +1216,14 @@
     tip.appendChild(name);
     tip.appendChild(tipRow("", usd(d.m.api_cost_per_task_usd, 3), " /task at list"));
     if (d.pair) {
-      tip.appendChild(tipRow(confidenceClass(d.pair), usd(d.pair.cost_per_task_usd, 4), " /task on " + d.pair.plan_name));
+      tip.appendChild(tipRow(confidenceClass(d.pair), usd(d.pair.cost_per_task_usd, 4), " /task at full use on " + d.pair.plan_name));
       if (d.ratio >= 1.05) {
         var gain = document.createElement("div");
         gain.className = "tip-gain";
         var gb = document.createElement("b");
         gb.textContent = (d.ratio >= 10 ? Math.round(d.ratio) : d.ratio.toFixed(1)) + "x";
         gain.appendChild(gb);
-        gain.appendChild(document.createTextNode(" cheaper than list"));
+        gain.appendChild(document.createTextNode(" estimated ratio at full utilization"));
         tip.appendChild(gain);
       }
     } else if (state.mode === "sub") {
@@ -1363,21 +1367,35 @@
     if (!m) return;
     if (fromUser && !rail.classList.contains("open")) railOpener = document.activeElement;
     tip.classList.remove("on");
-    var pairs = (DERIVED.pairs || []).filter(function(p){ return p.model_id === modelId && state.selectedPlans.indexOf(p.plan_id) !== -1 && (!state.selectedPlan || p.plan_id === state.selectedPlan); })
+    var pairs = (DERIVED.pairs || []).filter(function(p){ return p.model_id === modelId && eligiblePair(p) && (!state.selectedPlan || p.plan_id === state.selectedPlan); })
       .sort(function(a,b){ return a.cost_per_task_usd - b.cost_per_task_usd; });
     var html = "<h3>" + m.name + "</h3>";
     html += '<div class="rail-figs">';
     html += '<div class="rail-fig"><div class="value">' + m.score_pct + '%</div><div class="label">score</div></div>';
     html += '<div class="rail-fig"><div class="value">$' + m.api_cost_per_task_usd.toFixed(3) + '</div><div class="label">API list / task</div></div>';
     html += '</div>';
-    if (pairs.length) {
-      var best = pairs[0];
-      html += '<div class="formula">cost_per_task = price_per_month / tasks_per_month\n= $' + best.price_usd_month + ' / ' + best.tasks_per_month + '\n= $' + best.cost_per_task_usd.toFixed(4) + ' on ' + best.plan_name + '</div>';
-      if (best.days_for_full_run) {
-        html += '<p style="margin-top:12px;">All 113 tasks on ' + best.plan_name + ': <strong style="color:var(--adj)">' + best.days_for_full_run + ' days</strong>.</p>';
+    var chosen = null;
+    if (state.selectedPlan === "api") {
+      html += '<p>API list estimate: $' + (m.api_cost_per_task_usd * decisionOptions().tasks).toFixed(2) + ' for ' + decisionOptions().tasks + ' tasks. Benchmark median; actual costs vary.</p>';
+    } else if (pairs.length) {
+      var best = pairs[0]; chosen = best;
+      html += '<div class="formula">At full utilization only:\ncost_per_task = price_per_month / tasks_per_month\n= $' + best.price_usd_month + ' / ' + best.tasks_per_month + '\n= $' + best.cost_per_task_usd.toFixed(4) + ' on ' + best.plan_name + '</div>';
+      if (best.quota_equivalent_days) {
+        html += '<p style="margin-top:12px;">Quota equivalent for 113 tasks on ' + best.plan_name + ': <strong style="color:var(--adj)">' + best.quota_equivalent_days + ' days</strong>; not a completion-time estimate.</p>';
       }
     } else {
       html += '<p>No plan in the selected set prices this model yet.</p>';
+    }
+    html += '<p class="tool-note">Score measured with mini-swe-agent at ' + escapeHTML(m.reasoning_effort || "default") + ' effort. Subscription tools may perform differently. Cost and capacity use benchmark medians, not a measured monthly workload.</p>';
+    if (chosen) {
+      var plan = planById[chosen.plan_id], estimate = RackRateDecision.costs(chosen, decisionOptions().tasks);
+      html += '<p>' + escapeHTML(evidenceSummary(chosen)) + '</p>';
+      html += '<p>At your ' + decisionOptions().tasks + ' tasks/month: $' + estimate.monthly.toFixed(2) + '/month, $' + estimate.perTask.toFixed(3) + '/task. API estimate: $' + estimate.apiMonthly.toFixed(2) + '. Break-even: about ' + estimate.breakEven + ' tasks/month.</p>';
+      if (!estimate.fits) html += '<p>Requested workload exceeds this route’s estimated monthly capacity. Extra usage is not priced.</p>';
+      html += '<p>' + escapeHTML(plan.method) + '</p>';
+      var access = (plan.model_access || {})[m.id];
+      html += '<p>Model access: ' + (access ? escapeHTML(access.status + " in source dated " + access.as_of) : 'unverified; confirm model and reasoning-level access before purchasing') + '.</p>';
+      html += '<p><a href="' + escapeHTML(plan.plan_url) + '">Check ' + escapeHTML(plan.name) + ' availability and pricing</a></p>';
     }
     if (m.effort_variants && m.effort_variants.length) {
       html += '<h3 style="margin-top:24px;">Reasoning effort</h3>';
@@ -1396,7 +1414,7 @@
       html += '</tbody></table>';
     }
     html += '<h3 style="margin-top:24px;">Evidence</h3><ul class="evidence-list">';
-    (m.evidence || []).forEach(function(id){
+    (m.evidence || []).concat(chosen ? planById[chosen.plan_id].sources : []).filter(function(id, i, ids){ return ids.indexOf(id) === i; }).forEach(function(id){
       html += '<li>' + renderSourceRef(id) + '</li>';
     });
     html += '</ul>';
@@ -1435,7 +1453,7 @@
     var rows = [];
     MODELS.forEach(function(m){
       var pairs = (DERIVED.pairs || []).filter(function(p){
-        return p.model_id === m.id && state.selectedPlans.indexOf(p.plan_id) !== -1;
+        return p.model_id === m.id && eligiblePair(p);
       });
       if (!pairs.length) return;
       var best = pairs.reduce(function(a,b){ return b.cost_per_task_usd < a.cost_per_task_usd ? b : a; });
@@ -1468,8 +1486,8 @@
         '<td data-label="Score">' + r.score_pct + "%</td>" +
         '<td data-label="API list">$' + r.api_cost_per_task_usd.toFixed(3) + "</td>" +
         '<td data-label="Plan">' + r.plan_name + "</td>" +
-        '<td data-label="Plan cost / task"><span class="confidence-dot ' + confidenceClass(r) + '"></span>$' + r.cost_per_task_usd.toFixed(4) + "</td>" +
-        '<td data-label="Days for full run">' + (r.days_for_full_run || "n/a") + "</td>" +
+        '<td data-label="At full use / task"><span class="confidence-dot ' + confidenceClass(r) + '"></span>$' + r.cost_per_task_usd.toFixed(4) + "</td>" +
+        '<td data-label="Quota-equivalent days">' + (r.quota_equivalent_days || "n/a") + "</td>" +
         "</tr>";
     }).join("");
     Array.prototype.forEach.call(body.querySelectorAll("tr[data-model]"), function(tr){
@@ -1543,15 +1561,15 @@
   // ---------- runtime chart ----------
   function renderRuntime(){
     var svgR = document.getElementById("runtime-svg");
-    var rows = routesForTable().filter(function(r){ return r.days_for_full_run; })
-      .sort(function(a,b){ return a.days_for_full_run - b.days_for_full_run; });
+    var rows = routesForTable().filter(function(r){ return r.quota_equivalent_days; })
+      .sort(function(a,b){ return a.quota_equivalent_days - b.quota_equivalent_days; });
     var rowH = 28;
     svgR.setAttribute("viewBox", "0 0 1040 " + Math.max(40, rows.length * rowH + 20));
     if (!rows.length) {
       svgR.innerHTML = '<text class="empty-state" x="480" y="24" text-anchor="middle">No runtime data yet.</text>';
       return;
     }
-    var maxDays = Math.max.apply(null, rows.map(function(r){ return r.days_for_full_run; }));
+    var maxDays = Math.max.apply(null, rows.map(function(r){ return r.quota_equivalent_days; }));
     var scaleMax = Math.max(maxDays, 90);
     var caps = [1, 7, 30, 90];
     var LABEL_COL = 300, BAR_W = 620;
@@ -1562,13 +1580,13 @@
     });
     rows.forEach(function(r, i){
       var y = i * rowH + 14;
-      var w = Math.max(2, (Math.log10(Math.max(r.days_for_full_run,0.1)) / Math.log10(scaleMax)) * BAR_W);
-      var color = r.days_for_full_run <= 7 ? "var(--measured)" : (r.days_for_full_run <= 30 ? "var(--adj)" : "#B5533D");
+      var w = Math.max(2, (Math.log10(Math.max(r.quota_equivalent_days,0.1)) / Math.log10(scaleMax)) * BAR_W);
+      var color = r.quota_equivalent_days <= 7 ? "var(--measured)" : (r.quota_equivalent_days <= 30 ? "var(--adj)" : "#B5533D");
       html += '<g class="runtime-row" data-model="' + r.model_id + '" tabindex="0" style="--i:' + i + '">';
       html += '<text class="axis-label" x="0" y="' + (y+4) + '">' + r.model_name + " · " + r.plan_name + '</text>';
       html += '<rect class="runtime-bar" x="' + LABEL_COL + '" y="' + (y-7) + '" width="' + w + '" height="14" rx="7" fill="' + color + '"><title>' +
-        r.model_name + ' on ' + r.plan_name + ': ' + r.days_for_full_run + ' days for all tasks, $' + r.cost_per_task_usd.toFixed(4) + '/task</title></rect>';
-      html += '<text class="axis-label runtime-val" x="' + (LABEL_COL + 6 + w) + '" y="' + (y+4) + '">' + r.days_for_full_run + 'd</text>';
+        r.model_name + ' on ' + r.plan_name + ': ' + r.quota_equivalent_days + ' days for all tasks, $' + r.cost_per_task_usd.toFixed(4) + '/task</title></rect>';
+      html += '<text class="axis-label runtime-val" x="' + (LABEL_COL + 6 + w) + '" y="' + (y+4) + '">' + r.quota_equivalent_days + 'd</text>';
       html += '</g>';
     });
     svgR.innerHTML = html;
@@ -1606,7 +1624,7 @@
       cards.push({
         kind: "Credit quota", plan: credits.name,
         eq: "credits_per_task =\n  (input_tokens + output_tokens × weight) / 10,000",
-        given: "weight", value: "unresolved, see known_gaps"
+        given: "weight", value: "unresolved; see missing evidence below"
       });
     }
     wrap.textContent = "";
@@ -1748,6 +1766,7 @@
   renderMethodCards();
   renderCrossCheck();
   renderSources();
+  document.getElementById("known-gaps").innerHTML = (DERIVED.known_gaps || []).map(function(g){ return '<li><strong>' + escapeHTML(g.plan) + '</strong>: ' + escapeHTML(g.reason) + '</li>'; }).join("");
   if (state.selectedModel) openRail(state.selectedModel, false);
 
   // ---------- scroll reveals ----------
