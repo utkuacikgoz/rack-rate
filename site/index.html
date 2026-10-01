@@ -140,7 +140,9 @@
   }
   .wordmark:hover::after, .wordmark:focus-visible::after{ opacity:1; transform:translateY(0); }
   .wordmark:focus-visible{ outline:2px solid var(--adj); outline-offset:3px; }
-  .lede-payoff{ font-size:1.2rem; color:var(--ink); max-width:56ch; }
+  .lede-payoff{ font-size:1.2rem; color:var(--ink-dim); max-width:56ch; }
+  .lede-payoff strong{ color:var(--ink); }
+  .h1-mult{ color:var(--adj); white-space:nowrap; }
   .hero-figs{ display:flex; gap:36px; flex-wrap:wrap; margin-top:28px; }
   .hero-fig{ min-width:140px; }
   .hero-fig .value{ font-family:"JetBrains Mono",monospace; font-size:1.6rem; color:var(--adj); font-weight:500; }
@@ -290,6 +292,11 @@
   .card{ --mx:50%; --my:50%; background:radial-gradient(280px circle at var(--mx) var(--my), rgba(255,176,32,calc(.085 * var(--spot))), transparent 70%), var(--panel); border:1px solid var(--rule); border-radius:12px; padding:20px; min-width:0; overflow-wrap:anywhere; transition:border-color .2s ease, transform .35s var(--out-expo), box-shadow .3s ease, --spot .35s ease; }
   .card:hover{ --spot:1; border-color:#2A3850; transform:translateY(-3px); box-shadow:0 16px 32px -18px rgba(0,0,0,.6); }
   .card a{ overflow-wrap:anywhere; word-break:break-word; }
+  .card-kicker{ font-family:"JetBrains Mono",monospace; font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; color:var(--adj); margin-bottom:6px; }
+  .formula{ font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.8rem; line-height:1.6; color:var(--ink); white-space:pre-wrap; overflow-wrap:anywhere; background:var(--sunk); border:1px solid var(--rule); border-radius:8px; padding:14px 16px; }
+  .formula-given{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-top:12px; padding:0 2px; font-family:"JetBrains Mono",monospace; font-size:.8rem; color:var(--ink-faint); }
+  .formula-given b{ color:var(--adj); font-weight:600; text-align:right; }
+  .lede code{ color:var(--adj); background:var(--sunk); border:1px solid var(--rule); border-radius:6px; padding:3px 9px; font-size:.85rem; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
   .license-badge{ display:inline-block; font-family:"JetBrains Mono",monospace; font-size:.8rem; padding:3px 8px; border-radius:5px; background:var(--sunk); border:1px solid var(--rule); color:var(--ink-faint); }
   .license-badge.open{ color:var(--measured); border-color:var(--measured); }
 
@@ -415,15 +422,15 @@
   <div class="measure hero-grid">
     <div class="hero-copy">
       <div class="wordmark" tabindex="0" aria-label="A hotel's rack rate is the full price on the back of the door. Nobody pays it — everyone gets a discount, a corporate rate, a loyalty rate." data-tooltip="A hotel's rack rate is the full price on the back of the door. Nobody pays it — everyone gets a discount, a corporate rate, a loyalty rate.">Rack Rate</div>
-      <h1>API list pricing is the rack rate.<br>Nobody pays it.</h1>
-      <p class="lede lede-payoff">See what the model you'd actually pick costs on the plan you'd actually buy, not the number vendors publish.</p>
+      <h1>Coding AI costs <span class="h1-mult" id="h1-mult">far</span> less than its sticker price.</h1>
+      <p class="lede lede-payoff"><strong>Sticker price:</strong> what the API charges per task. <strong>Real price:</strong> what you pay on a monthly plan. Same models, same benchmark scores.</p>
       <div class="hero-figs" id="hero-figs"></div>
-      <p class="hero-cite">Scored by <a href="https://deepswe.datacurve.ai/">DeepSWE</a>, a public coding benchmark. Every number cited.</p>
+      <p class="hero-cite">A task is one of <a href="https://deepswe.datacurve.ai/">DeepSWE</a>’s 113 real coding challenges. Every number cited.</p>
     </div>
     <div class="hero-tool">
       <div class="budget-tool">
-        <div class="budget-tool-kicker">Try it</div>
-        <label for="budget-input">What does <span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="999" step="1" maxlength="3" inputmode="numeric"></span> a month get you?</label>
+        <div class="budget-tool-kicker">Best model for your budget</div>
+        <label for="budget-input">Got <span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="999" step="1" maxlength="3" inputmode="numeric"></span> a month?</label>
         <div class="budget-slider"><input type="range" id="budget-range" min="0" max="1000" step="1" value="258" aria-label="Monthly budget in dollars"><div class="budget-ticks" id="budget-ticks" aria-hidden="true"></div></div>
         <div class="budget-result" id="budget-result" aria-live="polite"></div>
       </div>
@@ -658,14 +665,16 @@
         return br > ar ? b : a;
       });
       var mult = biggest.api_cost_per_task_usd / biggest.cost_per_task_usd;
+      var h1m = document.getElementById("h1-mult");
+      if (h1m) h1m.textContent = "up to " + Math.round(mult) + "x";
       figs.push({
-        label: "than API list price — " + biggest.model_name + " on " + biggest.plan_name,
-        to: Math.round(mult), decimals: 0, prefix: "", suffix: "x cheaper",
+        label: "per task than the API sticker price: " + biggest.model_name + " on " + biggest.plan_name,
+        to: Math.round(mult), decimals: 0, prefix: "", suffix: "x less",
       });
       var cheapest = routes.reduce(function(a,b){ return b.cost_per_task_usd < a.cost_per_task_usd ? b : a; });
       figs.push({
-        label: "cheapest subscription route — " + cheapest.model_name + " on " + cheapest.plan_name,
-        to: cheapest.cost_per_task_usd, decimals: 3, prefix: "$", suffix: "/task",
+        label: "cheapest of any model and plan: " + cheapest.model_name + " on " + cheapest.plan_name,
+        to: cheapest.cost_per_task_usd, decimals: 3, prefix: "$", suffix: " per task",
       });
     }
     el.innerHTML = figs.map(function(f){
@@ -720,11 +729,10 @@
       });
       key = best.model_id + "|" + best.plan_id;
       if (key === lastPick) return;
-      wrap.appendChild(document.createTextNode("Best pick: "));
       wrap.appendChild(pickLink(best.model_id, best.model_name));
-      wrap.appendChild(document.createTextNode(" (" + best.score_pct + "%) on "));
+      wrap.appendChild(document.createTextNode(" scores " + best.score_pct + "% on "));
       wrap.appendChild(strong(best.plan_name));
-      wrap.appendChild(document.createTextNode(" — $" + best.price_usd_month + "/mo, $" + best.cost_per_task_usd.toFixed(4) + "/task."));
+      wrap.appendChild(document.createTextNode(". $" + best.price_usd_month + "/mo, $" + best.cost_per_task_usd.toFixed(4) + " per task."));
     }
     var first = lastPick === null;
     lastPick = key;
@@ -1579,25 +1587,58 @@
     var cards = [];
     if (budget) {
       cards.push({
-        title: "Budget quota &middot; " + budget.name,
-        body: "tasks_per_month = quota_usd_month / DeepSWE cost per task\n\nquota_usd_month = $" + budget.quota_usd_month
+        kind: "Budget quota", plan: budget.name,
+        eq: "tasks_per_month =\n  quota_usd_month / DeepSWE cost per task",
+        given: "quota_usd_month", value: "$" + budget.quota_usd_month
       });
     }
     if (requests) {
       cards.push({
-        title: "Request quota &middot; " + requests.name,
-        body: "tasks_per_month = requests_month / agent_steps_per_task\n\nrequests_month = " + requests.requests_month
+        kind: "Request quota", plan: requests.name,
+        eq: "tasks_per_month =\n  requests_month / agent_steps_per_task",
+        given: "requests_month", value: String(requests.requests_month)
       });
     }
     if (credits) {
       cards.push({
-        title: "Credit quota &middot; " + credits.name,
-        body: "credits_per_task = (input_tokens + output_tokens × weight) / 10,000\n\nweight is unresolved for this plan; see known_gaps"
+        kind: "Credit quota", plan: credits.name,
+        eq: "credits_per_task =\n  (input_tokens + output_tokens × weight) / 10,000",
+        given: "weight", value: "unresolved, see known_gaps"
       });
     }
-    wrap.innerHTML = cards.map(function(c){
-      return '<div class="card"><h3>' + c.title + '</h3><div class="formula">' + c.body + '</div></div>';
-    }).join("") || '<div class="card">No plans priced yet.</div>';
+    wrap.textContent = "";
+    if (!cards.length) {
+      var empty = document.createElement("div");
+      empty.className = "card";
+      empty.textContent = "No plans priced yet.";
+      wrap.appendChild(empty);
+      return;
+    }
+    cards.forEach(function(c){
+      var card = document.createElement("div");
+      card.className = "card";
+      var kind = document.createElement("div");
+      kind.className = "card-kicker";
+      kind.textContent = c.kind;
+      var h = document.createElement("h3");
+      h.textContent = c.plan;
+      var eq = document.createElement("div");
+      eq.className = "formula";
+      eq.textContent = c.eq;
+      var given = document.createElement("div");
+      given.className = "formula-given";
+      var k = document.createElement("span");
+      k.textContent = c.given;
+      var v = document.createElement("b");
+      v.textContent = c.value;
+      given.appendChild(k);
+      given.appendChild(v);
+      card.appendChild(kind);
+      card.appendChild(h);
+      card.appendChild(eq);
+      card.appendChild(given);
+      wrap.appendChild(card);
+    });
   }
 
   // ---------- cross check ----------
