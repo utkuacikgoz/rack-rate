@@ -307,7 +307,7 @@
       <h1>API list pricing is the rack rate.<br>Nobody pays it.</h1>
       <p class="lede lede-payoff">See what the model you'd actually pick costs on the plan you'd actually buy, not the number vendors publish.</p>
       <div class="hero-figs" id="hero-figs"></div>
-      <p class="hero-cite">Scored by <a href="https://deepswe.datacurve.ai/">DeepSWE</a>, a public coding benchmark. <span id="hero-meta"></span></p>
+      <p class="hero-cite">Scored by <a href="https://deepswe.datacurve.ai/">DeepSWE</a>, a public coding benchmark. Every number cited.</p>
     </div>
     <div class="hero-tool">
       <div class="budget-tool">
@@ -497,7 +497,6 @@
   (function renderHero(){
     var el = document.getElementById("hero-figs");
     var routes = DERIVED.best_routes || [];
-    var pairCount = (DERIVED.pairs || []).length;
     var figs = [];
     if (routes.length) {
       var biggest = routes.reduce(function(a, b){
@@ -519,8 +518,6 @@
     el.innerHTML = figs.map(function(f){
       return '<div class="hero-fig"><div class="value">' + f.value + '</div><div class="label">' + f.label + '</div></div>';
     }).join("");
-    document.getElementById("hero-meta").textContent =
-      MODELS.length + " models, " + PLANS.length + " plans, " + pairCount + " pairs priced, every number cited.";
   })();
 
   // ---------- budget tool ----------
