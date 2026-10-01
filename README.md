@@ -19,9 +19,9 @@ Rack Rate combines a DeepSWE benchmark snapshot with cited subscription quotas. 
 
 `model_scope` contains explicit candidate model IDs; it does **not** establish access. New benchmark models do not silently join every aggregator plan. `model_access` records source-observed or source-listed model access with its citation and date. Access is unverified otherwise.
 
-By default, the site excludes unverified model access, low-confidence plan estimates, and China-only plans. Users can explicitly include exploratory estimates and China-only plans. Other regional restrictions still require checking the vendor. Historical evidence is not a guarantee of present-day availability or support for a particular reasoning setting.
+By default, the site includes all modeled combinations, including unverified model access, low-confidence plan estimates, and China-only plans. Users can narrow the comparison with evidence and region filters. Other regional restrictions still require checking the vendor. Historical evidence is not a guarantee of present-day availability or support for a particular reasoning setting.
 
-Only three model-plan combinations in the current snapshot have observed or source-listed access evidence. Other calculated combinations remain available for explicitly enabled exploration. The access catalog needs further primary-source verification; missing evidence is not replaced with a guessed catalog.
+Only three model-plan combinations in the current snapshot have observed or source-listed access evidence. Other calculated combinations are included with their evidence labels. The access catalog needs further primary-source verification; missing evidence is not replaced with a guessed catalog.
 
 Quota evidence and conversion confidence are separate. A quota measured on one model is downgraded when applied to another. Higher-tier multipliers and API-equivalent conversion assumptions remain estimates. The cross-check compares two conversions of shared data; its unresolved disagreement is not independent validation.
 
