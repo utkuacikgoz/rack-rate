@@ -19,15 +19,15 @@ WIDTH, HEIGHT = 1200, 630
 
 # Same palette as site/template.html. Keep these two in sync by hand; the
 # card is rendered by a script with no access to the page's CSS.
-BG = "#0A0E15"
-PANEL = "#111825"
-INK = "#EAEEF5"
-INK_DIM = "#A3B0C4"
-INK_FAINT = "#67768D"
-ADJ = "#FFB020"
-MEASURED = "#45D97F"
-API = "#5C6A80"
-RULE = "#1D2735"
+BG = "#121310"
+PANEL = "#1b1d18"
+INK = "#f2efe6"
+INK_DIM = "#b8bbae"
+INK_FAINT = "#999e8e"
+ADJ = "#eeb94e"
+MEASURED = "#aecf99"
+API = "#929b88"
+RULE = "#36392f"
 
 FONT_CANDIDATES = [
     "/System/Library/Fonts/Helvetica.ttc",
@@ -55,47 +55,40 @@ def load_font(candidates, size):
 
 def main():
     derived = json.loads((DATA / "derived.json").read_text())
-    routes = derived.get("best_routes", [])
-    if not routes:
-        raise SystemExit("make_og.py: derived.json has no best_routes, run compute.py first")
-
-    cheapest = min(routes, key=lambda r: r["cost_per_task_usd"])
-    top_scorer = max(routes, key=lambda r: r["score_pct"])
-
     img = Image.new("RGB", (WIDTH, HEIGHT), BG)
     draw = ImageDraw.Draw(img)
+    headline = load_font(FONT_CANDIDATES, 78)
+    brand = load_font(FONT_BOLD_CANDIDATES, 26)
+    body = load_font(FONT_CANDIDATES, 25)
+    small = load_font(FONT_CANDIDATES, 18)
+    number = load_font(FONT_CANDIDATES, 43)
+    mono = load_font(MONO_CANDIDATES, 13)
 
-    h1 = load_font(FONT_BOLD_CANDIDATES, 64)
-    h2 = load_font(FONT_CANDIDATES, 28)
-    mono = load_font(MONO_CANDIDATES, 30)
-    small = load_font(FONT_CANDIDATES, 22)
+    margin = 64
+    draw.rectangle((64, 40, 96, 72), outline=ADJ, width=1)
+    draw.line([(71, 49), (83, 49), (90, 56), (83, 63), (71, 63), (71, 49)], fill=ADJ, width=2)
+    draw.ellipse((74, 54, 77, 57), fill=ADJ)
+    draw.text((110, 40), "Rack Rate.", font=brand, fill=INK)
+    draw.text((870, 49), "THE AI CODING COST INDEX", font=mono, fill=INK_DIM)
+    draw.line([(margin, 99), (WIDTH - margin, 99)], fill=RULE)
 
-    margin = 80
-    draw.text((margin, 70), "Rack Rate", font=h1, fill=INK)
-    draw.text(
-        (margin, 150),
-        "Compare AI coding costs for your workload.",
-        font=h2,
-        fill=INK_DIM,
-    )
+    for y, line, color in [(145, "Stop paying", INK), (224, "sticker price", ADJ), (303, "for AI coding.", INK)]:
+        draw.text((margin, y), line, font=headline, fill=color)
+    draw.text((margin, 425), "Compare API costs and coding plans", font=body, fill=INK_DIM)
+    draw.text((margin, 460), "for the work you actually do.", font=body, fill=INK)
 
-    draw.line([(margin, 220), (WIDTH - margin, 220)], fill=RULE, width=1)
+    draw.line([(810, 147), (810, 494)], fill=RULE)
+    for y, value, label in [
+        (147, derived["generated_from"]["models"], "benchmark models"),
+        (260, derived["generated_from"]["plans"], "coding plans"),
+        (373, derived["generated_from"]["task_count"], "coding tasks"),
+    ]:
+        draw.text((858, y), str(value), font=number, fill=ADJ)
+        draw.text((858, y + 53), label, font=small, fill=INK_DIM)
 
-    def stat_block(y, label, model, value, value_color):
-        draw.text((margin, y), label, font=small, fill=INK_FAINT)
-        draw.text((margin, y + 35), model, font=h2, fill=INK)
-        draw.text((margin, y + 85), value, font=mono, fill=value_color)
-
-    stat_block(
-        260, "BENCHMARK COVERAGE", "113 coding tasks",
-        f"{derived['generated_from']['models']} models; costs are estimates", ADJ,
-    )
-    stat_block(
-        410, "YOUR WORKLOAD", "API spending or a monthly plan?",
-        "Compare usage, capacity and evidence", MEASURED,
-    )
-
-    draw.text((margin, HEIGHT - 45), SITE_URL, font=h2, fill=API)
+    draw.line([(margin, 543), (WIDTH - margin, 543)], fill=RULE)
+    draw.text((margin, 568), "Open data. Traceable estimates.", font=small, fill=INK_DIM)
+    draw.text((830, 568), SITE_URL, font=small, fill=INK_DIM)
 
     out_path = SITE / "og.png"
     img.save(out_path)
