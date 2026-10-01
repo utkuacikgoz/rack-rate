@@ -6,7 +6,7 @@ Plan pricing moves faster than one person can track. That is why this is a repo 
 
 1. **A measured month on a tier nobody has measured.** Claude Pro and ChatGPT Plus have real numbers. Max 5x, Max 20x, Pro 5x and Pro 20x scale off them by the multiplier the vendor advertises. One measured Max month replaces four rows of arithmetic. If you have run a tool that reports what your month would have cost at API rates, that number is worth more than everything derived here.
 2. **Anything at all for Google.** AI Pro and AI Ultra are metered in credits with no published conversion. Those rows are placeholders. They are the weakest numbers on the page and they are marked as such.
-3. **Z.ai's real credit multipliers.** The GLM plans use Z.ai's published formula but assume the output weight equals the ratio of its output and input API rates. If the real weights appear in the docs, they drop straight into `plans.json`.
+3. **Z.ai's real credit multipliers.** The domestic GLM rows use measured request counts. International credit conversion remains unresolved; do not infer a credit weight from API prices without evidence.
 4. **Cursor's included pool per tier.** Pro is roughly its sticker price. Pro+ and Ultra are scaled from it, which is a guess.
 5. **An explanation for the 1.6x cross-check gap.** Two methods disagree by a stable factor. Cache pricing is the leading suspect. Proving or killing that would tighten every budget row on the page.
 6. **Missing plans.** `known_gaps` in `plans.json` lists what exists and is not priced yet, with the reason each one is missing.
@@ -48,10 +48,16 @@ unless you ask otherwise.
 ## What does not belong here
 
 - Annual or promotional pricing. One billing basis keeps the comparison readable.
-- Regional pricing. Worth doing, but as its own axis, not by quietly changing the base numbers.
+- Unlabeled regional pricing. Set `region: china` for domestic China-only plans; keep eligibility explicit.
 - Benchmark task content. See the note in SOURCES.md.
 - Affiliate links.
 
 ## Upstream changes
 
 `python scripts/fetch_deepswe.py --diff` prints what moved on the leaderboard without writing anything. If the endpoint list in that file has gone stale, fixing it is a welcome PR on its own.
+
+## Model access and confidence
+
+Use explicit candidate model IDs in `model_scope`. Add a `model_access` entry only when a cited source observes or lists that exact model on that exact plan. Each entry needs `status` (`observed` or `listed`), `source`, and ISO `as_of` date. Leave unsupported combinations unverified; the site excludes them by default. Record `region` and the vendor `plan_url`. Never promote a measured quota on one model to a measured result on another.
+
+Run Python and Node tests from README before proposing changes. `quota_equivalent_days` replaces the misleading `days_for_full_run` field in derived exports. It is a steady-state quota measure, not a runtime prediction.
