@@ -94,8 +94,9 @@
   h2{ font-size:1.7rem; letter-spacing:-.02em; }
   h3{ font-size:1.15rem; letter-spacing:-.01em; }
   p{ margin:0 0 1em; }
-  a{ color:var(--adj); text-decoration-color:rgba(255,176,32,.4); }
+  a{ color:var(--adj); text-decoration-color:rgba(255,176,32,.4); transition:text-decoration-color .15s ease; }
   a:hover{ text-decoration-color:var(--adj); }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--adj); outline-offset:2px; border-radius:2px; }
   code, .mono{ font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
   .tab-figs, table, .hero-figs, .rail-figs, .formula, code, .chart, figcaption .value{
     font-variant-numeric: tabular-nums;
@@ -227,7 +228,12 @@
   .plan-chip[aria-pressed="true"]{ border-color:var(--adj); color:var(--adj); }
   details.plan-picker summary{ cursor:pointer; color:var(--ink-dim); font-family:"JetBrains Mono",monospace; font-size:.85rem; }
 
-  aside.rail{ position:fixed; top:0; right:0; height:100%; width:min(420px,92vw); background:var(--panel); border-left:1px solid var(--rule); padding:28px; overflow-y:auto; transform:translateX(100%); transition:transform var(--dur-rail) var(--ease); z-index:20; }
+  .rail-backdrop{
+    position:fixed; inset:0; background:rgba(5,7,11,.6); z-index:19;
+    opacity:0; pointer-events:none; transition:opacity var(--dur-rail) var(--ease);
+  }
+  .rail-backdrop.show{ opacity:1; pointer-events:auto; }
+  aside.rail{ position:fixed; top:0; right:0; height:100%; width:min(420px,92vw); background:var(--panel); border-left:1px solid var(--rule); padding:28px; overflow-y:auto; transform:translateX(100%); box-shadow:-24px 0 48px -24px rgba(0,0,0,.5); transition:transform var(--dur-rail) var(--ease); z-index:20; }
   aside.rail.open{ transform:translateX(0); }
   aside.rail .close{ background:none; border:0; color:var(--ink-faint); font-size:1.4rem; cursor:pointer; position:absolute; top:20px; right:20px; }
   .rail-figs{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:20px 0; }
@@ -242,14 +248,18 @@
   .rail-effort-table tr.active td{ color:var(--adj); }
 
   table.routes{ width:100%; border-collapse:collapse; font-size:.85rem; }
-  table.routes th{ text-align:left; color:var(--ink-faint); font-weight:500; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; padding:10px 12px; border-bottom:1px solid var(--rule); cursor:pointer; user-select:none; white-space:nowrap; }
+  table.routes th{ text-align:left; color:var(--ink-faint); font-weight:500; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; padding:10px 12px; border-bottom:1px solid var(--rule); cursor:pointer; user-select:none; white-space:nowrap; transition:color .15s ease; }
   table.routes th[data-key]:hover{ color:var(--ink); }
+  table.routes th[data-key]:focus-visible{ color:var(--ink); outline:2px solid var(--adj); outline-offset:-2px; border-radius:3px; }
   table.routes th[data-key]::after{ content:"\2195"; display:inline-block; margin-left:5px; opacity:.35; font-weight:400; }
   table.routes th[aria-sort]::after{ opacity:1; color:var(--adj); }
   table.routes th[aria-sort="ascending"]::after{ content:"\2191"; }
   table.routes th[aria-sort="descending"]::after{ content:"\2193"; }
-  table.routes td{ padding:9px 12px; border-bottom:1px solid var(--rule-soft); }
+  table.routes td{ padding:9px 12px; border-bottom:1px solid var(--rule-soft); transition:background .12s ease; }
+  table.routes tr{ cursor:pointer; }
   table.routes tr:hover td{ background:var(--sunk); }
+  table.routes tr:focus-visible td{ background:var(--sunk); }
+  table.routes tr:focus-visible{ outline:2px solid var(--adj); outline-offset:-2px; }
   .confidence-dot{ display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; }
   .confidence-dot.measured{ background:var(--measured); }
   .confidence-dot.published{ background:var(--adj); }
@@ -266,7 +276,8 @@
 
   .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:20px; }
   @media (max-width:620px){ .cards{ grid-template-columns:1fr; } }
-  .card{ background:var(--panel); border:1px solid var(--rule); border-radius:12px; padding:20px; min-width:0; overflow-wrap:anywhere; }
+  .card{ background:var(--panel); border:1px solid var(--rule); border-radius:12px; padding:20px; min-width:0; overflow-wrap:anywhere; transition:border-color .2s ease, transform .2s ease, box-shadow .2s ease; }
+  .card:hover{ border-color:#2A3850; transform:translateY(-2px); box-shadow:0 12px 28px -16px rgba(0,0,0,.5); }
   .card a{ overflow-wrap:anywhere; word-break:break-word; }
   .license-badge{ display:inline-block; font-family:"JetBrains Mono",monospace; font-size:.8rem; padding:3px 8px; border-radius:5px; background:var(--sunk); border:1px solid var(--rule); color:var(--ink-faint); }
   .license-badge.open{ color:var(--measured); border-color:var(--measured); }
@@ -377,12 +388,12 @@
       <table class="routes" id="routes-table">
         <thead>
           <tr>
-            <th data-key="model_name">Model</th>
-            <th data-key="score_pct">Score</th>
-            <th data-key="api_cost_per_task_usd">API list</th>
-            <th data-key="plan_name">Plan</th>
-            <th data-key="cost_per_task_usd">Plan cost / task</th>
-            <th data-key="days_for_full_run">Days for full run</th>
+            <th data-key="model_name" tabindex="0" role="button">Model</th>
+            <th data-key="score_pct" tabindex="0" role="button">Score</th>
+            <th data-key="api_cost_per_task_usd" tabindex="0" role="button">API list</th>
+            <th data-key="plan_name" tabindex="0" role="button">Plan</th>
+            <th data-key="cost_per_task_usd" tabindex="0" role="button">Plan cost / task</th>
+            <th data-key="days_for_full_run" tabindex="0" role="button">Days for full run</th>
           </tr>
         </thead>
         <tbody id="routes-body"></tbody>
@@ -431,6 +442,7 @@
   </div>
 </footer>
 
+<div class="rail-backdrop" id="rail-backdrop"></div>
 <aside class="rail" id="rail" aria-hidden="true" inert>
   <button class="close" id="rail-close" aria-label="Close">&times;</button>
   <div id="rail-content"></div>
@@ -872,11 +884,17 @@
 
   // ---------- provenance rail ----------
   var rail = document.getElementById("rail");
+  var railBackdrop = document.getElementById("rail-backdrop");
   document.getElementById("rail-close").addEventListener("click", closeRail);
+  railBackdrop.addEventListener("click", closeRail);
+  document.addEventListener("keydown", function(e){
+    if (e.key === "Escape" && rail.classList.contains("open")) closeRail();
+  });
   function closeRail(){
     rail.classList.remove("open");
     rail.setAttribute("aria-hidden", "true");
     rail.setAttribute("inert", "");
+    railBackdrop.classList.remove("show");
     state.selectedModel = null;
     writeURL();
   }
@@ -924,6 +942,7 @@
     rail.classList.add("open");
     rail.setAttribute("aria-hidden", "false");
     rail.removeAttribute("inert");
+    railBackdrop.classList.add("show");
   }
   var sourceById = {};
   (DATA.sources || []).forEach(function(s){ sourceById[s.id] = s; });
@@ -972,7 +991,7 @@
       return;
     }
     body.innerHTML = rows.map(function(r){
-      return "<tr data-model=\"" + r.model_id + "\">" +
+      return "<tr data-model=\"" + r.model_id + "\" tabindex=\"0\">" +
         '<td data-label="Model">' + r.model_name + "</td>" +
         '<td data-label="Score">' + r.score_pct + "%</td>" +
         '<td data-label="API list">$' + r.api_cost_per_task_usd.toFixed(3) + "</td>" +
@@ -984,7 +1003,15 @@
     Array.prototype.forEach.call(body.querySelectorAll("tr[data-model]"), function(tr){
       tr.addEventListener("mouseenter", function(){ setHot(tr.getAttribute("data-model")); });
       tr.addEventListener("mouseleave", function(){ setHot(null); });
+      tr.addEventListener("focus", function(){ setHot(tr.getAttribute("data-model")); });
+      tr.addEventListener("blur", function(){ setHot(null); });
       tr.addEventListener("click", function(){ select(tr.getAttribute("data-model")); });
+      tr.addEventListener("keydown", function(e){
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          select(tr.getAttribute("data-model"));
+        }
+      });
     });
   }
   function setTableHot(modelId){
@@ -1003,11 +1030,15 @@
     });
   }
   Array.prototype.forEach.call(document.querySelectorAll("table.routes th[data-key]"), function(th){
-    th.addEventListener("click", function(){
+    function toggleSort(){
       var key = th.getAttribute("data-key");
       if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = 1; }
       markSortIndicator();
       renderTable();
+    }
+    th.addEventListener("click", toggleSort);
+    th.addEventListener("keydown", function(e){
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleSort(); }
     });
   });
   markSortIndicator();
