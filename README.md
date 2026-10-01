@@ -1,6 +1,6 @@
 # Rack Rate
 
-**A hotel's rack rate is the price on the back of the door. Nobody pays it.**
+**A hotel's rack rate is the full price on the back of the door. Most guests pay less.**
 
 API list pricing is the same instrument. Published, high, and quietly discounted for almost everyone who walks in.
 
@@ -8,7 +8,7 @@ API list pricing is the same instrument. Published, high, and quietly discounted
 
 [DeepSWE](https://deepswe.datacurve.ai/) is a public coding benchmark: 113 original tasks, hand written verifiers, no contamination. It prices every model at API list rates.
 
-Nobody buys coding tokens at list rates. People pay $10 to $200 a month and work inside a quota.
+Most people don't buy coding tokens at list rates. People pay $10 to $200 a month and work inside a quota.
 
 This repo joins the two: same scores, real prices, every number cited.
 
@@ -26,7 +26,7 @@ Claude subscription cannot run a Kimi model, and `data/plans.json`'s
 | gemini-3.1-pro-preview | 11.73% | $1.72 | $0.575 on Ollama Pro | 3x |
 
 The cheapest route on the page, deepseek-v4-flash on Ollama Pro, is also
-mid-pack on score (53%) — the frontier here isn't as one-sided as "cheap or
+mid-pack on score (53%). The frontier here isn't as one-sided as "cheap or
 good, pick one." gemini-3.1-pro-preview shows the other end: a discounted
 route that still barely solves anything. See the chart's
 list-price-to-subscription flight for the full picture across all 28 models.
@@ -44,7 +44,7 @@ endpoint and field mapping are now confirmed against that exact data (a real
 fetch outside this build environment matched it exactly), so running it from
 an unblocked network is a plain refresh, not a fix. See `src-deepswe-data` in
 `data/sources.json`. gpt-6-astra's cost figures now reflect DeepSWE's
-disclosed *current* GA pricing, confirmed as of the 2026-09-22 snapshot — an
+disclosed *current* GA pricing, confirmed as of the 2026-09-22 snapshot. An
 earlier snapshot priced it against pre-launch estimated pricing, which was
 about 48% higher. See CONTRIBUTING.md.
 
@@ -85,7 +85,7 @@ a real cost-per-task figure to divide the quota by.
   just hasn't been re-run from a network that can reach the site.
 - **Only the best reasoning-effort configuration per model is captured.**
   DeepSWE published more configurations than that (some models were run at
-  up to five effort levels — low, medium, high, xhigh, max); this repo keeps
+  up to five effort levels: low, medium, high, xhigh, max); this repo keeps
   only the highest-scoring one per model, per CONTRIBUTING item 7.
 - **Two models ship with `provider: "Unknown"`.** muse-spark-1.1 and
   muse-spark-1.2 appear in the DeepSWE snapshot with no vendor identified
