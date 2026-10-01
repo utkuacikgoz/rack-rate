@@ -1,6 +1,6 @@
 # Rack Rate
 
-**A hotel's rack rate is the price on the back of the door. Nobody pays it.**
+**A hotel's rack rate is the full price on the back of the door. Most guests pay less.**
 
 API list pricing is the same instrument. Published, high, and quietly discounted for almost everyone who walks in.
 
@@ -8,7 +8,7 @@ API list pricing is the same instrument. Published, high, and quietly discounted
 
 [DeepSWE](https://deepswe.datacurve.ai/) is a public coding benchmark: 113 original tasks, hand written verifiers, no contamination. It prices every model at API list rates.
 
-Nobody buys coding tokens at list rates. People pay $10 to $200 a month and work inside a quota.
+Most people don't buy coding tokens at list rates. People pay $10 to $200 a month and work inside a quota.
 
 This repo joins the two: same scores, real prices, every number cited.
 

@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rack Rate: API list pricing is the rack rate. Nobody pays it.</title>
+<title>Rack Rate: Stop paying sticker price for AI coding</title>
 <meta name="description" content="DeepSWE benchmark scores joined to what coding subscriptions actually charge. Every number cited.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:title" content="Rack Rate">
-<meta property="og:description" content="API list pricing is the rack rate. Nobody pays it.">
+<meta property="og:description" content="Same models. Same scores. The API charges full price. A monthly plan costs a fraction.">
 <meta property="og:image" content="/og.png">
 <meta property="og:url" content="https://rack-rate-flax.vercel.app">
 <meta name="twitter:card" content="summary_large_image">
@@ -421,16 +421,16 @@
 <header class="site">
   <div class="measure hero-grid">
     <div class="hero-copy">
-      <div class="wordmark" tabindex="0" aria-label="A hotel's rack rate is the full price on the back of the door. Nobody pays it. Everyone gets a discount, a corporate rate, a loyalty rate." data-tooltip="A hotel's rack rate is the full price on the back of the door. Nobody pays it. Everyone gets a discount, a corporate rate, a loyalty rate.">Rack Rate</div>
-      <h1>Coding AI costs <span class="h1-mult" id="h1-mult">far</span> less than its sticker price.</h1>
-      <p class="lede lede-payoff"><strong>Sticker price:</strong> what the API charges per task. <strong>Real price:</strong> what you pay on a monthly plan. Same models, same benchmark scores.</p>
+      <div class="wordmark" tabindex="0" aria-label="A hotel's rack rate is the full price on the back of the door. Most guests pay less: a discount, a corporate rate, a loyalty rate." data-tooltip="A hotel's rack rate is the full price on the back of the door. Most guests pay less: a discount, a corporate rate, a loyalty rate.">Rack Rate</div>
+      <h1>Stop paying <span class="h1-mult">sticker price</span> for AI coding.</h1>
+      <p class="lede lede-payoff"><strong>Same models. Same scores.</strong> The API charges full price. A monthly plan costs a fraction.</p>
       <div class="hero-figs" id="hero-figs"></div>
       <p class="hero-cite">A task is one of <a href="https://deepswe.datacurve.ai/">DeepSWE</a>’s 113 real coding challenges. Every number cited.</p>
     </div>
     <div class="hero-tool">
       <div class="budget-tool">
-        <div class="budget-tool-kicker">Best model for your budget</div>
-        <label for="budget-input">Got <span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="999" step="1" maxlength="3" inputmode="numeric"></span> a month?</label>
+        <div class="budget-tool-kicker">Try your budget</div>
+        <label for="budget-input">Spend <span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="999" step="1" maxlength="3" inputmode="numeric"></span> a month. Get this:</label>
         <div class="budget-slider"><input type="range" id="budget-range" min="0" max="1000" step="1" value="258" aria-label="Monthly budget in dollars"><div class="budget-ticks" id="budget-ticks" aria-hidden="true"></div></div>
         <div class="budget-result" id="budget-result" aria-live="polite"></div>
       </div>
@@ -526,7 +526,7 @@
 <section id="runtime" style="padding:0 0 40px;">
   <div class="measure">
     <h2>How long a quota lasts</h2>
-    <p class="lede">A price per task hides the ceiling. This is the real one.</p>
+    <p class="lede">Cheap per task means nothing if the quota runs out first. Days to finish all 113 tasks, per route.</p>
     <svg class="chart" id="runtime-svg" viewBox="0 0 1040 40" width="100%" role="img" aria-label="Days to run all tasks per route"></svg>
   </div>
 </section>
@@ -665,16 +665,14 @@
         return br > ar ? b : a;
       });
       var mult = biggest.api_cost_per_task_usd / biggest.cost_per_task_usd;
-      var h1m = document.getElementById("h1-mult");
-      if (h1m) h1m.textContent = "up to " + Math.round(mult) + "x";
       figs.push({
-        label: "per task than the API sticker price: " + biggest.model_name + " on " + biggest.plan_name,
-        to: Math.round(mult), decimals: 0, prefix: "", suffix: "x less",
+        label: "than the API, per task: " + biggest.model_name + " on " + biggest.plan_name,
+        to: Math.round(mult), decimals: 0, prefix: "", suffix: "x cheaper",
       });
       var cheapest = routes.reduce(function(a,b){ return b.cost_per_task_usd < a.cost_per_task_usd ? b : a; });
       figs.push({
-        label: "cheapest of any model and plan: " + cheapest.model_name + " on " + cheapest.plan_name,
-        to: cheapest.cost_per_task_usd, decimals: 3, prefix: "$", suffix: " per task",
+        label: "the cheapest route: " + cheapest.model_name + " on " + cheapest.plan_name,
+        to: cheapest.cost_per_task_usd, decimals: 3, prefix: "$", suffix: " a task",
       });
     }
     el.innerHTML = figs.map(function(f){
@@ -719,7 +717,7 @@
       var none = document.createElement("span");
       none.className = "none";
       none.textContent = cheapestPlan
-        ? "🍌 Nothing at that budget, not even close. The cheapest plan here is " + cheapestPlan.name + ", $" + cheapestPlan.price_usd_month + "/mo."
+        ? "🍌 Not even close. The cheapest plan here is " + cheapestPlan.name + " at $" + cheapestPlan.price_usd_month + "/mo."
         : "🍌 Nothing at that budget in the currently selected plans.";
       wrap.appendChild(none);
     } else {
@@ -732,7 +730,7 @@
       wrap.appendChild(pickLink(best.model_id, best.model_name));
       wrap.appendChild(document.createTextNode(" scores " + best.score_pct + "% on "));
       wrap.appendChild(strong(best.plan_name));
-      wrap.appendChild(document.createTextNode(". $" + best.price_usd_month + "/mo, $" + best.cost_per_task_usd.toFixed(4) + " per task."));
+      wrap.appendChild(document.createTextNode(". $" + best.price_usd_month + "/mo. $" + best.cost_per_task_usd.toFixed(4) + " a task."));
     }
     var first = lastPick === null;
     lastPick = key;
