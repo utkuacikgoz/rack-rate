@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rack Rate — API list pricing is the rack rate. Nobody pays it.</title>
+<title>Rack Rate: API list pricing is the rack rate. Nobody pays it.</title>
 <meta name="description" content="DeepSWE benchmark scores joined to what coding subscriptions actually charge. Every number cited.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:title" content="Rack Rate">
@@ -421,7 +421,7 @@
 <header class="site">
   <div class="measure hero-grid">
     <div class="hero-copy">
-      <div class="wordmark" tabindex="0" aria-label="A hotel's rack rate is the full price on the back of the door. Nobody pays it — everyone gets a discount, a corporate rate, a loyalty rate." data-tooltip="A hotel's rack rate is the full price on the back of the door. Nobody pays it — everyone gets a discount, a corporate rate, a loyalty rate.">Rack Rate</div>
+      <div class="wordmark" tabindex="0" aria-label="A hotel's rack rate is the full price on the back of the door. Nobody pays it. Everyone gets a discount, a corporate rate, a loyalty rate." data-tooltip="A hotel's rack rate is the full price on the back of the door. Nobody pays it. Everyone gets a discount, a corporate rate, a loyalty rate.">Rack Rate</div>
       <h1>Coding AI costs <span class="h1-mult" id="h1-mult">far</span> less than its sticker price.</h1>
       <p class="lede lede-payoff"><strong>Sticker price:</strong> what the API charges per task. <strong>Real price:</strong> what you pay on a monthly plan. Same models, same benchmark scores.</p>
       <div class="hero-figs" id="hero-figs"></div>
@@ -719,7 +719,7 @@
       var none = document.createElement("span");
       none.className = "none";
       none.textContent = cheapestPlan
-        ? "🍌 Nothing at that budget — not even close. The cheapest plan here is " + cheapestPlan.name + ", $" + cheapestPlan.price_usd_month + "/mo."
+        ? "🍌 Nothing at that budget, not even close. The cheapest plan here is " + cheapestPlan.name + ", $" + cheapestPlan.price_usd_month + "/mo."
         : "🍌 Nothing at that budget in the currently selected plans.";
       wrap.appendChild(none);
     } else {
@@ -1384,7 +1384,7 @@
       m.effort_variants.forEach(function(v, vi){
         var active = v.score_pct === m.score_pct;
         html += '<tr' + (active ? ' class="active"' : '') + '>' +
-          '<td>' + (v.reasoning_effort || '—') + '</td>' +
+          '<td>' + (v.reasoning_effort || 'n/a') + '</td>' +
           '<td>' + v.score_pct + '% <span class="eff-bar"><i style="--w:' + v.score_pct + '%;--i:' + vi + '"></i></span></td>' +
           '<td>$' + v.api_cost_per_task_usd.toFixed(2) + '</td>' +
           '<td>' + v.agent_steps_per_task + '</td>' +
@@ -1466,7 +1466,7 @@
         '<td data-label="API list">$' + r.api_cost_per_task_usd.toFixed(3) + "</td>" +
         '<td data-label="Plan">' + r.plan_name + "</td>" +
         '<td data-label="Plan cost / task"><span class="confidence-dot ' + confidenceClass(r) + '"></span>$' + r.cost_per_task_usd.toFixed(4) + "</td>" +
-        '<td data-label="Days for full run">' + (r.days_for_full_run || "—") + "</td>" +
+        '<td data-label="Days for full run">' + (r.days_for_full_run || "n/a") + "</td>" +
         "</tr>";
     }).join("");
     Array.prototype.forEach.call(body.querySelectorAll("tr[data-model]"), function(tr){

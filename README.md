@@ -26,7 +26,7 @@ Claude subscription cannot run a Kimi model, and `data/plans.json`'s
 | gemini-3.1-pro-preview | 11.73% | $1.72 | $0.575 on Ollama Pro | 3x |
 
 The cheapest route on the page, deepseek-v4-flash on Ollama Pro, is also
-mid-pack on score (53%) — the frontier here isn't as one-sided as "cheap or
+mid-pack on score (53%). The frontier here isn't as one-sided as "cheap or
 good, pick one." gemini-3.1-pro-preview shows the other end: a discounted
 route that still barely solves anything. See the chart's
 list-price-to-subscription flight for the full picture across all 28 models.
@@ -44,7 +44,7 @@ endpoint and field mapping are now confirmed against that exact data (a real
 fetch outside this build environment matched it exactly), so running it from
 an unblocked network is a plain refresh, not a fix. See `src-deepswe-data` in
 `data/sources.json`. gpt-6-astra's cost figures now reflect DeepSWE's
-disclosed *current* GA pricing, confirmed as of the 2026-09-22 snapshot — an
+disclosed *current* GA pricing, confirmed as of the 2026-09-22 snapshot. An
 earlier snapshot priced it against pre-launch estimated pricing, which was
 about 48% higher. See CONTRIBUTING.md.
 
@@ -85,7 +85,7 @@ a real cost-per-task figure to divide the quota by.
   just hasn't been re-run from a network that can reach the site.
 - **Only the best reasoning-effort configuration per model is captured.**
   DeepSWE published more configurations than that (some models were run at
-  up to five effort levels — low, medium, high, xhigh, max); this repo keeps
+  up to five effort levels: low, medium, high, xhigh, max); this repo keeps
   only the highest-scoring one per model, per CONTRIBUTING item 7.
 - **Two models ship with `provider: "Unknown"`.** muse-spark-1.1 and
   muse-spark-1.2 appear in the DeepSWE snapshot with no vendor identified
