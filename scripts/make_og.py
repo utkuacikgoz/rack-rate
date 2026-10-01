@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 SITE = ROOT / "site"
 
-SITE_URL = "rackrate.dev"
+SITE_URL = "rack-rate-flax.vercel.app"
 
 WIDTH, HEIGHT = 1200, 630
 
@@ -71,7 +71,7 @@ def main():
     draw.text((margin, 70), "Rack Rate", font=h1, fill=INK)
     draw.text(
         (margin, 150),
-        "API list pricing is the rack rate. Nobody pays it.",
+        "Stop paying sticker price for AI coding.",
         font=h2,
         fill=INK_DIM,
     )
