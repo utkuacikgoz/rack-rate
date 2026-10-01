@@ -71,7 +71,7 @@
     :root{ --dur-reprice:0.01ms; --dur-rail:0.01ms; --dur-toggle:0.01ms; --dur-hover:0.01ms; }
   }
   *{ box-sizing:border-box; }
-  html{ background:var(--bg); }
+  html{ background:var(--bg); font-size:17.5px; }
   @media (prefers-reduced-motion: no-preference){ html{ scroll-behavior:smooth; } }
   section[id]{ scroll-margin-top:56px; }
   body{
@@ -149,7 +149,7 @@
   .hero-cite a{ color:var(--ink-faint); text-decoration-color:rgba(115,130,160,.5); }
 
   .budget-tool{ width:100%; padding:24px 26px; background:var(--panel); border:1px solid var(--rule); border-radius:14px; box-shadow:0 24px 60px -30px rgba(0,0,0,.6); }
-  .budget-tool-kicker{ font-family:"JetBrains Mono",monospace; font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--adj); margin-bottom:10px; }
+  .budget-tool-kicker{ font-family:"JetBrains Mono",monospace; font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; color:var(--adj); margin-bottom:10px; }
   .budget-tool label{ font-size:1.1rem; color:var(--ink); display:flex; align-items:center; flex-wrap:wrap; gap:2px; }
   .budget-input-wrap{
     display:inline-flex; align-items:center; gap:1px; margin:0 2px;
@@ -248,7 +248,7 @@
   .rail-effort-table tr.active td{ color:var(--adj); }
 
   table.routes{ width:100%; border-collapse:collapse; font-size:.85rem; }
-  table.routes th{ text-align:left; color:var(--ink-faint); font-weight:500; font-size:.78rem; text-transform:uppercase; letter-spacing:.04em; padding:10px 12px; border-bottom:1px solid var(--rule); cursor:pointer; user-select:none; white-space:nowrap; transition:color .15s ease; }
+  table.routes th{ text-align:left; color:var(--ink-faint); font-weight:500; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; padding:10px 12px; border-bottom:1px solid var(--rule); cursor:pointer; user-select:none; white-space:nowrap; transition:color .15s ease; }
   table.routes th[data-key]:hover{ color:var(--ink); }
   table.routes th[data-key]:focus-visible{ color:var(--ink); outline:2px solid var(--adj); outline-offset:-2px; border-radius:3px; }
   table.routes th[data-key]::after{ content:"\2195"; display:inline-block; margin-left:5px; opacity:.35; font-weight:400; }

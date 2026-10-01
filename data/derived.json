@@ -171,6 +171,21 @@
       "confidence": "medium"
     },
     {
+      "model_id": "gpt-6-astra",
+      "model_name": "gpt-6-astra",
+      "score_pct": 74.12,
+      "plan_id": "chatgpt-pro-20x",
+      "plan_name": "ChatGPT Pro 20x",
+      "provider": "OpenAI",
+      "price_usd_month": 200.0,
+      "api_cost_per_task_usd": 3.8407,
+      "tasks_per_month": 2272.92,
+      "cost_per_task_usd": 0.088,
+      "days_for_full_run": 1.49,
+      "quota_method": "budget",
+      "confidence": "medium"
+    },
+    {
       "model_id": "claude-fable-5",
       "model_name": "claude-fable-5",
       "score_pct": 69.91,
@@ -306,21 +321,6 @@
       "confidence": "measured"
     },
     {
-      "model_id": "gpt-6-astra",
-      "model_name": "gpt-6-astra",
-      "score_pct": 74.12,
-      "plan_id": "chatgpt-pro-20x",
-      "plan_name": "ChatGPT Pro 20x",
-      "provider": "OpenAI",
-      "price_usd_month": 200.0,
-      "api_cost_per_task_usd": 5.6717,
-      "tasks_per_month": 1539.15,
-      "cost_per_task_usd": 0.1299,
-      "days_for_full_run": 2.2,
-      "quota_method": "budget",
-      "confidence": "medium"
-    },
-    {
       "model_id": "glm-5.3-flash",
       "model_name": "glm-5.3-flash",
       "score_pct": 63.39,
@@ -409,6 +409,21 @@
       "days_for_full_run": 5.55,
       "quota_method": "budget",
       "confidence": "medium"
+    },
+    {
+      "model_id": "gpt-6-astra",
+      "model_name": "gpt-6-astra",
+      "score_pct": 74.12,
+      "plan_id": "chatgpt-plus",
+      "plan_name": "ChatGPT Plus",
+      "provider": "OpenAI",
+      "price_usd_month": 20.0,
+      "api_cost_per_task_usd": 3.8407,
+      "tasks_per_month": 113.65,
+      "cost_per_task_usd": 0.176,
+      "days_for_full_run": 29.83,
+      "quota_method": "budget",
+      "confidence": "measured"
     },
     {
       "model_id": "claude-fable-5",
@@ -618,21 +633,6 @@
       "cost_per_task_usd": 0.2489,
       "days_for_full_run": 116.71,
       "quota_method": "requests",
-      "confidence": "measured"
-    },
-    {
-      "model_id": "gpt-6-astra",
-      "model_name": "gpt-6-astra",
-      "score_pct": 74.12,
-      "plan_id": "chatgpt-plus",
-      "plan_name": "ChatGPT Plus",
-      "provider": "OpenAI",
-      "price_usd_month": 20.0,
-      "api_cost_per_task_usd": 5.6717,
-      "tasks_per_month": 76.96,
-      "cost_per_task_usd": 0.2599,
-      "days_for_full_run": 44.05,
-      "quota_method": "budget",
       "confidence": "measured"
     },
     {
@@ -1176,6 +1176,21 @@
       "confidence": "high"
     },
     {
+      "model_id": "gpt-6-astra",
+      "model_name": "gpt-6-astra",
+      "score_pct": 74.12,
+      "plan_id": "ollama-pro",
+      "plan_name": "Ollama Pro",
+      "provider": "Ollama",
+      "price_usd_month": 20.0,
+      "api_cost_per_task_usd": 3.8407,
+      "tasks_per_month": 15.62,
+      "cost_per_task_usd": 1.2802,
+      "days_for_full_run": 217.0,
+      "quota_method": "budget",
+      "confidence": "high"
+    },
+    {
       "model_id": "muse-spark-1.2",
       "model_name": "muse-spark-1.2",
       "score_pct": 54.87,
@@ -1506,21 +1521,6 @@
       "confidence": "low"
     },
     {
-      "model_id": "gpt-6-astra",
-      "model_name": "gpt-6-astra",
-      "score_pct": 74.12,
-      "plan_id": "ollama-pro",
-      "plan_name": "Ollama Pro",
-      "provider": "Ollama",
-      "price_usd_month": 20.0,
-      "api_cost_per_task_usd": 5.6717,
-      "tasks_per_month": 10.58,
-      "cost_per_task_usd": 1.8906,
-      "days_for_full_run": 320.45,
-      "quota_method": "budget",
-      "confidence": "high"
-    },
-    {
       "model_id": "gemini-3.5-flash",
       "model_name": "gemini-3.5-flash",
       "score_pct": 36.06,
@@ -1534,6 +1534,21 @@
       "days_for_full_run": 646.9,
       "quota_method": "budget",
       "confidence": "high"
+    },
+    {
+      "model_id": "gpt-6-astra",
+      "model_name": "gpt-6-astra",
+      "score_pct": 74.12,
+      "plan_id": "cursor-ultra",
+      "plan_name": "Cursor Ultra",
+      "provider": "Cursor",
+      "price_usd_month": 200.0,
+      "api_cost_per_task_usd": 3.8407,
+      "tasks_per_month": 104.15,
+      "cost_per_task_usd": 1.9204,
+      "days_for_full_run": 32.55,
+      "quota_method": "budget",
+      "confidence": "low"
     },
     {
       "model_id": "grok-4.6",
@@ -1821,6 +1836,21 @@
       "confidence": "low"
     },
     {
+      "model_id": "gpt-6-astra",
+      "model_name": "gpt-6-astra",
+      "score_pct": 74.12,
+      "plan_id": "github-copilot-pro",
+      "plan_name": "GitHub Copilot Pro",
+      "provider": "GitHub",
+      "price_usd_month": 10.0,
+      "api_cost_per_task_usd": 3.8407,
+      "tasks_per_month": 3.91,
+      "cost_per_task_usd": 2.5605,
+      "days_for_full_run": 868.0,
+      "quota_method": "budget",
+      "confidence": "high"
+    },
+    {
       "model_id": "muse-spark-1.2",
       "model_name": "muse-spark-1.2",
       "score_pct": 54.87,
@@ -1864,21 +1894,6 @@
       "days_for_full_run": 929.9,
       "quota_method": "budget",
       "confidence": "high"
-    },
-    {
-      "model_id": "gpt-6-astra",
-      "model_name": "gpt-6-astra",
-      "score_pct": 74.12,
-      "plan_id": "cursor-ultra",
-      "plan_name": "Cursor Ultra",
-      "provider": "Cursor",
-      "price_usd_month": 200.0,
-      "api_cost_per_task_usd": 5.6717,
-      "tasks_per_month": 70.53,
-      "cost_per_task_usd": 2.8358,
-      "days_for_full_run": 48.07,
-      "quota_method": "budget",
-      "confidence": "low"
     },
     {
       "model_id": "gemini-3.5-flash",
@@ -2184,16 +2199,31 @@
       "model_id": "gpt-6-astra",
       "model_name": "gpt-6-astra",
       "score_pct": 74.12,
-      "plan_id": "github-copilot-pro",
-      "plan_name": "GitHub Copilot Pro",
-      "provider": "GitHub",
-      "price_usd_month": 10.0,
-      "api_cost_per_task_usd": 5.6717,
-      "tasks_per_month": 2.64,
-      "cost_per_task_usd": 3.7811,
-      "days_for_full_run": 1281.8,
+      "plan_id": "cursor-pro",
+      "plan_name": "Cursor Pro",
+      "provider": "Cursor",
+      "price_usd_month": 20.0,
+      "api_cost_per_task_usd": 3.8407,
+      "tasks_per_month": 5.21,
+      "cost_per_task_usd": 3.8407,
+      "days_for_full_run": 651.0,
       "quota_method": "budget",
       "confidence": "high"
+    },
+    {
+      "model_id": "gpt-6-astra",
+      "model_name": "gpt-6-astra",
+      "score_pct": 74.12,
+      "plan_id": "cursor-pro-plus",
+      "plan_name": "Cursor Pro+",
+      "provider": "Cursor",
+      "price_usd_month": 60.0,
+      "api_cost_per_task_usd": 3.8407,
+      "tasks_per_month": 15.62,
+      "cost_per_task_usd": 3.8407,
+      "days_for_full_run": 217.0,
+      "quota_method": "budget",
+      "confidence": "low"
     },
     {
       "model_id": "gpt-5.5",
@@ -2357,36 +2387,6 @@
       "tasks_per_month": 35.27,
       "cost_per_task_usd": 5.6706,
       "days_for_full_run": 96.12,
-      "quota_method": "budget",
-      "confidence": "low"
-    },
-    {
-      "model_id": "gpt-6-astra",
-      "model_name": "gpt-6-astra",
-      "score_pct": 74.12,
-      "plan_id": "cursor-pro",
-      "plan_name": "Cursor Pro",
-      "provider": "Cursor",
-      "price_usd_month": 20.0,
-      "api_cost_per_task_usd": 5.6717,
-      "tasks_per_month": 3.53,
-      "cost_per_task_usd": 5.6717,
-      "days_for_full_run": 961.35,
-      "quota_method": "budget",
-      "confidence": "high"
-    },
-    {
-      "model_id": "gpt-6-astra",
-      "model_name": "gpt-6-astra",
-      "score_pct": 74.12,
-      "plan_id": "cursor-pro-plus",
-      "plan_name": "Cursor Pro+",
-      "provider": "Cursor",
-      "price_usd_month": 60.0,
-      "api_cost_per_task_usd": 5.6717,
-      "tasks_per_month": 10.58,
-      "cost_per_task_usd": 5.6717,
-      "days_for_full_run": 320.45,
       "quota_method": "budget",
       "confidence": "low"
     },
@@ -2768,6 +2768,21 @@
       "confidence": "medium"
     },
     {
+      "model_id": "gpt-6-astra",
+      "model_name": "gpt-6-astra",
+      "score_pct": 74.12,
+      "plan_id": "chatgpt-pro-20x",
+      "plan_name": "ChatGPT Pro 20x",
+      "provider": "OpenAI",
+      "price_usd_month": 200.0,
+      "api_cost_per_task_usd": 3.8407,
+      "tasks_per_month": 2272.92,
+      "cost_per_task_usd": 0.088,
+      "days_for_full_run": 1.49,
+      "quota_method": "budget",
+      "confidence": "medium"
+    },
+    {
       "model_id": "claude-fable-5",
       "model_name": "claude-fable-5",
       "score_pct": 69.91,
@@ -2841,21 +2856,6 @@
       "days_for_full_run": 12.98,
       "quota_method": "requests",
       "confidence": "measured"
-    },
-    {
-      "model_id": "gpt-6-astra",
-      "model_name": "gpt-6-astra",
-      "score_pct": 74.12,
-      "plan_id": "chatgpt-pro-20x",
-      "plan_name": "ChatGPT Pro 20x",
-      "provider": "OpenAI",
-      "price_usd_month": 200.0,
-      "api_cost_per_task_usd": 5.6717,
-      "tasks_per_month": 1539.15,
-      "cost_per_task_usd": 0.1299,
-      "days_for_full_run": 2.2,
-      "quota_method": "budget",
-      "confidence": "medium"
     },
     {
       "model_id": "glm-5.3-flash",
@@ -3150,9 +3150,9 @@
         "plan_name": "ChatGPT Plus",
         "model_id": "gpt-6-astra",
         "model_name": "gpt-6-astra",
-        "tasks_by_dollars": 76.96,
+        "tasks_by_dollars": 113.65,
         "tasks_by_tokens": 516.58,
-        "ratio": 6.713
+        "ratio": 4.546
       },
       {
         "plan_id": "chatgpt-plus",
@@ -3203,7 +3203,7 @@
     "summary": {
       "median_ratio": 1.601,
       "min_ratio": 1.006,
-      "max_ratio": 6.713,
+      "max_ratio": 4.546,
       "pair_count": 11
     }
   },

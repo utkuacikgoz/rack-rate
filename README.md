@@ -20,7 +20,7 @@ Claude subscription cannot run a Kimi model, and `data/plans.json`'s
 
 | Model | Score | API list | Cheapest usable plan | |
 |---|---|---|---|---|
-| gpt-6-astra | 74.12% | $5.67 | $0.130 on ChatGPT Pro 20x | 44x |
+| gpt-6-astra | 74.12% | $3.84 | $0.088 on ChatGPT Pro 20x | 44x |
 | claude-opus-5 | 73.65% | $10.43 | $0.082 on Claude Max 20x | 127x |
 | deepseek-v4-flash | 53.32% | $0.09 | $0.030 on Ollama Pro | 3x |
 | gemini-3.1-pro-preview | 11.73% | $1.72 | $0.575 on Ollama Pro | 3x |
@@ -43,9 +43,10 @@ supplied directly rather than fetched here. `scripts/fetch_deepswe.py`'s
 endpoint and field mapping are now confirmed against that exact data (a real
 fetch outside this build environment matched it exactly), so running it from
 an unblocked network is a plain refresh, not a fix. See `src-deepswe-data` in
-`data/sources.json`. gpt-6-astra's cost figures are DeepSWE's own disclosed
-*expected launch pricing*, not confirmed GA API pricing; treat them as
-provisional. See CONTRIBUTING.md.
+`data/sources.json`. gpt-6-astra's cost figures now reflect DeepSWE's
+disclosed *current* GA pricing, confirmed as of the 2026-09-22 snapshot — an
+earlier snapshot priced it against pre-launch estimated pricing, which was
+about 48% higher. See CONTRIBUTING.md.
 
 ## The method
 
@@ -86,9 +87,6 @@ a real cost-per-task figure to divide the quota by.
   DeepSWE published more configurations than that (some models were run at
   up to five effort levels — low, medium, high, xhigh, max); this repo keeps
   only the highest-scoring one per model, per CONTRIBUTING item 7.
-- **gpt-6-astra's pricing is provisional.** DeepSWE scored it against its own
-  disclosed *expected launch pricing*, not a confirmed GA rate card. Treat its
-  cost-per-task figures as a forecast, not a receipt.
 - **Two models ship with `provider: "Unknown"`.** muse-spark-1.1 and
   muse-spark-1.2 appear in the DeepSWE snapshot with no vendor identified
   anywhere in the response. Rather than guess, this repo ships them with an

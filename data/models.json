@@ -4,9 +4,9 @@
   "repo_url": "https://github.com/datacurve-ai/deep-swe",
   "license": "Apache-2.0",
   "task_count": 113,
-  "generated_at": "2026-09-03T22:24:37.984682+00:00",
+  "generated_at": "2026-09-22T06:27:15.860279+00:00",
   "harness": "mini-swe-agent",
-  "note": "One row per model: the highest-scoring reasoning-effort configuration available for it in this snapshot, per CONTRIBUTING item 7. api_cost_per_task_usd, output_tokens_per_task, input_tokens_per_task and agent_steps_per_task are medians over scored attempts, not means, to resist a few very expensive stuck runs skewing the figure. gpt-6-astra's cost figures are DeepSWE-reported *expected launch pricing* ($12/M uncached input, $15/M cache writes, $1.20/M cache reads, $50/M output, $2/M compute units), not confirmed GA API pricing \u2014 treat its cost_per_task numbers as provisional until the model ships.",
+  "note": "One row per model: the highest-scoring reasoning-effort configuration available for it in this snapshot, per CONTRIBUTING item 7. api_cost_per_task_usd, output_tokens_per_task, input_tokens_per_task and agent_steps_per_task are medians over scored attempts, not means, to resist a few very expensive stuck runs skewing the figure. gpt-6-astra's cost figures now reflect DeepSWE-reported current pricing ($10/M uncached input, $12.50/M cache writes, $1/M cache reads, $50/M output, no separate compute-unit fee), confirmed GA API pricing as of the 2026-09-22 snapshot; the prior 2026-09-03 snapshot used pre-launch estimated pricing, which was roughly 48% higher.",
   "models": [
     {
       "id": "gpt-6-astra",
@@ -15,7 +15,7 @@
       "score_pct": 74.12,
       "score_pass_at_4_pct": 80.53,
       "reasoning_effort": "xhigh",
-      "api_cost_per_task_usd": 5.6717,
+      "api_cost_per_task_usd": 3.8407,
       "output_tokens_per_task": 28542,
       "input_tokens_per_task": 1163918,
       "agent_steps_per_task": 26.0,
@@ -27,7 +27,7 @@
         {
           "reasoning_effort": "xhigh",
           "score_pct": 74.12,
-          "api_cost_per_task_usd": 5.6717,
+          "api_cost_per_task_usd": 3.8407,
           "output_tokens_per_task": 28542,
           "input_tokens_per_task": 1163918,
           "agent_steps_per_task": 26.0
@@ -35,7 +35,7 @@
         {
           "reasoning_effort": "high",
           "score_pct": 73.23,
-          "api_cost_per_task_usd": 4.9623,
+          "api_cost_per_task_usd": 3.4542,
           "output_tokens_per_task": 25414,
           "input_tokens_per_task": 995020,
           "agent_steps_per_task": 25.0
@@ -43,7 +43,7 @@
         {
           "reasoning_effort": "max",
           "score_pct": 73.23,
-          "api_cost_per_task_usd": 11.0369,
+          "api_cost_per_task_usd": 6.7126,
           "output_tokens_per_task": 58618,
           "input_tokens_per_task": 1767876,
           "agent_steps_per_task": 26.0
@@ -51,7 +51,7 @@
         {
           "reasoning_effort": "medium",
           "score_pct": 72.79,
-          "api_cost_per_task_usd": 3.7133,
+          "api_cost_per_task_usd": 2.6204,
           "output_tokens_per_task": 19006,
           "input_tokens_per_task": 779601,
           "agent_steps_per_task": 24.0
@@ -59,7 +59,7 @@
         {
           "reasoning_effort": "low",
           "score_pct": 67.04,
-          "api_cost_per_task_usd": 1.721,
+          "api_cost_per_task_usd": 1.2632,
           "output_tokens_per_task": 9488,
           "input_tokens_per_task": 310994,
           "agent_steps_per_task": 17.0
@@ -77,7 +77,7 @@
       "output_tokens_per_task": 138377,
       "input_tokens_per_task": 18026661,
       "agent_steps_per_task": 161.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ],
@@ -111,7 +111,7 @@
       "output_tokens_per_task": 113366,
       "input_tokens_per_task": 12130308,
       "agent_steps_per_task": 90.5,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ],
@@ -169,7 +169,7 @@
       "output_tokens_per_task": 58786,
       "input_tokens_per_task": 5973866,
       "agent_steps_per_task": 53.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ],
@@ -227,7 +227,7 @@
       "output_tokens_per_task": 76036,
       "input_tokens_per_task": 5337564,
       "agent_steps_per_task": 61.5,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ],
@@ -285,7 +285,7 @@
       "output_tokens_per_task": 70835,
       "input_tokens_per_task": 7288778,
       "agent_steps_per_task": 71.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ],
@@ -343,7 +343,7 @@
       "output_tokens_per_task": 74953,
       "input_tokens_per_task": 10137783,
       "agent_steps_per_task": 114.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -359,7 +359,7 @@
       "output_tokens_per_task": 75383,
       "input_tokens_per_task": 6930356,
       "agent_steps_per_task": 88.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -375,7 +375,7 @@
       "output_tokens_per_task": 48586,
       "input_tokens_per_task": 4705124,
       "agent_steps_per_task": 66.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ],
@@ -425,7 +425,7 @@
       "output_tokens_per_task": 70253,
       "input_tokens_per_task": 12278493,
       "agent_steps_per_task": 92.5,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ],
@@ -483,7 +483,7 @@
       "output_tokens_per_task": 44492,
       "input_tokens_per_task": 6648150,
       "agent_steps_per_task": 76.5,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ],
@@ -533,7 +533,7 @@
       "output_tokens_per_task": 87640,
       "input_tokens_per_task": 11116142,
       "agent_steps_per_task": 108.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ],
@@ -575,7 +575,7 @@
       "output_tokens_per_task": 67491,
       "input_tokens_per_task": 9358476,
       "agent_steps_per_task": 110.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -591,7 +591,7 @@
       "output_tokens_per_task": 101214,
       "input_tokens_per_task": 20628260,
       "agent_steps_per_task": 146.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -607,7 +607,7 @@
       "output_tokens_per_task": 129180,
       "input_tokens_per_task": 15368311,
       "agent_steps_per_task": 116.0,
-      "n_tasks_attempted": 111,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ],
@@ -665,7 +665,7 @@
       "output_tokens_per_task": 89729,
       "input_tokens_per_task": 10163801,
       "agent_steps_per_task": 102.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -681,7 +681,7 @@
       "output_tokens_per_task": 81250,
       "input_tokens_per_task": 10339991,
       "agent_steps_per_task": 94.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -697,7 +697,7 @@
       "output_tokens_per_task": 203918,
       "input_tokens_per_task": 62591138,
       "agent_steps_per_task": 260.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ],
@@ -755,7 +755,7 @@
       "output_tokens_per_task": 34250,
       "input_tokens_per_task": 3293744,
       "agent_steps_per_task": 56.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -771,7 +771,7 @@
       "output_tokens_per_task": 104492,
       "input_tokens_per_task": 17312560,
       "agent_steps_per_task": 148.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -787,7 +787,7 @@
       "output_tokens_per_task": 66088,
       "input_tokens_per_task": 8037064,
       "agent_steps_per_task": 86.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -803,7 +803,7 @@
       "output_tokens_per_task": 67234,
       "input_tokens_per_task": 6869950,
       "agent_steps_per_task": 63.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -819,7 +819,7 @@
       "output_tokens_per_task": 86727,
       "input_tokens_per_task": 8949018,
       "agent_steps_per_task": 108.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -835,7 +835,7 @@
       "output_tokens_per_task": 75760,
       "input_tokens_per_task": 11208642,
       "agent_steps_per_task": 123.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ],
@@ -869,7 +869,7 @@
       "output_tokens_per_task": 68910,
       "input_tokens_per_task": 5694082,
       "agent_steps_per_task": 97.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -885,7 +885,7 @@
       "output_tokens_per_task": 54054,
       "input_tokens_per_task": 10022682,
       "agent_steps_per_task": 139.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -901,7 +901,7 @@
       "output_tokens_per_task": 70001,
       "input_tokens_per_task": 10933709,
       "agent_steps_per_task": 124.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
@@ -917,7 +917,7 @@
       "output_tokens_per_task": 25990,
       "input_tokens_per_task": 1834116,
       "agent_steps_per_task": 70.0,
-      "n_tasks_attempted": 113,
+      "n_tasks_attempted": null,
       "evidence": [
         "src-deepswe-data"
       ]
