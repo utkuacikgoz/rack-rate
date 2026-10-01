@@ -21,7 +21,7 @@ function page(hash = '') {
   return dom;
 }
 test('budget recommendation opens the same plan, including after reload', () => {
-  const dom = page();
+  const dom = page('#exploratory=0&region=other');
   const d = dom.window.document;
   assert.match(d.querySelector('#budget-result').textContent, /ChatGPT Plus/);
   d.querySelector('#budget-result button').click();
@@ -45,7 +45,7 @@ test('empty plan selection survives reload', () => {
   dom.window.close();
 });
 test('all local navigation targets exist in the deployed directory', () => {
-  const dom = page();
+  const dom = page('#exploratory=0&region=other');
   for (const a of dom.window.document.querySelectorAll('a[href]')) {
     const href = a.getAttribute('href');
     if (href.startsWith('#')) assert.ok(dom.window.document.getElementById(href.slice(1)), href);
@@ -65,16 +65,36 @@ test('workload and eligibility survive recommendation share links', () => {
   assert.equal(reloaded.window.document.querySelector('#exploratory-input').checked, true);
   reloaded.window.close(); dom.window.close();
 });
-test('unverified model access is not shown as an eligible plan by default', () => {
-  const dom = page('#plans=ollama-pro');
-  assert.match(dom.window.document.querySelector('#routes-body').textContent, /No priced routes/);
-  dom.window.document.querySelector('#exploratory-input').checked = true;
-  dom.window.document.querySelector('#exploratory-input').dispatchEvent(new dom.window.Event('input'));
-  assert.match(dom.window.document.querySelector('#routes-body').textContent, /Ollama Pro/);
-  dom.window.close();
+test('all estimates and regions are included by default, including with unrelated URL parameters', () => {
+  for (const hash of ['', '#tasks=10']) {
+    const dom = page(hash); const d = dom.window.document;
+    assert.equal(d.querySelector('#exploratory-input').checked, true);
+    assert.equal(d.querySelector('#region-input').value, 'china');
+    const rows = d.querySelector('#routes-body').textContent;
+    assert.match(rows, /unverified/i);
+    d.querySelector('#toggle-pill button[data-mode="sub"]').click();
+    d.querySelector('#mobile-comparison .text-action').click();
+    const data = JSON.parse(d.querySelector('#rack-rate-data').textContent);
+    assert.equal(d.querySelectorAll('#mobile-comparison .model-card').length,
+      new Set(data.derived.pairs.map(p => p.model_id)).size);
+    dom.window.close();
+  }
+});
+test('narrower evidence and region filters survive reload', () => {
+  const dom = page('#plans=ollama-pro'); const d = dom.window.document;
+  assert.match(d.querySelector('#routes-body').textContent, /Ollama Pro/);
+  d.querySelector('#exploratory-input').checked = false;
+  d.querySelector('#exploratory-input').dispatchEvent(new dom.window.Event('input'));
+  d.querySelector('#region-input').value = 'other';
+  d.querySelector('#region-input').dispatchEvent(new dom.window.Event('input'));
+  const reloaded = page(dom.window.location.hash); const rd = reloaded.window.document;
+  assert.equal(rd.querySelector('#exploratory-input').checked, false);
+  assert.equal(rd.querySelector('#region-input').value, 'other');
+  assert.match(rd.querySelector('#routes-body').textContent, /No priced routes/);
+  reloaded.window.close(); dom.window.close();
 });
 test('comparison search and mobile sort preserve accurate route details', () => {
-  const dom = page(); const d = dom.window.document;
+  const dom = page('#exploratory=0&region=other'); const d = dom.window.document;
   const search = d.querySelector('#route-search');
   search.value = 'ChatGPT'; search.dispatchEvent(new dom.window.Event('input'));
   assert.equal(d.querySelectorAll('#routes-body tr[data-model]').length, 1);
@@ -88,7 +108,7 @@ test('comparison search and mobile sort preserve accurate route details', () => 
   dom.window.close();
 });
 test('mobile comparisons expand and follow mode and evidence filters', () => {
-  const dom = page(); const d = dom.window.document;
+  const dom = page('#exploratory=0&region=other'); const d = dom.window.document;
   assert.equal(d.querySelectorAll('#mobile-comparison .model-card').length, 5);
   d.querySelector('#mobile-comparison .text-action').click();
   assert.equal(d.querySelectorAll('#mobile-comparison .model-card').length, 28);
@@ -98,7 +118,7 @@ test('mobile comparisons expand and follow mode and evidence filters', () => {
   dom.window.close();
 });
 test('modal traps focus, isolates background and restores the opener on Escape', () => {
-  const dom = page(); const d = dom.window.document;
+  const dom = page('#exploratory=0&region=other'); const d = dom.window.document;
   const opener = d.querySelector('#budget-result button'); opener.focus(); opener.click();
   const rail = d.querySelector('#rail'), close = d.querySelector('#rail-close');
   assert.equal(rail.getAttribute('role'), 'dialog');
@@ -113,7 +133,7 @@ test('modal traps focus, isolates background and restores the opener on Escape',
   dom.window.close();
 });
 test('runtime and cross-check data have readable HTML text equivalents', () => {
-  const dom = page(); const d = dom.window.document;
+  const dom = page('#exploratory=0&region=other'); const d = dom.window.document;
   assert.equal(d.querySelector('#runtime-svg').tagName, 'DIV');
   assert.equal(d.querySelectorAll('#runtime-svg .quota-card').length, 3);
   assert.equal(d.querySelectorAll('#cross-data .cross-card').length, 11);
