@@ -4,7 +4,7 @@
 
 API list pricing is the same instrument. Published, high, and quietly discounted for almost everyone who walks in.
 
-**[rackrate.dev](https://rackrate.dev)** · [method](#the-method) · [sources](SOURCES.md) · [contributing](CONTRIBUTING.md)
+**[rack-rate-flax.vercel.app](https://rack-rate-flax.vercel.app)** · [method](#the-method) · [sources](SOURCES.md) · [contributing](CONTRIBUTING.md)
 
 [DeepSWE](https://deepswe.datacurve.ai/) is a public coding benchmark: 113 original tasks, hand written verifiers, no contamination. It prices every model at API list rates.
 
