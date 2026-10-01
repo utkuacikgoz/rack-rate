@@ -490,9 +490,9 @@
         <label for="tasks-input">Tasks per month <input type="number" id="tasks-input" value="10" min="1" max="10000" step="1"></label>
         <p class="tool-note">Count coding jobs, not messages. We use benchmark tasks to estimate the cost.</p>
         <details class="eligibility-controls"><summary>Region and evidence filters</summary>
-          <label for="region-input">Plan eligibility <select id="region-input"><option value="other">Exclude China-only plans</option><option value="china">Include China-only plans</option></select></label>
-          <label class="estimate-option"><input type="checkbox" id="exploratory-input"> Include unverified access and low-confidence estimates</label>
-          <p class="tool-note">Unverified model access is excluded by default. Other regional restrictions may apply; check the vendor before buying.</p>
+          <label for="region-input">Plan eligibility <select id="region-input"><option value="other">Exclude China-only plans</option><option value="china" selected>Include China-only plans</option></select></label>
+          <label class="estimate-option"><input type="checkbox" id="exploratory-input" checked> Include unverified access and low-confidence estimates</label>
+          <p class="tool-note">All estimates and regions are included by default. Use these filters to narrow the comparison; check vendor availability before buying.</p>
         </details>
         <a class="primary-action calculator-action" href="#compare">See what fits <span aria-hidden="true">↓</span></a>
       </div>
@@ -530,7 +530,7 @@
       <aside class="decision-guide" aria-labelledby="decision-guide-title">
         <h3 id="decision-guide-title">The price that matters is yours.</h3>
         <p>A $20 plan costs $2 per task when you use it for ten tasks. An advertised full-use price can look much cheaper.</p>
-        <p>We compare the bill at your usage, check estimated capacity, and keep unverified model access out by default.</p>
+        <p>We compare the bill at your usage, check estimated capacity, and label the evidence behind each estimate.</p>
         <a class="text-action" href="#workload">Adjust your budget or workload ↑</a>
         <p class="tool-note">Benchmark performance is a reference point. Your tasks and coding tools will behave differently.</p>
       </aside>
@@ -593,7 +593,7 @@
 <section id="routes" style="padding:0 0 40px;">
   <div class="measure">
     <h2>Best plan estimates</h2>
-    <p class="lede">Each model’s lowest full-utilization estimate among eligible selected plans. Actual cost depends on usage; use the workload tool above. Unverified access is excluded by default.</p>
+    <p class="lede">Each model’s lowest full-utilization estimate among eligible selected plans. Actual cost depends on usage; use the workload tool above. All estimates are included by default; evidence labels distinguish documented from unverified access.</p>
     <div class="comparison-controls">
       <label for="route-search">Find a model or plan<input type="search" id="route-search" placeholder="Search models and plans"></label>
       <label for="route-sort">Sort by<select id="route-sort"><option value="cost_per_task_usd">Full-use cost</option><option value="score_pct">Benchmark score</option><option value="model_name">Model name</option><option value="api_cost_per_task_usd">API cost</option><option value="plan_name">Plan name</option><option value="quota_equivalent_days">Quota equivalent</option></select></label>
@@ -690,8 +690,8 @@
     selectedPlans: PLANS.filter(function(p){ return p.available !== false; }).map(function(p){ return p.id; }),
     selectedModel: null,
     selectedPlan: null,
-    region: "other",
-    exploratory: false,
+    region: "china",
+    exploratory: true,
     hotId: null,
   };
 
@@ -706,8 +706,8 @@
     }
     if (params.has("model")) state.selectedModel = params.get("model");
     if (params.has("plan")) state.selectedPlan = params.get("plan");
-    state.region = params.get("region") === "china" ? "china" : "other";
-    state.exploratory = params.get("exploratory") === "1";
+    state.region = params.get("region") === "other" ? "other" : "china";
+    state.exploratory = params.get("exploratory") !== "0";
     document.getElementById("region-input").value = state.region;
     document.getElementById("exploratory-input").checked = state.exploratory;
     ["budget", "tasks"].forEach(function(key){
@@ -725,7 +725,7 @@
     params.set("budget", document.getElementById("budget-input").value);
     params.set("tasks", document.getElementById("tasks-input").value);
     params.set("region", state.region);
-    if (state.exploratory) params.set("exploratory", "1");
+    params.set("exploratory", state.exploratory ? "1" : "0");
     history.replaceState(null, "", "#" + params.toString());
   }
   var skipOpeningAnimation = readURL();
@@ -773,7 +773,7 @@
   (function renderCoverage(){
     var observed = (DERIVED.pairs || []).filter(function(p){ return p.access_status !== "unverified"; }).length;
     var date = (DERIVED.generated_from.benchmark_date || "unknown").slice(0, 10);
-    document.getElementById("coverage-summary").textContent = MODELS.length + " benchmark models across 113 tasks. " + observed + " source-documented model-plan combinations are currently eligible by default. Benchmark snapshot: " + date + ". Scores were measured with mini-swe-agent, not each subscription’s tool. Costs use benchmark medians; actual workloads vary.";
+    document.getElementById("coverage-summary").textContent = MODELS.length + " benchmark models across 113 tasks. " + observed + " model-plan combinations have source-documented access. All estimates are included by default, with evidence labels. Benchmark snapshot: " + date + ". Scores were measured with mini-swe-agent, not each subscription’s tool. Costs use benchmark medians; actual workloads vary.";
   })();
 
   function decisionOptions(){
@@ -1694,7 +1694,7 @@
     }
     bindModelButtons(box);
     document.getElementById("eligibility-summary").textContent =
-      state.exploratory ? "Exploratory mode: unverified access and low-confidence estimates are included. Confirm availability before buying." : "Evidence filter: only observed or source-listed model access; low-confidence estimates excluded.";
+      state.exploratory ? "All evidence levels: unverified access and low-confidence estimates are included. Confirm availability before buying." : "Evidence filter: only observed or source-listed model access; low-confidence estimates excluded.";
   }
   function renderRuntime(){
     var box = document.getElementById("runtime-svg");
