@@ -73,3 +73,50 @@ test('unverified model access is not shown as an eligible plan by default', () =
   assert.match(dom.window.document.querySelector('#routes-body').textContent, /Ollama Pro/);
   dom.window.close();
 });
+test('comparison search and mobile sort preserve accurate route details', () => {
+  const dom = page(); const d = dom.window.document;
+  const search = d.querySelector('#route-search');
+  search.value = 'ChatGPT'; search.dispatchEvent(new dom.window.Event('input'));
+  assert.equal(d.querySelectorAll('#routes-body tr[data-model]').length, 1);
+  d.querySelector('#routes-body button').click();
+  assert.match(d.querySelector('#rail-content').textContent, /ChatGPT Plus/);
+  d.querySelector('#rail-close').click();
+  search.value = ''; search.dispatchEvent(new dom.window.Event('input'));
+  const sort = d.querySelector('#route-sort'); sort.value = 'score_pct';
+  sort.dispatchEvent(new dom.window.Event('change'));
+  assert.equal(d.querySelector('#routes-body tr').dataset.model, 'gpt-5.6-sol');
+  dom.window.close();
+});
+test('mobile comparisons expand and follow mode and evidence filters', () => {
+  const dom = page(); const d = dom.window.document;
+  assert.equal(d.querySelectorAll('#mobile-comparison .model-card').length, 5);
+  d.querySelector('#mobile-comparison .text-action').click();
+  assert.equal(d.querySelectorAll('#mobile-comparison .model-card').length, 28);
+  d.querySelector('#toggle-pill button[data-mode="sub"]').click();
+  assert.equal(d.querySelectorAll('#mobile-comparison .model-card').length, 3);
+  assert.doesNotMatch(d.querySelector('#mobile-comparison').textContent, /Ollama/);
+  dom.window.close();
+});
+test('modal traps focus, isolates background and restores the opener on Escape', () => {
+  const dom = page(); const d = dom.window.document;
+  const opener = d.querySelector('#budget-result button'); opener.focus(); opener.click();
+  const rail = d.querySelector('#rail'), close = d.querySelector('#rail-close');
+  assert.equal(rail.getAttribute('role'), 'dialog');
+  assert.ok(d.querySelector('main').hasAttribute('inert'));
+  assert.equal(d.activeElement, close);
+  close.dispatchEvent(new dom.window.KeyboardEvent('keydown', {key:'Tab', shiftKey:true, bubbles:true, cancelable:true}));
+  assert.equal(d.activeElement, [...rail.querySelectorAll('a[href], button:not([disabled])')].at(-1));
+  d.dispatchEvent(new dom.window.KeyboardEvent('keydown', {key:'Escape', bubbles:true}));
+  assert.equal(d.activeElement, opener);
+  assert.equal(d.querySelector('main').hasAttribute('inert'), false);
+  assert.equal(rail.getAttribute('aria-hidden'), 'true');
+  dom.window.close();
+});
+test('runtime and cross-check data have readable HTML text equivalents', () => {
+  const dom = page(); const d = dom.window.document;
+  assert.equal(d.querySelector('#runtime-svg').tagName, 'DIV');
+  assert.equal(d.querySelectorAll('#runtime-svg .quota-card').length, 3);
+  assert.equal(d.querySelectorAll('#cross-data .cross-card').length, 11);
+  assert.match(d.querySelector('#cross-data').textContent, /Dollar conversion/);
+  dom.window.close();
+});

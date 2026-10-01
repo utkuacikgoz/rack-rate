@@ -4,7 +4,7 @@ Compare API spending and subscription estimates for your AI coding workload.
 
 **[Live site](https://rack-rate-flax.vercel.app/)** · [Sources](SOURCES.md) · [Contributing](CONTRIBUTING.md)
 
-Rack Rate combines a DeepSWE benchmark snapshot with cited subscription quotas. Enter a monthly budget and expected task count to compare estimated spending. Recommendations rank the highest-scoring benchmark configurations that fit both your budget and estimated capacity; ties prefer lower monthly spending. Alternatives show different models.
+Rack Rate combines a DeepSWE benchmark snapshot with cited subscription quotas. Enter a monthly budget and expected task count to compare estimated spending. Recommendations rank the highest-scoring benchmark configurations that fit both your budget and estimated capacity; ties prefer lower monthly spending. Alternatives show different models. The page introduces the cost trade-off, then leads from budget and workload to the monthly comparison; charts and methodology provide supporting evidence. Mobile uses readable model cards and quota rows, with search and sorting for plan estimates.
 
 ## What the numbers mean
 

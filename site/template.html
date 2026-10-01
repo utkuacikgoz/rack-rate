@@ -73,7 +73,7 @@
   *{ box-sizing:border-box; }
   html{ background:var(--bg); font-size:17.5px; }
   @media (prefers-reduced-motion: no-preference){ html{ scroll-behavior:smooth; } }
-  section[id]{ scroll-margin-top:56px; }
+  section[id], #workload{ scroll-margin-top:80px; }
   body{
     margin:0;
     background:var(--bg);
@@ -101,15 +101,13 @@
   .tab-figs, table, .hero-figs, .rail-figs, .formula, code, .chart, figcaption .value{
     font-variant-numeric: tabular-nums;
   }
-  /* Full width, always. Nothing here should float as a boxed column on a
-     real monitor. Only .lede caps line length, and only for the paragraphs
-     that need it to stay readable. */
+  /* One content grid aligns the introduction, comparison and evidence. */
   .measure{ margin-left:auto; margin-right:auto; padding:0 clamp(20px,4vw,56px); }
   .lede{ max-width:62ch; }
   @media (min-width:1500px){ h1{ font-size:4.2rem; } }
 
   header.site{ padding:56px 0 36px; border-bottom:1px solid var(--rule); }
-  .hero-grid{ display:grid; grid-template-columns:1fr; gap:40px; max-width:1360px; }
+  .hero-grid{ display:grid; grid-template-columns:minmax(0,1fr); gap:40px; max-width:1360px; }
   .hero-tool{ display:flex; }
   @media (min-width:960px){
     .hero-grid{ grid-template-columns:minmax(0,1fr) minmax(340px,420px); align-items:center; gap:64px; }
@@ -120,7 +118,7 @@
     header.site h1{ animation:heroIn .6s .07s var(--ease) both; }
     header.site .lede-payoff{ animation:heroIn .6s .16s var(--ease) both; }
     header.site .hero-figs{ animation:heroIn .6s .24s var(--ease) both; }
-    header.site .budget-tool{ animation:heroIn .6s .32s var(--ease) both; }
+
     header.site .hero-cite{ animation:heroIn .6s .4s var(--ease) both; }
   }
   @keyframes heroIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
@@ -415,6 +413,57 @@
   .budget-tool label{margin-top:12px;gap:8px;} .budget-tool .estimate-option{font-size:.85rem;display:block;}
   .tool-note{font-size:.85rem;line-height:1.55;color:var(--ink-dim);margin:10px 0;}
   .recommendation{padding:14px 0;border-top:1px solid var(--rule);}.recommendation p{margin:8px 0;}
+  .skip-link{position:fixed;top:8px;left:8px;transform:translateY(-200%);z-index:30;padding:12px;background:var(--ink);color:var(--bg);}
+  .skip-link:focus{transform:none;} :is(button,a,input,select,summary):focus-visible{outline:2px solid var(--adj);outline-offset:4px;}
+  .hero-grid{align-items:start;} .hero-copy{padding-top:20px;} .alternatives{border-top:1px solid var(--rule);padding-top:16px;margin-top:12px;}
+  summary{cursor:pointer;} .alternatives summary,.cross-details summary{min-height:44px;padding:10px 0;color:var(--ink);}
+  .mobile-comparison{display:none;} .model-card,.quota-card{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px;color:var(--ink-dim);font:inherit;cursor:pointer;}
+  .model-card + .model-card,.quota-card + .quota-card{margin-top:10px;} .model-card-title{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--ink);font-weight:600;margin-bottom:8px;}
+  .model-card-title strong{color:var(--adj);white-space:nowrap;} .model-card > span:last-child,.quota-card > span{font-size:.9rem;line-height:1.5;}
+  .quota-list{max-width:900px;margin:24px 0;} .quota-track{display:block;height:6px;background:var(--rule);border-radius:4px;margin-top:12px;overflow:hidden;}
+  .quota-track > span{display:block;height:100%;background:var(--adj);border-radius:4px;}
+  .text-action{display:inline-block;background:none;border:0;color:var(--adj);font:inherit;text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:10px 0;min-height:44px;}
+  .plan-picker{margin-top:12px;}.plan-chip{min-height:44px;}.chart-legend .item{white-space:normal;text-align:left;line-height:1.5;}
+  .comparison-controls{display:flex;flex-wrap:wrap;gap:16px;margin-top:24px;}.comparison-controls label{flex:1;min-width:200px;font-size:.9rem;}
+  .comparison-controls input,.comparison-controls select{display:block;width:100%;margin-top:8px;padding:12px;background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:8px;font:inherit;}
+  .sort-button{background:none;border:0;padding:8px 0;color:inherit;font:inherit;cursor:pointer;text-transform:inherit;}
+  .route-model{background:none;border:0;color:var(--ink);font:inherit;text-align:left;padding:8px 0;cursor:pointer;text-decoration:underline;text-underline-offset:4px;}
+  .route-evidence{display:block;font-size:.8rem;color:var(--ink-dim);margin-top:5px;} .cross-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
+  .cross-card{border:1px solid var(--rule);padding:18px;border-radius:10px;}.cross-card h3{font-size:1rem;overflow-wrap:anywhere;}.cross-card p{font-size:.9rem;}
+  .cross-card dl{font-size:.85rem;margin:12px 0 0;}.cross-card dl > div{display:flex;justify-content:space-between;gap:12px;margin-top:8px;}.cross-card dd{margin:0;text-align:right;color:var(--ink);}
+  .node .dot{filter:none;}.node .dot.measured{fill:var(--measured);}.node .dot.published{fill:var(--adj);}
+  @media(max-width:620px){
+    .chart-wrap,.chart-guide{display:none;}.mobile-comparison{display:block;margin:18px 0;}
+    .hero-copy{padding-top:0;} .hero-figs{gap:20px;} .budget-tool{padding:20px;} .panel{padding:18px;}
+    .comparison-controls{display:block;}.comparison-controls label{display:block;margin-top:12px;}
+    .cross-list{grid-template-columns:minmax(0,1fr);} .cross-card dl > div{flex-wrap:wrap;}
+    .route-evidence{font-size:.85rem;} table.routes td{align-items:center;} table.routes td > span{text-align:right;}
+    .chart-legend{gap:12px;}.chart-legend .item{font-size:.85rem;}.quota-card{padding:16px;}
+    .jump-nav a{min-height:44px;display:inline-flex;align-items:center;} .budget-tool input,.budget-tool select{font-size:16px;}
+  }
+  .eyebrow{text-transform:uppercase;letter-spacing:.1em;font-size:.75rem;font-weight:600;color:var(--adj);margin:18px 0 14px;}
+  .hero-actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:28px;}
+  .primary-action{display:inline-flex;align-items:center;justify-content:center;gap:24px;padding:14px 20px;background:var(--adj);color:var(--bg);border-radius:8px;font-weight:600;text-decoration:none;min-height:48px;}
+  .primary-action:hover{background:#ffc355;}.why-card{align-self:center;border-left:2px solid var(--adj);padding:8px 0 8px 28px;}.why-card h2{font-size:1.55rem;line-height:1.2;margin:14px 0;}.why-card p{line-height:1.6;}
+  .usage-example{display:flex;flex-direction:column;gap:10px;padding:22px;background:var(--panel);border:1px solid var(--rule);border-radius:10px;margin:24px 0;font-size:.9rem;}.usage-example strong{font-size:2rem;color:var(--ink);}.usage-example small{font-size:1rem;font-weight:400;}
+  .compare-section{padding:48px 0 72px;}.comparison-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:28px;margin-top:32px;align-items:start;}
+  .result-panel{padding:28px;background:var(--panel);border:1px solid var(--rule);border-radius:14px;}.comparison-layout h3{font-size:1.1rem;margin:0 0 18px;color:var(--ink);}.budget-tool h3:not(:first-child){margin-top:28px;}.eligibility-controls{border-top:1px solid var(--rule);margin-top:24px;padding-top:14px;font-size:.9rem;}.eligibility-controls summary{min-height:44px;padding:8px 0;}
+  .monthly-total{display:block;font-size:2.3rem;color:var(--ink);letter-spacing:-.03em;margin:14px 0;}.monthly-total small{font-size:1rem;font-weight:400;color:var(--ink-dim);letter-spacing:0;margin-left:5px;}.result-plan{display:block;color:var(--adj);font-size:.9rem;}
+  .alternatives .monthly-total{font-size:1.5rem;}.result-panel .pick-link{font-size:1.1rem;}.result-panel .recommendation:first-child{padding-top:0;border-top:0;}
+  @media(min-width:960px){.hero-grid{grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr);gap:64px;}.hero-copy h1{font-size:clamp(2.6rem,4.2vw,4.2rem);}}
+  @media(max-width:760px){.comparison-layout{grid-template-columns:minmax(0,1fr);gap:18px;}.result-panel{padding:20px;}.why-card{padding-left:20px;}.hero-actions{gap:12px;}.compare-section{padding-top:32px;}.hero-copy h1{font-size:2.35rem;}.hero-grid{gap:26px;}.usage-example{padding:16px;}}
+  .hero-copy{min-width:0;padding-top:0;}.hero-instruction{font-size:1rem;line-height:1.6;color:var(--ink-dim);max-width:45ch;margin:26px 0;}
+  .hero-proof{display:flex;align-items:center;flex-wrap:wrap;gap:12px 26px;border-top:1px solid var(--rule);padding-top:22px;margin-top:30px;font-size:.8rem;color:var(--ink-dim);}.hero-proof strong{color:var(--ink);font-weight:600;}.hero-proof a{color:var(--ink-dim);}
+  .hero-grid > .budget-tool{align-self:center;}.budget-tool .budget-tool-kicker{margin-bottom:16px;}.calculator-action{display:flex;width:100%;margin-top:18px;font-size:.95rem;justify-content:space-between;}
+  .hero-grid .budget-tool{box-shadow:none;}.wordmark{cursor:default;}.wordmark::after{display:none;}
+  .decision-guide{border-left:1px solid var(--rule);padding:8px 0 8px 28px;align-self:start;}.decision-guide h3{font-size:1.3rem;line-height:1.3;}.decision-guide p{line-height:1.65;color:var(--ink-dim);}.comparison-layout{grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:48px;}
+  @media(min-width:960px){header.site{padding:72px 0 56px;}.hero-grid{grid-template-columns:minmax(0,1.7fr) minmax(330px,1fr);gap:64px;align-items:center;}.hero-copy h1{font-size:clamp(3rem,4.4vw,4rem);line-height:1.04;letter-spacing:-.05em;}.hero-copy .lede-payoff{font-size:1.2rem;line-height:1.55;}}
+  @media(max-width:959px){.hero-grid{gap:32px;}.hero-copy h1{font-size:clamp(2.4rem,7vw,4rem);line-height:1.08;}.hero-grid > .budget-tool{max-width:580px;}}
+  @media(max-width:760px){.comparison-layout{grid-template-columns:minmax(0,1fr);gap:24px;}.decision-guide{padding:0 0 0 18px;}.hero-proof{gap:12px 22px;}.hero-instruction{font-size:.95rem;}header.site{padding-top:32px;}}
+  .measure{max-width:1360px;}.result-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding:20px 0;margin:20px 0 12px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+  .result-metrics dt{font-size:.8rem;color:var(--ink-dim);margin-bottom:8px;}.result-metrics dd{margin:0;color:var(--ink);font-size:1.05rem;font-variant-numeric:tabular-nums;}
+  @media(max-width:620px){.result-metrics{grid-template-columns:1fr;gap:14px;}.result-metrics > div{display:flex;justify-content:space-between;gap:14px;}.result-metrics dt{margin:0;}.result-metrics dd{font-size:.95rem;}}
+  @media (min-width:621px) and (max-width:900px){.chart-wrap,.chart-guide{display:none;}.mobile-comparison{display:block;margin:18px 0;}}
 </style>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -422,39 +471,42 @@
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+<a class="skip-link" href="#main-content">Skip to comparisons</a>
 
 <header class="site">
   <div class="measure hero-grid">
     <div class="hero-copy">
-      <div class="wordmark" tabindex="0" aria-label="A hotel's rack rate is the full price on the back of the door. Most guests pay less: a discount, a corporate rate, a loyalty rate." data-tooltip="A hotel's rack rate is the full price on the back of the door. Most guests pay less: a discount, a corporate rate, a loyalty rate.">Rack Rate</div>
-      <h1>Your workload.<br>Your <span class="h1-mult">AI coding budget.</span></h1>
-      <p class="lede lede-payoff"><strong>Find the route that fits.</strong> Compare API spending with subscription estimates at your level of use.</p>
-      <div class="hero-figs" id="hero-figs"></div>
-      <p class="hero-cite">A task is one of <a href="https://deepswe.datacurve.ai/">DeepSWE</a>’s 113 real coding challenges. Scores were measured with mini-swe-agent, not each subscription’s coding tool. Costs are estimates from benchmark medians.</p>
+      <div class="wordmark">Rack Rate</div>
+      <h1>Stop paying <span class="h1-mult">sticker price</span> for AI coding.</h1>
+      <p class="lede lede-payoff"><strong>Same models. Different ways to pay.</strong> Compare API costs with monthly plans, based on how much you actually code.</p>
+      <p class="hero-instruction">Your budget + your workload → a model, a monthly bill, and the evidence.</p>
+      <div class="hero-proof"><span><strong>28</strong> benchmark models</span><span><strong>113</strong> coding tasks</span><a href="#method">Every estimate explained ↗</a></div>
     </div>
-    <div class="hero-tool">
-      <div class="budget-tool">
-        <div class="budget-tool-kicker">Try your budget</div>
-        <label for="budget-input">Spend <span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="300" step="1" maxlength="3" inputmode="numeric"></span> a month.</label>
+      <div class="budget-tool" id="workload">
+        <p class="budget-tool-kicker">Try your budget</p>
+        <label for="budget-input">Spend <span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="300" step="1" inputmode="numeric"></span> a month.</label>
         <div class="budget-slider"><input type="range" id="budget-range" min="0" max="1000" step="1" value="258" aria-label="Monthly budget in dollars"><div class="budget-ticks" id="budget-ticks" aria-hidden="true"></div></div>
-        <label for="tasks-input">Expected tasks / month <input type="number" id="tasks-input" value="10" min="1" max="10000" step="1"></label>
-        <label for="region-input">Plan eligibility <select id="region-input"><option value="other">Exclude China-only plans</option><option value="china">Include China-only plans</option></select></label>
-        <label class="estimate-option"><input type="checkbox" id="exploratory-input"> Include unverified access and low-confidence estimates</label>
-        <p class="tool-note">Other regional restrictions may apply. Check the vendor before buying. A benchmark task is only a proxy for your workload.</p>
-        <div class="budget-result" id="budget-result" aria-live="polite"></div>
+
+        <label for="tasks-input">Tasks per month <input type="number" id="tasks-input" value="10" min="1" max="10000" step="1"></label>
+        <p class="tool-note">Count coding jobs, not messages. We use benchmark tasks to estimate the cost.</p>
+        <details class="eligibility-controls"><summary>Region and evidence filters</summary>
+          <label for="region-input">Plan eligibility <select id="region-input"><option value="other">Exclude China-only plans</option><option value="china">Include China-only plans</option></select></label>
+          <label class="estimate-option"><input type="checkbox" id="exploratory-input"> Include unverified access and low-confidence estimates</label>
+          <p class="tool-note">Unverified model access is excluded by default. Other regional restrictions may apply; check the vendor before buying.</p>
+        </details>
+        <a class="primary-action calculator-action" href="#compare">See what fits <span aria-hidden="true">↓</span></a>
       </div>
-    </div>
+
   </div>
 </header>
 
 <nav class="jump-nav">
   <div class="measure">
     <div class="jump-nav-links">
-      <a href="#chart">Chart</a>
-      <a href="#routes">Best plan estimates</a>
-      <a href="#runtime">Quota capacity</a>
+      <a href="#compare">Compare options</a>
+      <a href="#chart">Benchmarks</a>
+      <a href="#routes">Plan estimates</a>
       <a href="#method">The method</a>
-      <a href="#cross-check">The cross check</a>
       <a href="#sources">Sources</a>
     </div>
     <a class="repo-link" href="https://github.com/utkuacikgoz/rack-rate" target="_blank" rel="noopener">
@@ -464,9 +516,33 @@
   </div>
 </nav>
 
-<main>
+<main id="main-content">
+<section id="compare" class="compare-section">
+  <div class="measure">
+    <p class="eyebrow">Your comparison</p>
+    <h2>Here’s what fits.</h2>
+    <p class="lede">The highest-scoring benchmark models within your budget and estimated monthly capacity. API and subscription routes compete on the same monthly bill.</p>
+    <div class="comparison-layout">
+      <div class="result-panel">
+
+        <div class="budget-result" id="budget-result" aria-live="polite"></div>
+      </div>
+      <aside class="decision-guide" aria-labelledby="decision-guide-title">
+        <h3 id="decision-guide-title">The price that matters is yours.</h3>
+        <p>A $20 plan costs $2 per task when you use it for ten tasks. An advertised full-use price can look much cheaper.</p>
+        <p>We compare the bill at your usage, check estimated capacity, and keep unverified model access out by default.</p>
+        <a class="text-action" href="#workload">Adjust your budget or workload ↑</a>
+        <p class="tool-note">Benchmark performance is a reference point. Your tasks and coding tools will behave differently.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
 <section class="chart-section" id="chart">
   <div class="measure">
+    <p class="eyebrow">Explore the supporting data</p>
+    <h2>Benchmark score vs. cost</h2>
+    <p class="lede">Compare benchmark scores with API costs or full-use subscription estimates.</p>
     <div class="panel">
       <div class="chart-toolbar">
         <div class="toggle-pill" data-mode="list" id="toggle-pill">
@@ -476,6 +552,8 @@
         </div>
         <div class="chart-legend" id="chart-legend"></div>
       </div>
+      <p class="tool-note chart-guide">Higher means a better benchmark score. Further left means lower cost per task. The cost axis is logarithmic: each step is 10×. Hollow points without an eligible subscription stay at their API cost. Use arrow keys to explore and Enter for details.</p>
+      <div class="mobile-comparison" id="mobile-comparison" aria-label="Model comparison"></div>
       <div class="chart-wrap">
         <svg class="chart" id="chart-svg" viewBox="0 0 960 520" tabindex="0" role="img" aria-label="Score against cost per task for every model">
           <defs>
@@ -497,11 +575,13 @@
           <g id="nodes"></g>
           <line class="crosshair" id="crosshair-x" x1="0" y1="0" x2="0" y2="0"></line>
           <line class="crosshair" id="crosshair-y" x1="0" y1="0" x2="0" y2="0"></line>
-          <text class="empty-state" id="empty-state" x="480" y="260" text-anchor="middle">No model data. Run scripts/fetch_deepswe.py, or see known_gaps in data/plans.json.</text>
+          <text class="empty-state" id="empty-state" x="480" y="260" text-anchor="middle">Comparison data is unavailable. See Sources for dataset details.</text>
         </svg>
         <div class="chart-tip" id="chart-tip" aria-hidden="true"></div>
         <div class="sr-only" id="chart-live" aria-live="polite"></div>
       </div>
+      <p class="tool-note" id="eligibility-summary"></p>
+      <a class="text-action" href="#compare">Adjust workload and evidence filters</a>
       <details class="plan-picker">
         <summary id="plan-picker-summary">Plans: all on</summary>
         <div class="plan-chips" id="plan-chips"></div>
@@ -514,16 +594,21 @@
   <div class="measure">
     <h2>Best plan estimates</h2>
     <p class="lede">Each model’s lowest full-utilization estimate among eligible selected plans. Actual cost depends on usage; use the workload tool above. Unverified access is excluded by default.</p>
+    <div class="comparison-controls">
+      <label for="route-search">Find a model or plan<input type="search" id="route-search" placeholder="Search models and plans"></label>
+      <label for="route-sort">Sort by<select id="route-sort"><option value="cost_per_task_usd">Full-use cost</option><option value="score_pct">Benchmark score</option><option value="model_name">Model name</option><option value="api_cost_per_task_usd">API cost</option><option value="plan_name">Plan name</option><option value="quota_equivalent_days">Quota equivalent</option></select></label>
+    </div>
+    <p class="tool-note" id="route-count" aria-live="polite"></p>
     <div style="overflow-x:auto;">
       <table class="routes" id="routes-table">
         <thead>
           <tr>
-            <th data-key="model_name" tabindex="0" role="button">Model</th>
-            <th data-key="score_pct" tabindex="0" role="button">Score</th>
-            <th data-key="api_cost_per_task_usd" tabindex="0" role="button">API list</th>
-            <th data-key="plan_name" tabindex="0" role="button">Plan</th>
-            <th data-key="cost_per_task_usd" tabindex="0" role="button">At full use / task</th>
-            <th data-key="quota_equivalent_days" tabindex="0" role="button">Quota-equivalent days</th>
+            <th data-key="model_name" scope="col"><button type="button" class="sort-button">Model</button></th>
+            <th data-key="score_pct" scope="col"><button type="button" class="sort-button">Score</button></th>
+            <th data-key="api_cost_per_task_usd" scope="col"><button type="button" class="sort-button">API list</button></th>
+            <th data-key="plan_name" scope="col"><button type="button" class="sort-button">Plan</button></th>
+            <th data-key="cost_per_task_usd" scope="col"><button type="button" class="sort-button">At full use / task</button></th>
+            <th data-key="quota_equivalent_days" scope="col"><button type="button" class="sort-button">Quota-equivalent days</button></th>
           </tr>
         </thead>
         <tbody id="routes-body"></tbody>
@@ -536,13 +621,15 @@
   <div class="measure">
     <h2>Quota capacity</h2>
     <p class="lede">Steady-state quota-equivalent days for 113 tasks, assuming continuous full use. These are not completion times: starting allowance, resets, run duration and concurrency are not modeled.</p>
-    <svg class="chart" id="runtime-svg" viewBox="0 0 1040 40" width="100%" role="img" aria-label="Quota-equivalent days per route"></svg>
+    <div id="runtime-svg" class="quota-list" aria-label="Quota-equivalent days per route"></div>
   </div>
 </section>
 
 <section id="method" style="padding:0 0 40px;">
   <div class="measure">
-    <h2>The method</h2>
+    <h2>How the estimates work</h2>
+    <p class="lede">We combine coding benchmark results with cited plan quotas. The result is a comparison model, not a guarantee of performance or future usage limits.</p>
+    <p class="tool-note" id="coverage-summary"></p>
     <p class="lede"><code>cost_per_task = price_per_month / tasks_per_month</code></p>
     <p class="tool-note">Full-use prices assume the entire estimated quota is consumed. Your effective cost is monthly price divided by tasks actually run. API-equivalent quotas measured on one model do not establish the allowance for another. Reasoning settings, caching, tool behavior and provider rates can change the result.</p>
     <div class="cards" id="method-cards"></div>
@@ -554,7 +641,7 @@
   <div class="measure">
     <h2>The cross check</h2>
     <p class="lede">Two conversions of the same quota disagree. These estimates share source data and are not independent validation. The gap is unresolved; it should lower confidence in the conversion.</p>
-    <svg class="chart" id="cross-svg" viewBox="0 0 960 160" width="100%" role="img" aria-label="Cross check ratio strip plot"></svg>
+    <details class="cross-details"><summary>See individual comparisons</summary><div id="cross-data" class="cross-list"></div></details>
     <p id="cross-summary" class="mono" style="color:var(--ink-faint); font-size:.85rem; max-width:60ch;"></p>
   </div>
 </section>
@@ -575,7 +662,7 @@
 </footer>
 
 <div class="rail-backdrop" id="rail-backdrop"></div>
-<aside class="rail" id="rail" aria-hidden="true" inert>
+<aside class="rail" id="rail" role="dialog" aria-modal="true" aria-labelledby="rail-title" aria-hidden="true" inert>
   <button class="close" id="rail-close" aria-label="Close">&times;</button>
   <div id="rail-content"></div>
 </aside>
@@ -683,13 +770,10 @@
   }
 
   // ---------- hero figures, computed live ----------
-  (function renderHero(){
+  (function renderCoverage(){
     var observed = (DERIVED.pairs || []).filter(function(p){ return p.access_status !== "unverified"; }).length;
-    document.getElementById("hero-figs").innerHTML =
-      '<div class="hero-fig"><div class="value">' + MODELS.length + ' models</div><div class="label">Benchmarked on 113 coding challenges</div></div>' +
-      '<div class="hero-fig"><div class="value">' + observed + ' documented routes</div><div class="label">Observed or source-listed model access; check current availability</div></div>';
     var date = (DERIVED.generated_from.benchmark_date || "unknown").slice(0, 10);
-    document.querySelector(".hero-cite").appendChild(document.createTextNode(" Benchmark snapshot: " + date + "."));
+    document.getElementById("coverage-summary").textContent = MODELS.length + " benchmark models across 113 tasks. " + observed + " source-documented model-plan combinations are currently eligible by default. Benchmark snapshot: " + date + ". Scores were measured with mini-swe-agent, not each subscription’s tool. Costs use benchmark medians; actual workloads vary.";
   })();
 
   function decisionOptions(){
@@ -724,6 +808,9 @@
     }
     var candidates = RackRateDecision.recommend(MODELS, DERIVED.pairs || [], opts);
     if (!candidates.length) { out.textContent = "No route fits this workload and budget. Reduce the task count, increase the budget, or review the evidence filters."; return; }
+    var alternatives = document.createElement("details"); alternatives.className = "alternatives";
+    var summary = document.createElement("summary"); summary.textContent = "Compare " + Math.min(2, candidates.length - 1) + " alternatives";
+    alternatives.appendChild(summary);
     candidates.slice(0, 3).forEach(function(best, i){
       var card = document.createElement("div"); card.className = "recommendation";
       var label = document.createElement("p"); label.className = "tool-note";
@@ -731,12 +818,26 @@
       card.appendChild(pickLink(best.model_id, best.model_name, best.plan_id));
       card.appendChild(document.createTextNode(" · " + best.score_pct + "% benchmark score"));
       var detail = document.createElement("p");
-      detail.textContent = best.plan_name + ": $" + best.monthly.toFixed(2) + "/month for " + opts.tasks + " tasks ($" + best.perTask.toFixed(3) + "/task).";
+      detail.innerHTML = '<span class="result-plan">' + escapeHTML(best.plan_name) + '</span><strong class="monthly-total">$' + best.monthly.toFixed(2) + '<small>/month</small></strong><span>' + opts.tasks + ' tasks · $' + best.perTask.toFixed(3) + ' per task at your usage</span>';
       card.appendChild(detail);
       var note = document.createElement("p"); note.className = "tool-note";
       note.textContent = best.plan_id === "api" ? "API estimate uses benchmark median cost. Actual runs vary; no subscription required." : evidenceSummary(best) + " Estimated capacity: " + Math.floor(best.capacity) + " tasks/month. API for the same workload: $" + best.apiMonthly.toFixed(2) + ". Break-even: about " + best.breakEven + " tasks/month.";
-      card.appendChild(note); out.appendChild(card);
+      if (best.plan_id !== "api") {
+        var metrics = document.createElement("dl"); metrics.className = "result-metrics";
+        [["API at your usage", "$" + best.apiMonthly.toFixed(2) + "/mo"], ["Estimated capacity", Math.floor(best.capacity) + " tasks/mo"], ["Break-even", best.breakEven + " tasks/mo"]].forEach(function(metric){
+          var item = document.createElement("div"), term = document.createElement("dt"), value = document.createElement("dd");
+          term.textContent = metric[0]; value.textContent = metric[1]; item.append(term, value); metrics.appendChild(item);
+        });
+        card.appendChild(metrics);
+        note.textContent = "Model access: " + best.access_status + ". Costs are modeled; inspect the evidence before choosing.";
+      }
+      card.appendChild(note);
+      var action = document.createElement("button"); action.type = "button"; action.className = "text-action";
+      action.textContent = "View costs and evidence";
+      action.addEventListener("click", function(){ select(best.model_id, best.plan_id); }); card.appendChild(action);
+      (i ? alternatives : out).appendChild(card);
     });
+    if (candidates.length > 1) out.appendChild(alternatives);
   }
 
   (function initBudgetTool(){
@@ -861,6 +962,7 @@
       });
       writeURL();
       paint(false, true);
+      renderMobileComparison();
     });
   });
   togglePill.setAttribute("data-mode", state.mode);
@@ -1070,7 +1172,7 @@
     // gets a dot; tap it and the rail shows the rest.
     var isMobile = VB.w < 500;
     var frontierIds = null;
-    if (isMobile) {
+    {
       frontierIds = {};
       var maxScoreSoFar = -Infinity;
       geometry.slice().sort(function(a, b){ return a.x - b.x; }).forEach(function(g){
@@ -1093,7 +1195,7 @@
       if (!n) return;
       if (doEntrance) n.g.style.setProperty("--enter", Math.min(idx * 14, 380) + "ms");
       n.g.style.setProperty("--wave", doWave ? Math.min(idx * 11, 280) + "ms" : "0ms");
-      var shouldLabel = !isMobile || frontierIds[m.id];
+      var shouldLabel = frontierIds[m.id] || idx === 0;
 
       n.dot.style.cx = x + "px";
       n.dot.style.cy = y + "px";
@@ -1353,6 +1455,8 @@
     rail.setAttribute("aria-hidden", "true");
     rail.setAttribute("inert", "");
     railBackdrop.classList.remove("show");
+    document.querySelectorAll("header.site, nav.jump-nav, main, footer.site, .skip-link").forEach(function(el){ el.removeAttribute("inert"); });
+    document.body.style.overflow = "";
     state.selectedModel = null;
     state.selectedPlan = null;
     writeURL();
@@ -1369,7 +1473,7 @@
     tip.classList.remove("on");
     var pairs = (DERIVED.pairs || []).filter(function(p){ return p.model_id === modelId && eligiblePair(p) && (!state.selectedPlan || p.plan_id === state.selectedPlan); })
       .sort(function(a,b){ return a.cost_per_task_usd - b.cost_per_task_usd; });
-    var html = "<h3>" + m.name + "</h3>";
+    var html = '<h3 id="rail-title">' + escapeHTML(m.name) + "</h3>";
     html += '<div class="rail-figs">';
     html += '<div class="rail-fig"><div class="value">' + m.score_pct + '%</div><div class="label">score</div></div>';
     html += '<div class="rail-fig"><div class="value">$' + m.api_cost_per_task_usd.toFixed(3) + '</div><div class="label">API list / task</div></div>';
@@ -1425,7 +1529,9 @@
     rail.setAttribute("aria-hidden", "false");
     rail.removeAttribute("inert");
     railBackdrop.classList.add("show");
-    if (fromUser) railClose.focus({ preventScroll: true });
+    document.querySelectorAll("header.site, nav.jump-nav, main, footer.site, .skip-link").forEach(function(el){ el.setAttribute("inert", ""); });
+    document.body.style.overflow = "hidden";
+    if (fromUser || !rail.contains(document.activeElement)) railClose.focus({ preventScroll: true });
   }
   var sourceById = {};
   (DATA.sources || []).forEach(function(s){ sourceById[s.id] = s; });
@@ -1449,6 +1555,7 @@
   // ---------- table ----------
   var sortKey = "cost_per_task_usd";
   var sortDir = 1;
+  var routeQuery = "";
   function routesForTable(){
     var rows = [];
     MODELS.forEach(function(m){
@@ -1467,7 +1574,8 @@
     return rows;
   }
   function renderTable(flip){
-    var rows = routesForTable();
+    var rows = routesForTable().filter(function(r){ return (r.model_name + " " + r.plan_name).toLowerCase().includes(routeQuery); });
+    document.getElementById("route-count").textContent = rows.length + " matching models. Open a model for plan evidence and your workload costs.";
     var body = document.getElementById("routes-body");
     var before = null;
     if (flip && motionOK) {
@@ -1477,15 +1585,15 @@
       });
     }
     if (!rows.length) {
-      body.innerHTML = '<tr><td colspan="6" data-label="">No priced routes yet for the selected plans.</td></tr>';
+      body.innerHTML = '<tr><td colspan="6" data-label="">' + (routeQuery ? "No matches. Try another model or plan." : "No priced routes yet for the selected plans and evidence filters.") + "</td></tr>";
       return;
     }
     body.innerHTML = rows.map(function(r){
-      return "<tr data-model=\"" + r.model_id + "\" tabindex=\"0\">" +
-        '<td data-label="Model">' + r.model_name + "</td>" +
+      return '<tr data-model="' + r.model_id + '" data-plan="' + r.plan_id + '">' +
+        '<td data-label="Model"><button type="button" class="route-model">' + escapeHTML(r.model_name) + '</button></td>' +
         '<td data-label="Score">' + r.score_pct + "%</td>" +
         '<td data-label="API list">$' + r.api_cost_per_task_usd.toFixed(3) + "</td>" +
-        '<td data-label="Plan">' + r.plan_name + "</td>" +
+        '<td data-label="Plan"><span>' + escapeHTML(r.plan_name) + '<small class="route-evidence">Access: ' + r.access_status + '</small></span></td>' +
         '<td data-label="At full use / task"><span class="confidence-dot ' + confidenceClass(r) + '"></span>$' + r.cost_per_task_usd.toFixed(4) + "</td>" +
         '<td data-label="Quota-equivalent days">' + (r.quota_equivalent_days || "n/a") + "</td>" +
         "</tr>";
@@ -1495,11 +1603,11 @@
       tr.addEventListener("mouseleave", function(){ setHot(null); });
       tr.addEventListener("focus", function(){ setHot(tr.getAttribute("data-model")); });
       tr.addEventListener("blur", function(){ setHot(null); });
-      tr.addEventListener("click", function(){ select(tr.getAttribute("data-model")); });
+      tr.addEventListener("click", function(){ select(tr.getAttribute("data-model"), tr.getAttribute("data-plan")); });
       tr.addEventListener("keydown", function(e){
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          select(tr.getAttribute("data-model"));
+          select(tr.getAttribute("data-model"), tr.getAttribute("data-plan"));
         }
       });
     });
@@ -1548,6 +1656,7 @@
     function toggleSort(){
       var key = th.getAttribute("data-key");
       if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = 1; }
+      document.getElementById("route-sort").value = sortKey;
       markSortIndicator();
       renderTable(true);
     }
@@ -1559,45 +1668,52 @@
   markSortIndicator();
 
   // ---------- runtime chart ----------
-  function renderRuntime(){
-    var svgR = document.getElementById("runtime-svg");
-    var rows = routesForTable().filter(function(r){ return r.quota_equivalent_days; })
-      .sort(function(a,b){ return a.quota_equivalent_days - b.quota_equivalent_days; });
-    var rowH = 28;
-    svgR.setAttribute("viewBox", "0 0 1040 " + Math.max(40, rows.length * rowH + 20));
-    if (!rows.length) {
-      svgR.innerHTML = '<text class="empty-state" x="480" y="24" text-anchor="middle">No runtime data yet.</text>';
-      return;
-    }
-    var maxDays = Math.max.apply(null, rows.map(function(r){ return r.quota_equivalent_days; }));
-    var scaleMax = Math.max(maxDays, 90);
-    var caps = [1, 7, 30, 90];
-    var LABEL_COL = 300, BAR_W = 620;
-    var html = "";
-    caps.forEach(function(c){
-      var x = LABEL_COL + (Math.log10(c) / Math.log10(scaleMax)) * BAR_W;
-      html += '<line class="gridline" x1="' + x + '" x2="' + x + '" y1="0" y2="' + (rows.length * rowH) + '"></line>';
-    });
-    rows.forEach(function(r, i){
-      var y = i * rowH + 14;
-      var w = Math.max(2, (Math.log10(Math.max(r.quota_equivalent_days,0.1)) / Math.log10(scaleMax)) * BAR_W);
-      var color = r.quota_equivalent_days <= 7 ? "var(--measured)" : (r.quota_equivalent_days <= 30 ? "var(--adj)" : "#B5533D");
-      html += '<g class="runtime-row" data-model="' + r.model_id + '" tabindex="0" style="--i:' + i + '">';
-      html += '<text class="axis-label" x="0" y="' + (y+4) + '">' + r.model_name + " · " + r.plan_name + '</text>';
-      html += '<rect class="runtime-bar" x="' + LABEL_COL + '" y="' + (y-7) + '" width="' + w + '" height="14" rx="7" fill="' + color + '"><title>' +
-        r.model_name + ' on ' + r.plan_name + ': ' + r.quota_equivalent_days + ' days for all tasks, $' + r.cost_per_task_usd.toFixed(4) + '/task</title></rect>';
-      html += '<text class="axis-label runtime-val" x="' + (LABEL_COL + 6 + w) + '" y="' + (y+4) + '">' + r.quota_equivalent_days + 'd</text>';
-      html += '</g>';
-    });
-    svgR.innerHTML = html;
-    Array.prototype.forEach.call(svgR.querySelectorAll(".runtime-row"), function(g){
-      var modelId = g.getAttribute("data-model");
-      g.addEventListener("mouseenter", function(){ setHot(modelId); });
-      g.addEventListener("mouseleave", function(){ setHot(null); });
-      g.addEventListener("click", function(){ select(modelId); });
-      g.addEventListener("keydown", function(e){ if (e.key === "Enter") select(modelId); });
+  var mobileExpanded = false, quotaExpanded = false;
+  function bindModelButtons(container){
+    container.querySelectorAll("button[data-model]").forEach(function(button){
+      button.addEventListener("click", function(){ select(button.dataset.model, button.dataset.plan || null); });
     });
   }
+  function renderMobileComparison(){
+    var box = document.getElementById("mobile-comparison");
+    var rows = MODELS.map(function(m){
+      var pair = cheapestFor(m.id, "sub");
+      return { m: m, pair: pair, cost: state.mode === "sub" ? (pair ? pair.cost_per_task_usd : null) : m.api_cost_per_task_usd };
+    }).filter(function(r){ return r.cost !== null; }).sort(function(a,b){ return b.m.score_pct - a.m.score_pct; });
+    box.innerHTML = '<p class="tool-note">Ranked by benchmark score. Tap a model for details.</p>' +
+      rows.slice(0, mobileExpanded ? rows.length : 5).map(function(r){
+        var planId = state.mode === "sub" ? r.pair.plan_id : "api";
+        return '<button type="button" class="model-card" data-model="' + r.m.id + '" data-plan="' + planId + '"><span class="model-card-title">' + escapeHTML(r.m.name) + '<strong>' + r.m.score_pct + '%</strong></span><span>$' + r.cost.toFixed(3) + '/task · ' + (state.mode === "sub" ? 'at full use on ' + escapeHTML(r.pair.plan_name) : 'API median') + '</span></button>';
+      }).join("");
+    if (!rows.length) box.innerHTML += '<p>No eligible subscription estimates. Review the evidence filters or use API list prices.</p>';
+    if (rows.length > 5) {
+      var more = document.createElement("button"); more.type = "button"; more.className = "text-action";
+      more.textContent = mobileExpanded ? "Show top 5" : "Show all " + rows.length + " models";
+      more.setAttribute("aria-expanded", String(mobileExpanded));
+      more.addEventListener("click", function(){ mobileExpanded = !mobileExpanded; renderMobileComparison(); box.querySelector(".text-action").focus(); }); box.appendChild(more);
+    }
+    bindModelButtons(box);
+    document.getElementById("eligibility-summary").textContent =
+      state.exploratory ? "Exploratory mode: unverified access and low-confidence estimates are included. Confirm availability before buying." : "Evidence filter: only observed or source-listed model access; low-confidence estimates excluded.";
+  }
+  function renderRuntime(){
+    var box = document.getElementById("runtime-svg");
+    var rows = routesForTable().filter(function(r){ return r.quota_equivalent_days; }).sort(function(a,b){ return a.quota_equivalent_days - b.quota_equivalent_days; });
+    if (!rows.length) { box.innerHTML = '<p>No quota estimates for the selected plans and evidence filters.</p>'; return; }
+    var max = Math.max.apply(null, rows.map(function(r){ return r.quota_equivalent_days; }));
+    box.innerHTML = rows.slice(0, quotaExpanded ? rows.length : 6).map(function(r){
+      return '<button type="button" class="quota-card" data-model="' + r.model_id + '" data-plan="' + r.plan_id + '"><span class="model-card-title">' + escapeHTML(r.model_name) + '<strong>' + r.quota_equivalent_days + ' days</strong></span><span>' + escapeHTML(r.plan_name) + ' · Access: ' + r.access_status + '</span><span class="quota-track" aria-hidden="true"><span style="width:' + (r.quota_equivalent_days / max * 100) + '%"></span></span></button>';
+    }).join("");
+    if (rows.length > 6) {
+      var more = document.createElement("button"); more.type = "button"; more.className = "text-action";
+      more.textContent = quotaExpanded ? "Show first 6" : "Show all " + rows.length + " quota estimates";
+      more.setAttribute("aria-expanded", String(quotaExpanded));
+      more.addEventListener("click", function(){ quotaExpanded = !quotaExpanded; renderRuntime(); box.querySelector(".text-action").focus(); }); box.appendChild(more);
+    }
+    bindModelButtons(box);
+  }
+  document.getElementById("route-search").addEventListener("input", function(e){ routeQuery = e.target.value.trim().toLowerCase(); renderTable(false); });
+  document.getElementById("route-sort").addEventListener("change", function(e){ sortKey = e.target.value; sortDir = sortKey === "score_pct" ? -1 : 1; markSortIndicator(); renderTable(false); });
 
   // ---------- method cards ----------
   function renderMethodCards(){
@@ -1664,55 +1780,12 @@
 
   // ---------- cross check ----------
   function renderCrossCheck(){
-    var svgC = document.getElementById("cross-svg");
     var rows = (DERIVED.cross_check && DERIVED.cross_check.pairs) || [];
     var summary = (DERIVED.cross_check && DERIVED.cross_check.summary) || {};
-    if (!rows.length) {
-      svgC.innerHTML = '<text class="empty-state" x="480" y="80" text-anchor="middle">No cross-check pairs yet. Needs models.json populated.</text>';
-      document.getElementById("cross-summary").textContent = "";
-      return;
-    }
-    var maxRatio = Math.max.apply(null, rows.map(function(r){ return r.ratio; }));
-    var LANES = [26, 58, 90, 122, 154, 186, 218, 250, 282, 314];
-    var laneLastX = [];
-    function placeLane(x){
-      for (var li = 0; li < LANES.length; li++){
-        if (laneLastX[li] === undefined || x - laneLastX[li] > 130) {
-          laneLastX[li] = x;
-          return LANES[li];
-        }
-      }
-      laneLastX[LANES.length - 1] = x;
-      return LANES[LANES.length - 1];
-    }
-    var viewH = LANES[LANES.length - 1] + 30;
-    svgC.setAttribute("viewBox", "0 0 960 " + viewH);
-    var html = "";
-    rows.slice().sort(function(a, b){ return a.ratio - b.ratio; }).forEach(function(r, ri){
-      var x = 60 + (r.ratio / maxRatio) * 780;
-      var y = placeLane(x);
-      html += '<g class="cross-point" data-model="' + r.model_id + '" style="--i:' + ri + '">';
-      html += '<circle class="cross-dot" cx="' + x + '" cy="' + y + '" r="7" fill="url(#ballAmber)" filter="url(#ballShadow)">' +
-        '<title>' + r.model_name + ' on ' + r.plan_name + ': ' + r.ratio + 'x gap between the dollar and token count (' +
-        r.tasks_by_dollars + ' vs ' + r.tasks_by_tokens + ' tasks/month)</title></circle>';
-      html += '<text class="axis-label cross-label" x="' + (x + 11) + '" y="' + (y + 4) + '">' + r.model_name + '</text>';
-      html += '</g>';
-    });
-    if (summary.median_ratio) {
-      var mx = 60 + (summary.median_ratio / maxRatio) * 780;
-      html += '<line class="cross-median" x1="' + mx + '" x2="' + mx + '" y1="0" y2="' + viewH + '" stroke="var(--measured)" stroke-width="1.5" stroke-dasharray="4 3"></line>';
-    }
-    svgC.innerHTML = html;
-    Array.prototype.forEach.call(svgC.querySelectorAll(".cross-point"), function(g){
-      var modelId = g.getAttribute("data-model");
-      var dot = g.querySelector(".cross-dot");
-      g.addEventListener("mouseenter", function(){ dot.setAttribute("r", 10); setHot(modelId); });
-      g.addEventListener("mouseleave", function(){ dot.setAttribute("r", 7); setHot(null); });
-      g.addEventListener("click", function(){ select(modelId); });
-    });
-    document.getElementById("cross-summary").textContent = summary.median_ratio
-      ? ("Median ratio " + summary.median_ratio + "x across " + summary.pair_count + " pairs, range " + summary.min_ratio + "x to " + summary.max_ratio + "x.")
-      : "";
+    var box = document.getElementById("cross-data");
+    box.innerHTML = rows.map(function(r){ return '<article class="cross-card"><h3>' + escapeHTML(r.model_name) + '</h3><p>' + escapeHTML(r.plan_name) + '</p><dl><div><dt>Dollar conversion</dt><dd>' + r.tasks_by_dollars + ' tasks/month</dd></div><div><dt>Token conversion</dt><dd>' + r.tasks_by_tokens + ' tasks/month</dd></div><div><dt>Disagreement</dt><dd>' + r.ratio + '×</dd></div></dl></article>'; }).join("");
+    document.getElementById("cross-summary").textContent = summary.median_ratio ?
+      "Median disagreement: " + summary.median_ratio + "× across " + summary.pair_count + " pairs (range " + summary.min_ratio + "–" + summary.max_ratio + "×)." : "No cross-check data yet.";
   }
 
   // ---------- sources ----------
@@ -1751,6 +1824,7 @@
     paint(true, true);
     renderTable(true);
     renderRuntime();
+    renderMobileComparison();
     renderBudgetTool();
     if (state.selectedModel) openRail(state.selectedModel, false);
   }
@@ -1763,6 +1837,7 @@
   paint(!skipOpeningAnimation, false);
   renderTable();
   renderRuntime();
+  renderMobileComparison();
   renderMethodCards();
   renderCrossCheck();
   renderSources();
@@ -1774,7 +1849,7 @@
     watch(el, "reveal");
   });
   watch(document.getElementById("runtime-svg"), "inview");
-  watch(document.getElementById("cross-svg"), "inview");
+
 
   // ---------- nav scroll-spy ----------
   (function initNav(){
