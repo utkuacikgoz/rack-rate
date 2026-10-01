@@ -10,6 +10,32 @@
 <meta property="og:image" content="/og.png">
 <meta property="og:url" content="https://rackrate.dev">
 <meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://rackrate.dev/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://rackrate.dev/#website",
+      "url": "https://rackrate.dev/",
+      "name": "Rack Rate",
+      "description": "DeepSWE benchmark scores joined to what coding subscriptions actually charge, with every number cited to a source."
+    },
+    {
+      "@type": "Dataset",
+      "@id": "https://rackrate.dev/#dataset",
+      "name": "Rack Rate: AI coding model cost per task, API list price vs. subscription price",
+      "description": "Joins DeepSWE's public coding-agent benchmark scores to real subscription plan pricing, computing cost per task under each plan's own quota model and citing every figure to its source.",
+      "url": "https://rackrate.dev/",
+      "isAccessibleForFree": true,
+      "creator": { "@type": "Organization", "name": "Rack Rate contributors", "url": "https://github.com/utkuacikgoz/rack-rate" },
+      "license": "https://github.com/utkuacikgoz/rack-rate/blob/main/LICENSE",
+      "citation": "https://github.com/datacurve-ai/deep-swe"
+    }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -298,6 +324,7 @@
   </div>
 </nav>
 
+<main>
 <section class="chart-section" id="chart">
   <div class="measure">
     <div class="panel">
@@ -395,6 +422,7 @@
     <div class="cards" id="source-cards"></div>
   </div>
 </section>
+</main>
 
 <footer class="site">
   <div class="measure">
@@ -402,7 +430,7 @@
   </div>
 </footer>
 
-<aside class="rail" id="rail" aria-hidden="true">
+<aside class="rail" id="rail" aria-hidden="true" inert>
   <button class="close" id="rail-close" aria-label="Close">&times;</button>
   <div id="rail-content"></div>
 </aside>
@@ -847,6 +875,7 @@
   function closeRail(){
     rail.classList.remove("open");
     rail.setAttribute("aria-hidden", "true");
+    rail.setAttribute("inert", "");
     state.selectedModel = null;
     writeURL();
   }
@@ -893,6 +922,7 @@
     document.getElementById("rail-content").innerHTML = html;
     rail.classList.add("open");
     rail.setAttribute("aria-hidden", "false");
+    rail.removeAttribute("inert");
   }
   var sourceById = {};
   (DATA.sources || []).forEach(function(s){ sourceById[s.id] = s; });
