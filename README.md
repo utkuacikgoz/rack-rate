@@ -58,6 +58,7 @@ Review refreshed data before committing. The fetch does not verify plan catalogs
 - `scripts/compute.py`: generates derived data and the page.
 - `scripts/validate.py`: validates data and evidence references.
 - `site/template.html`: page source.
+- `site/design.css`: editorial layout, typography, colors and responsive presentation.
 - `site/decision.js`: workload calculations shared with tests.
 - `tests/`: Python arithmetic/evidence checks and Node decision/DOM regression tests.
 

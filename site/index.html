@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rack Rate: Find the right AI coding plan</title>
-<meta name="description" content="DeepSWE benchmark scores joined to what coding subscriptions actually charge. Every number cited.">
+<title>Rack Rate — AI coding, priced for your workload</title>
+<meta name="description" content="Compare AI coding models, API costs and monthly plans. Set your budget and workload to see the estimated bill, capacity and evidence.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta property="og:title" content="Rack Rate">
 <meta property="og:description" content="Compare API spending and subscription estimates for your workload. Benchmark scores are measured separately.">
@@ -21,7 +21,7 @@
       "@id": "https://rack-rate-flax.vercel.app/#website",
       "url": "https://rack-rate-flax.vercel.app/",
       "name": "Rack Rate",
-      "description": "DeepSWE benchmark scores joined to what coding subscriptions actually charge, with every number cited to a source."
+      "description": "Compare AI coding models, API costs and monthly plans for your workload, with source-linked estimates."
     },
     {
       "@type": "Dataset",
@@ -465,6 +465,7 @@
   @media(max-width:620px){.result-metrics{grid-template-columns:1fr;gap:14px;}.result-metrics > div{display:flex;justify-content:space-between;gap:14px;}.result-metrics dt{margin:0;}.result-metrics dd{font-size:.95rem;}}
   @media (min-width:621px) and (max-width:900px){.chart-wrap,.chart-guide{display:none;}.mobile-comparison{display:block;margin:18px 0;}}
 </style>
+<link rel="stylesheet" href="design.css">
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
 </script>
@@ -473,41 +474,13 @@
 <body>
 <a class="skip-link" href="#main-content">Skip to comparisons</a>
 
-<header class="site">
-  <div class="measure hero-grid">
-    <div class="hero-copy">
-      <div class="wordmark">Rack Rate</div>
-      <h1>Stop paying <span class="h1-mult">sticker price</span> for AI coding.</h1>
-      <p class="lede lede-payoff"><strong>Same models. Different ways to pay.</strong> Compare API costs with monthly plans, based on how much you actually code.</p>
-      <p class="hero-instruction">Your budget + your workload → a model, a monthly bill, and the evidence.</p>
-      <div class="hero-proof"><span><strong>28</strong> benchmark models</span><span><strong>113</strong> coding tasks</span><a href="#method">Every estimate explained ↗</a></div>
-    </div>
-      <div class="budget-tool" id="workload">
-        <p class="budget-tool-kicker">Try your budget</p>
-        <label for="budget-input">Spend <span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="300" step="1" inputmode="numeric"></span> a month.</label>
-        <div class="budget-slider"><input type="range" id="budget-range" min="0" max="1000" step="1" value="258" aria-label="Monthly budget in dollars"><div class="budget-ticks" id="budget-ticks" aria-hidden="true"></div></div>
-
-        <label for="tasks-input">Tasks per month <input type="number" id="tasks-input" value="10" min="1" max="10000" step="1"></label>
-        <p class="tool-note">Count coding jobs, not messages. We use benchmark tasks to estimate the cost.</p>
-        <details class="eligibility-controls"><summary>Region and evidence filters</summary>
-          <label for="region-input">Plan eligibility <select id="region-input"><option value="other">Exclude China-only plans</option><option value="china" selected>Include China-only plans</option></select></label>
-          <label class="estimate-option"><input type="checkbox" id="exploratory-input" checked> Include unverified access and low-confidence estimates</label>
-          <p class="tool-note">All estimates and regions are included by default. Use these filters to narrow the comparison; check vendor availability before buying.</p>
-        </details>
-        <a class="primary-action calculator-action" href="#compare">See what fits <span aria-hidden="true">↓</span></a>
-      </div>
-
-  </div>
-</header>
-
-<nav class="jump-nav">
-  <div class="measure">
+<nav class="jump-nav" aria-label="Main navigation">
+  <div class="measure"><a class="brand" href="#top" aria-label="Rack Rate home"><svg class="brand-symbol" viewBox="0 0 32 32" aria-hidden="true"><path d="M7 9h11l7 7-7 7H7z" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="11.5" cy="16" r="1.5" fill="currentColor"/></svg><span>Rack Rate<span class="brand-dot">.</span></span></a>
     <div class="jump-nav-links">
-      <a href="#compare">Compare options</a>
+      <a href="#compare">Compare</a>
       <a href="#chart">Benchmarks</a>
-      <a href="#routes">Plan estimates</a>
-      <a href="#method">The method</a>
-      <a href="#sources">Sources</a>
+      <a href="#routes">Plans</a>
+      <a href="#method">Method</a>
     </div>
     <a class="repo-link" href="https://github.com/utkuacikgoz/rack-rate" target="_blank" rel="noopener">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"></path></svg>
@@ -516,22 +489,61 @@
   </div>
 </nav>
 
+<header class="site" id="top">
+  <div class="measure hero-grid">
+    <div class="hero-copy">
+      <p class="hero-kicker"><span aria-hidden="true"></span> The AI coding cost index</p>
+      <h1>Stop paying <br><span class="h1-mult">sticker price</span> <br>for AI coding.</h1>
+      <p class="lede lede-payoff">The same model can carry very different bills. Compare API costs and coding plans for <strong>the work you actually do.</strong></p>
+      <a class="hero-method" href="#method">Built on benchmarks. Open to scrutiny.</a>
+
+    </div>
+      <div class="budget-tool" id="workload">
+        <div class="calculator-heading"><p class="budget-tool-kicker">Make it your budget</p></div>
+        <p class="calculator-intro">Two inputs. A clearer monthly bill.</p>
+        <label class="budget-label" for="budget-input">Monthly budget <span class="field-meta">USD / MONTH</span></label>
+        <div class="budget-amount"><span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="300" step="1" inputmode="numeric" aria-describedby="budget-help"></span><span id="budget-help">up to $300</span></div>
+        <div class="budget-slider"><input type="range" id="budget-range" min="0" max="1000" step="1" value="258" aria-label="Monthly budget in dollars"><div class="budget-ticks" id="budget-ticks" aria-hidden="true"></div></div>
+        <div class="task-field"><label for="tasks-input">Coding tasks <span class="task-sublabel">per month</span></label><input type="number" id="tasks-input" value="10" min="1" max="10000" step="1" inputmode="numeric" aria-describedby="tasks-help"></div>
+        <p class="tool-note" id="tasks-help">Think completed coding jobs, rather than chat messages. Costs use benchmark task medians.</p>
+        <details class="eligibility-controls"><summary>Refine the comparison</summary>
+          <label for="region-input">Plan eligibility <select id="region-input"><option value="other">Exclude China-only plans</option><option value="china" selected>Include China-only plans</option></select></label>
+          <label class="estimate-option"><input type="checkbox" id="exploratory-input" checked> Include unverified access and low-confidence estimates</label>
+          <p class="tool-note">All estimates and regions are included by default. Use these filters to narrow the comparison; check vendor availability before buying.</p>
+        </details>
+        <a class="primary-action calculator-action" href="#compare">Find my comparison</a>
+        <p class="calculator-footer">All models. All plans. Evidence included.</p>
+      </div>
+  </div>
+  <div class="measure"><div class="coverage-strip" aria-label="Dataset coverage">
+    <p><strong>28</strong><span>benchmark models</span></p><p><strong>16</strong><span>coding plans</span></p><p><strong>113</strong><span>coding tasks</span></p>
+    <a href="#sources">Open data.<br>Traceable estimates.</a>
+  </div></div>
+</header>
+
+
+
 <main id="main-content">
 <section id="compare" class="compare-section">
   <div class="measure">
-    <p class="eyebrow">Your comparison</p>
-    <h2>Here’s what fits.</h2>
-    <p class="lede">The highest-scoring benchmark models within your budget and estimated monthly capacity. API and subscription routes compete on the same monthly bill.</p>
+    <p class="eyebrow"><span>01 /</span> Your comparison</p>
+    <h2>Your workload. Your price.</h2>
+    <p class="lede">Start with the highest-scoring model that fits your budget and estimated capacity. Then compare the bill, the limits and the evidence.</p>
     <div class="comparison-layout">
       <div class="result-panel">
 
         <div class="budget-result" id="budget-result" aria-live="polite"></div>
       </div>
       <aside class="decision-guide" aria-labelledby="decision-guide-title">
-        <h3 id="decision-guide-title">The price that matters is yours.</h3>
-        <p>A $20 plan costs $2 per task when you use it for ten tasks. An advertised full-use price can look much cheaper.</p>
-        <p>We compare the bill at your usage, check estimated capacity, and label the evidence behind each estimate.</p>
-        <a class="text-action" href="#workload">Adjust your budget or workload ↑</a>
+        <p class="eyebrow">Why usage matters</p><h3 id="decision-guide-title">A plan earns its value when you use it.</h3>
+        <p>The subscription stays the same. The cost of each task changes with how much you use it.</p>
+        <div class="usage-illustration" aria-label="Illustration: a twenty dollar plan costs two dollars per task at ten tasks, or twenty cents at one hundred tasks, if quota permits.">
+          <div><span>10 tasks</span><span class="usage-bar" style="--usage:100%"></span><strong>$2.00 <small>/ task</small></strong></div>
+          <div><span>100 tasks</span><span class="usage-bar" style="--usage:10%"></span><strong>$0.20 <small>/ task</small></strong></div>
+          <p>Same $20 plan. Illustration assumes enough quota.</p>
+        </div>
+
+        <a class="text-action" href="#workload">Fine-tune your workload</a>
         <p class="tool-note">Benchmark performance is a reference point. Your tasks and coding tools will behave differently.</p>
       </aside>
     </div>
@@ -540,14 +552,14 @@
 
 <section class="chart-section" id="chart">
   <div class="measure">
-    <p class="eyebrow">Explore the supporting data</p>
-    <h2>Benchmark score vs. cost</h2>
-    <p class="lede">Compare benchmark scores with API costs or full-use subscription estimates.</p>
+    <p class="eyebrow"><span>02 /</span> The benchmark</p>
+    <h2>Capability has a price.<br>Compare both.</h2>
+    <p class="lede">See where each model sits on coding performance and cost per task. Switch pricing views to explore the difference a plan could make.</p>
     <div class="panel">
       <div class="chart-toolbar">
         <div class="toggle-pill" data-mode="list" id="toggle-pill">
           <div class="thumb"></div>
-          <button type="button" data-mode="list" aria-pressed="true">List price</button>
+          <button type="button" data-mode="list" aria-pressed="true">API pricing</button>
           <button type="button" data-mode="sub" aria-pressed="false">Full-use estimate</button>
         </div>
         <div class="chart-legend" id="chart-legend"></div>
@@ -590,10 +602,10 @@
   </div>
 </section>
 
-<section id="routes" style="padding:0 0 40px;">
+<section id="routes" class="data-section">
   <div class="measure">
-    <h2>Best plan estimates</h2>
-    <p class="lede">Each model’s lowest full-utilization estimate among eligible selected plans. Actual cost depends on usage; use the workload tool above. All estimates are included by default; evidence labels distinguish documented from unverified access.</p>
+    <p class="eyebrow"><span>03 /</span> The plan index</p><h2>The plan behind the price.</h2>
+    <p class="lede">Each model’s lowest estimated cost per task, assuming full use of the selected plan’s quota. Use your comparison above for the bill at your actual workload.</p>
     <div class="comparison-controls">
       <label for="route-search">Find a model or plan<input type="search" id="route-search" placeholder="Search models and plans"></label>
       <label for="route-sort">Sort by<select id="route-sort"><option value="cost_per_task_usd">Full-use cost</option><option value="score_pct">Benchmark score</option><option value="model_name">Model name</option><option value="api_cost_per_task_usd">API cost</option><option value="plan_name">Plan name</option><option value="quota_equivalent_days">Quota equivalent</option></select></label>
@@ -617,18 +629,18 @@
   </div>
 </section>
 
-<section id="runtime" style="padding:0 0 40px;">
+<section id="runtime" class="data-section">
   <div class="measure">
-    <h2>Quota capacity</h2>
-    <p class="lede">Steady-state quota-equivalent days for 113 tasks, assuming continuous full use. These are not completion times: starting allowance, resets, run duration and concurrency are not modeled.</p>
+    <p class="eyebrow"><span>04 /</span> The allowance</p><h2>How far does the quota go?</h2>
+    <p class="lede">How many days of steady-state quota would cover 113 benchmark tasks? These figures describe allowance, not completion time; resets, starting balance and run duration are not modeled.</p>
     <div id="runtime-svg" class="quota-list" aria-label="Quota-equivalent days per route"></div>
   </div>
 </section>
 
-<section id="method" style="padding:0 0 40px;">
+<section id="method" class="data-section">
   <div class="measure">
-    <h2>How the estimates work</h2>
-    <p class="lede">We combine coding benchmark results with cited plan quotas. The result is a comparison model, not a guarantee of performance or future usage limits.</p>
+    <p class="eyebrow"><span>05 /</span> Behind the numbers</p><h2>No mystery math.</h2>
+    <p class="lede">Benchmark performance. Published prices. Cited quotas. We bring them together so you can inspect the assumptions behind every estimate.</p>
     <p class="tool-note" id="coverage-summary"></p>
     <p class="lede"><code>cost_per_task = price_per_month / tasks_per_month</code></p>
     <p class="tool-note">Full-use prices assume the entire estimated quota is consumed. Your effective cost is monthly price divided by tasks actually run. API-equivalent quotas measured on one model do not establish the allowance for another. Reasoning settings, caching, tool behavior and provider rates can change the result.</p>
@@ -637,26 +649,26 @@
   </div>
 </section>
 
-<section id="cross-check" style="padding:0 0 40px;">
+<section id="cross-check" class="data-section">
   <div class="measure">
-    <h2>The cross check</h2>
+    <p class="eyebrow">A note on uncertainty</p><h2>Where the estimates disagree.</h2>
     <p class="lede">Two conversions of the same quota disagree. These estimates share source data and are not independent validation. The gap is unresolved; it should lower confidence in the conversion.</p>
     <details class="cross-details"><summary>See individual comparisons</summary><div id="cross-data" class="cross-list"></div></details>
     <p id="cross-summary" class="mono" style="color:var(--ink-faint); font-size:.85rem; max-width:60ch;"></p>
   </div>
 </section>
 
-<section id="sources" style="padding:0 0 40px;">
+<section id="sources" class="data-section">
   <div class="measure">
-    <h2>Sources</h2>
-    <p class="lede">Every figure traces to one of these. Full detail in <a href="https://github.com/utkuacikgoz/rack-rate/blob/main/SOURCES.md">SOURCES.md</a>.</p>
+    <p class="eyebrow"><span>06 /</span> The source material</p><h2>Follow the numbers.</h2>
+    <p class="lede">Explore the benchmarks, quota measurements and pricing references behind this comparison. Full notes in <a href="https://github.com/utkuacikgoz/rack-rate/blob/main/SOURCES.md">SOURCES.md</a>.</p>
     <div class="cards" id="source-cards"></div>
   </div>
 </section>
 </main>
 
 <footer class="site">
-  <div class="measure">
+  <div class="measure"><div class="footer-signoff"><span>Rack Rate.</span><p>Know the model.<br>Understand the bill.</p><a href="#top">Back to top</a></div>
     <p>MIT licensed. Measured quotas from <a href="https://github.com/mahonzhan/awesome-coding-plan">Awesome Coding Plan</a> by mahonzhan, CC BY 4.0. See <a href="https://github.com/utkuacikgoz/rack-rate">the repository</a> and <a href="https://github.com/utkuacikgoz/rack-rate/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> for open work.</p>
   </div>
 </footer>
@@ -813,12 +825,14 @@
     alternatives.appendChild(summary);
     candidates.slice(0, 3).forEach(function(best, i){
       var card = document.createElement("div"); card.className = "recommendation";
-      var label = document.createElement("p"); label.className = "tool-note";
-      label.textContent = i ? "Alternative " + i : "Highest benchmark score within your limits"; card.appendChild(label);
-      card.appendChild(pickLink(best.model_id, best.model_name, best.plan_id));
-      card.appendChild(document.createTextNode(" · " + best.score_pct + "% benchmark score"));
+      var label = document.createElement("p"); label.className = "tool-note result-kicker";
+      label.textContent = i ? "Alternative " + i : "Highest score within your limits"; card.appendChild(label);
+      var modelHeading = document.createElement("div"); modelHeading.className = "result-model-heading";
+      modelHeading.appendChild(pickLink(best.model_id, best.model_name, best.plan_id));
+      var score = document.createElement("span"); score.className = "result-score";
+      score.textContent = best.score_pct + "% benchmark score"; modelHeading.appendChild(score); card.appendChild(modelHeading);
       var detail = document.createElement("p");
-      detail.innerHTML = '<span class="result-plan">' + escapeHTML(best.plan_name) + '</span><strong class="monthly-total">$' + best.monthly.toFixed(2) + '<small>/month</small></strong><span>' + opts.tasks + ' tasks · $' + best.perTask.toFixed(3) + ' per task at your usage</span>';
+      detail.innerHTML = '<span class="result-plan">' + escapeHTML(best.plan_name) + '</span><strong class="monthly-total">$' + best.monthly.toFixed(2) + '<small>/month</small></strong><span>' + opts.tasks + (opts.tasks === 1 ? ' task · $' : ' tasks · $') + best.perTask.toFixed(3) + ' per task at your usage</span>';
       card.appendChild(detail);
       var note = document.createElement("p"); note.className = "tool-note";
       note.textContent = best.plan_id === "api" ? "API estimate uses benchmark median cost. Actual runs vary; no subscription required." : evidenceSummary(best) + " Estimated capacity: " + Math.floor(best.capacity) + " tasks/month. API for the same workload: $" + best.apiMonthly.toFixed(2) + ". Break-even: about " + best.breakEven + " tasks/month.";
@@ -829,11 +843,12 @@
           term.textContent = metric[0]; value.textContent = metric[1]; item.append(term, value); metrics.appendChild(item);
         });
         card.appendChild(metrics);
-        note.textContent = "Model access: " + best.access_status + ". Costs are modeled; inspect the evidence before choosing.";
+        note.classList.add("evidence-note");
+        note.textContent = "Access: " + best.access_status + ". " + (best.access_status === "unverified" ? "This model-plan pairing needs confirmation from the vendor." : "Source-documented access; check current vendor availability.");
       }
       card.appendChild(note);
       var action = document.createElement("button"); action.type = "button"; action.className = "text-action";
-      action.textContent = "View costs and evidence";
+      action.textContent = "Inspect this estimate";
       action.addEventListener("click", function(){ select(best.model_id, best.plan_id); }); card.appendChild(action);
       (i ? alternatives : out).appendChild(card);
     });
@@ -1480,7 +1495,7 @@
     html += '</div>';
     var chosen = null;
     if (state.selectedPlan === "api") {
-      html += '<p>API list estimate: $' + (m.api_cost_per_task_usd * decisionOptions().tasks).toFixed(2) + ' for ' + decisionOptions().tasks + ' tasks. Benchmark median; actual costs vary.</p>';
+      html += '<p>API list estimate: $' + (m.api_cost_per_task_usd * decisionOptions().tasks).toFixed(2) + ' for ' + decisionOptions().tasks + (decisionOptions().tasks === 1 ? ' task.' : ' tasks.') + ' Benchmark median; actual costs vary.</p>';
     } else if (pairs.length) {
       var best = pairs[0]; chosen = best;
       html += '<div class="formula">At full utilization only:\ncost_per_task = price_per_month / tasks_per_month\n= $' + best.price_usd_month + ' / ' + best.tasks_per_month + '\n= $' + best.cost_per_task_usd.toFixed(4) + ' on ' + best.plan_name + '</div>';
