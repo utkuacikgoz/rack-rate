@@ -21,4 +21,5 @@ jobs:
       - run: python scripts/validate.py
       - run: python scripts/compute.py
       - run: git diff --exit-code -- data/derived.csv data/derived.json site/index.html
+      - run: python -m unittest discover -s tests
       - run: npm test

@@ -30,14 +30,17 @@ API = "#5C6A80"
 RULE = "#1D2735"
 
 FONT_CANDIDATES = [
+    "/System/Library/Fonts/Helvetica.ttc",
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
     "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
 ]
 FONT_BOLD_CANDIDATES = [
+    "/System/Library/Fonts/Helvetica.ttc",
     "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
     "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
 ]
 MONO_CANDIDATES = [
+    "/System/Library/Fonts/Menlo.ttc",
     "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
     "/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf",
 ]
@@ -71,7 +74,7 @@ def main():
     draw.text((margin, 70), "Rack Rate", font=h1, fill=INK)
     draw.text(
         (margin, 150),
-        "Stop paying sticker price for AI coding.",
+        "Compare AI coding costs for your workload.",
         font=h2,
         fill=INK_DIM,
     )
@@ -84,15 +87,15 @@ def main():
         draw.text((margin, y + 85), value, font=mono, fill=value_color)
 
     stat_block(
-        260, "CHEAPEST ROUTE", cheapest["model_name"],
-        f"${cheapest['cost_per_task_usd']:.3f} / task on {cheapest['plan_name']}", ADJ,
+        260, "BENCHMARK COVERAGE", "113 coding tasks",
+        f"{derived['generated_from']['models']} models; costs are estimates", ADJ,
     )
     stat_block(
-        420, "TOP SCORER", top_scorer["model_name"],
-        f"{top_scorer['score_pct']:.0f}% · ${top_scorer['cost_per_task_usd']:.3f} / task", MEASURED,
+        410, "YOUR WORKLOAD", "API spending or a monthly plan?",
+        "Compare usage, capacity and evidence", MEASURED,
     )
 
-    draw.text((margin, HEIGHT - 90), SITE_URL, font=h2, fill=API)
+    draw.text((margin, HEIGHT - 45), SITE_URL, font=h2, fill=API)
 
     out_path = SITE / "og.png"
     img.save(out_path)

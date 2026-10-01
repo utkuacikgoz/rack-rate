@@ -13,7 +13,7 @@
       "tokens_month"
     ],
     "_note": "A plan may set quota_unresolved: true to skip the required-field check above when the conversion genuinely does not exist yet. Explain why in known_gaps. requests_month's tasks_per_month divides by agent_steps_per_task from the matching model in data/models.json; agent_steps_per_task_assumed is only a plan-level fallback for a model DeepSWE hasn't measured, and is not itself required.",
-    "model_scope": "Every plan also needs model_scope: either the string 'any' for a multi-model aggregator plan (Cursor, Ollama, GitHub Copilot), or a list of provider names (matching a model's provider field) or exact model ids (for a plan with a fixed included list, like OpenCode Go) that plan can actually run. scripts/compute.py only prices a model against a plan whose model_scope allows it \u2014 a Claude subscription cannot run a Kimi model, however the arithmetic would come out."
+    "model_scope": "Explicit model IDs to consider for calculations, including unverified hypotheses. model_access separately records observed or source-listed access with a citation and date. Unverified combinations are excluded by default."
   },
   "plans": [
     {
@@ -36,9 +36,23 @@
       ],
       "available": true,
       "model_scope": [
-        "Anthropic"
+        "claude-opus-5",
+        "claude-fable-5",
+        "claude-opus-4.8",
+        "claude-sonnet-5",
+        "claude-sonnet-4.6"
       ],
-      "cross_check_tokens_month": 1588000000
+      "cross_check_tokens_month": 1588000000,
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {
+        "claude-opus-4.8": {
+          "status": "observed",
+          "source": "src-awesome-coding-plan",
+          "as_of": "2026-09-09"
+        }
+      },
+      "region": "check_vendor",
+      "plan_url": "https://www.anthropic.com/pricing"
     },
     {
       "id": "claude-max-5x",
@@ -61,8 +75,16 @@
       ],
       "available": true,
       "model_scope": [
-        "Anthropic"
-      ]
+        "claude-opus-5",
+        "claude-fable-5",
+        "claude-opus-4.8",
+        "claude-sonnet-5",
+        "claude-sonnet-4.6"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "check_vendor",
+      "plan_url": "https://www.anthropic.com/pricing"
     },
     {
       "id": "claude-max-20x",
@@ -85,8 +107,16 @@
       ],
       "available": true,
       "model_scope": [
-        "Anthropic"
-      ]
+        "claude-opus-5",
+        "claude-fable-5",
+        "claude-opus-4.8",
+        "claude-sonnet-5",
+        "claude-sonnet-4.6"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "check_vendor",
+      "plan_url": "https://www.anthropic.com/pricing"
     },
     {
       "id": "chatgpt-plus",
@@ -97,7 +127,7 @@
       "quota_usd_month": 436.48,
       "measured_against_model": "gpt-5.6-sol",
       "confidence": "measured",
-      "method": "Awesome Coding Plan measured a saturated month on gpt-5.6-sol through Codex: 8,760 requests and 616M tokens, valued at $436.48 at OpenAI's API rates. No 5-hour window figure was published for this plan, so days_for_full_run uses the monthly cap only.",
+      "method": "Awesome Coding Plan measured a saturated month on gpt-5.6-sol through Codex: 8,760 requests and 616M tokens, valued at $436.48 at OpenAI's API rates. No 5-hour window figure was published for this plan, so the quota-equivalent estimate uses the monthly cap only.",
       "evidence": [
         "src-awesome-coding-plan"
       ],
@@ -106,9 +136,24 @@
       ],
       "available": true,
       "model_scope": [
-        "OpenAI"
+        "gpt-6-astra",
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-5.6-luna",
+        "gpt-5.5",
+        "gpt-5.4"
       ],
-      "cross_check_tokens_month": 616000000
+      "cross_check_tokens_month": 616000000,
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {
+        "gpt-5.6-sol": {
+          "status": "observed",
+          "source": "src-awesome-coding-plan",
+          "as_of": "2026-09-09"
+        }
+      },
+      "region": "check_vendor",
+      "plan_url": "https://openai.com/chatgpt/pricing/"
     },
     {
       "id": "chatgpt-pro-20x",
@@ -129,8 +174,17 @@
       ],
       "available": true,
       "model_scope": [
-        "OpenAI"
-      ]
+        "gpt-6-astra",
+        "gpt-5.6-sol",
+        "gpt-5.6-terra",
+        "gpt-5.6-luna",
+        "gpt-5.5",
+        "gpt-5.4"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "check_vendor",
+      "plan_url": "https://openai.com/chatgpt/pricing/"
     },
     {
       "id": "cursor-pro",
@@ -150,7 +204,40 @@
         "src-cursor-pricing-search"
       ],
       "available": true,
-      "model_scope": "any"
+      "model_scope": [
+        "gpt-6-astra",
+        "gemini-3.8-flash",
+        "claude-opus-5",
+        "gpt-5.6-sol",
+        "claude-fable-5",
+        "gpt-5.6-terra",
+        "glm-5.3",
+        "kimi-k3",
+        "grok-4.6",
+        "gpt-5.6-luna",
+        "gpt-5.5",
+        "gemini-3.7-flash",
+        "glm-5.3-flash",
+        "deepseek-v4-pro",
+        "claude-opus-4.8",
+        "qwen-3.8-max",
+        "muse-spark-1.2",
+        "claude-sonnet-5",
+        "grok-4.5",
+        "deepseek-v4-flash",
+        "muse-spark-1.1",
+        "gpt-5.4",
+        "gemini-3.6-flash",
+        "glm-5.2",
+        "gemini-3.5-flash",
+        "kimi-k2.7-code",
+        "claude-sonnet-4.6",
+        "gemini-3.1-pro-preview"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "check_vendor",
+      "plan_url": "https://cursor.com/pricing"
     },
     {
       "id": "cursor-pro-plus",
@@ -168,7 +255,40 @@
         "src-cursor-pricing-search"
       ],
       "available": true,
-      "model_scope": "any"
+      "model_scope": [
+        "gpt-6-astra",
+        "gemini-3.8-flash",
+        "claude-opus-5",
+        "gpt-5.6-sol",
+        "claude-fable-5",
+        "gpt-5.6-terra",
+        "glm-5.3",
+        "kimi-k3",
+        "grok-4.6",
+        "gpt-5.6-luna",
+        "gpt-5.5",
+        "gemini-3.7-flash",
+        "glm-5.3-flash",
+        "deepseek-v4-pro",
+        "claude-opus-4.8",
+        "qwen-3.8-max",
+        "muse-spark-1.2",
+        "claude-sonnet-5",
+        "grok-4.5",
+        "deepseek-v4-flash",
+        "muse-spark-1.1",
+        "gpt-5.4",
+        "gemini-3.6-flash",
+        "glm-5.2",
+        "gemini-3.5-flash",
+        "kimi-k2.7-code",
+        "claude-sonnet-4.6",
+        "gemini-3.1-pro-preview"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "check_vendor",
+      "plan_url": "https://cursor.com/pricing"
     },
     {
       "id": "cursor-ultra",
@@ -186,7 +306,40 @@
         "src-cursor-pricing-search"
       ],
       "available": true,
-      "model_scope": "any"
+      "model_scope": [
+        "gpt-6-astra",
+        "gemini-3.8-flash",
+        "claude-opus-5",
+        "gpt-5.6-sol",
+        "claude-fable-5",
+        "gpt-5.6-terra",
+        "glm-5.3",
+        "kimi-k3",
+        "grok-4.6",
+        "gpt-5.6-luna",
+        "gpt-5.5",
+        "gemini-3.7-flash",
+        "glm-5.3-flash",
+        "deepseek-v4-pro",
+        "claude-opus-4.8",
+        "qwen-3.8-max",
+        "muse-spark-1.2",
+        "claude-sonnet-5",
+        "grok-4.5",
+        "deepseek-v4-flash",
+        "muse-spark-1.1",
+        "gpt-5.4",
+        "gemini-3.6-flash",
+        "glm-5.2",
+        "gemini-3.5-flash",
+        "kimi-k2.7-code",
+        "claude-sonnet-4.6",
+        "gemini-3.1-pro-preview"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "check_vendor",
+      "plan_url": "https://cursor.com/pricing"
     },
     {
       "id": "opencode-go",
@@ -205,14 +358,18 @@
       ],
       "available": true,
       "model_scope": [
-        "glm-5.1",
-        "kimi-k2.6",
-        "mimo-v2.5-pro",
-        "deepseek-v4-pro",
-        "qwen-3.6-plus",
-        "minimax-m2.7"
+        "deepseek-v4-pro"
       ],
-      "model_scope_note": "model_scope is the exact model list OpenCode Go's own page names as included, not every model DeepSWE tracks."
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {
+        "deepseek-v4-pro": {
+          "status": "listed",
+          "source": "src-awesome-coding-plan",
+          "as_of": "2026-09-09"
+        }
+      },
+      "region": "check_vendor",
+      "plan_url": "https://opencode.ai/go"
     },
     {
       "id": "ollama-pro",
@@ -230,7 +387,40 @@
         "src-awesome-coding-plan"
       ],
       "available": true,
-      "model_scope": "any"
+      "model_scope": [
+        "gpt-6-astra",
+        "gemini-3.8-flash",
+        "claude-opus-5",
+        "gpt-5.6-sol",
+        "claude-fable-5",
+        "gpt-5.6-terra",
+        "glm-5.3",
+        "kimi-k3",
+        "grok-4.6",
+        "gpt-5.6-luna",
+        "gpt-5.5",
+        "gemini-3.7-flash",
+        "glm-5.3-flash",
+        "deepseek-v4-pro",
+        "claude-opus-4.8",
+        "qwen-3.8-max",
+        "muse-spark-1.2",
+        "claude-sonnet-5",
+        "grok-4.5",
+        "deepseek-v4-flash",
+        "muse-spark-1.1",
+        "gpt-5.4",
+        "gemini-3.6-flash",
+        "glm-5.2",
+        "gemini-3.5-flash",
+        "kimi-k2.7-code",
+        "claude-sonnet-4.6",
+        "gemini-3.1-pro-preview"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "check_vendor",
+      "plan_url": "https://ollama.com/pricing"
     },
     {
       "id": "github-copilot-pro",
@@ -248,7 +438,40 @@
         "src-awesome-coding-plan"
       ],
       "available": true,
-      "model_scope": "any"
+      "model_scope": [
+        "gpt-6-astra",
+        "gemini-3.8-flash",
+        "claude-opus-5",
+        "gpt-5.6-sol",
+        "claude-fable-5",
+        "gpt-5.6-terra",
+        "glm-5.3",
+        "kimi-k3",
+        "grok-4.6",
+        "gpt-5.6-luna",
+        "gpt-5.5",
+        "gemini-3.7-flash",
+        "glm-5.3-flash",
+        "deepseek-v4-pro",
+        "claude-opus-4.8",
+        "qwen-3.8-max",
+        "muse-spark-1.2",
+        "claude-sonnet-5",
+        "grok-4.5",
+        "deepseek-v4-flash",
+        "muse-spark-1.1",
+        "gpt-5.4",
+        "gemini-3.6-flash",
+        "glm-5.2",
+        "gemini-3.5-flash",
+        "kimi-k2.7-code",
+        "claude-sonnet-4.6",
+        "gemini-3.1-pro-preview"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "check_vendor",
+      "plan_url": "https://github.com/features/copilot/plans"
     },
     {
       "id": "kimi-code-andante",
@@ -268,8 +491,13 @@
       ],
       "available": true,
       "model_scope": [
-        "Moonshot AI"
-      ]
+        "kimi-k3",
+        "kimi-k2.7-code"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "china",
+      "plan_url": "https://www.kimi.com/code"
     },
     {
       "id": "kimi-code-allegretto",
@@ -289,8 +517,13 @@
       ],
       "available": true,
       "model_scope": [
-        "Moonshot AI"
-      ]
+        "kimi-k3",
+        "kimi-k2.7-code"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "china",
+      "plan_url": "https://www.kimi.com/code"
     },
     {
       "id": "glm-coding-lite",
@@ -310,8 +543,14 @@
       ],
       "available": true,
       "model_scope": [
-        "Zhipu (Z.ai)"
-      ]
+        "glm-5.3",
+        "glm-5.3-flash",
+        "glm-5.2"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "china",
+      "plan_url": "https://bigmodel.cn/"
     },
     {
       "id": "glm-coding-pro",
@@ -331,8 +570,14 @@
       ],
       "available": true,
       "model_scope": [
-        "Zhipu (Z.ai)"
-      ]
+        "glm-5.3",
+        "glm-5.3-flash",
+        "glm-5.2"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "china",
+      "plan_url": "https://bigmodel.cn/"
     },
     {
       "id": "google-ai-pro",
@@ -352,8 +597,16 @@
       ],
       "available": true,
       "model_scope": [
-        "Google"
-      ]
+        "gemini-3.8-flash",
+        "gemini-3.7-flash",
+        "gemini-3.6-flash",
+        "gemini-3.5-flash",
+        "gemini-3.1-pro-preview"
+      ],
+      "model_scope_note": "Candidate models for arithmetic only. Access is unverified unless recorded in model_access; new benchmark models are not automatically included.",
+      "model_access": {},
+      "region": "check_vendor",
+      "plan_url": "https://gemini.google/subscriptions/"
     }
   ],
   "known_gaps": [

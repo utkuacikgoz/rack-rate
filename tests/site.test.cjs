@@ -11,6 +11,7 @@ function page(hash = '') {
     url: 'https://rack-rate.example/' + hash, runScripts: 'dangerously',
     pretendToBeVisual: true, virtualConsole,
     beforeParse(w) {
+      w.RackRateDecision = require("../site/decision.js");
       w.matchMedia = () => ({ matches: true });
       w.SVGElement.prototype.getBBox = () => ({ x: 0, y: 0, width: 80, height: 14 });
       w.HTMLElement.prototype.scrollTo = () => {};
@@ -31,7 +32,7 @@ test('budget recommendation opens the same plan, including after reload', () => 
   reloaded.window.close(); dom.window.close();
 });
 test('plan filters apply to table, runtime and model details', () => {
-  const dom = page('#plans=chatgpt-plus&model=gpt-6-astra');
+  const dom = page('#plans=chatgpt-plus&model=gpt-5.6-sol');
   const d = dom.window.document;
   assert.match(d.querySelector('#rail-content').textContent, /ChatGPT Plus/);
   assert.doesNotMatch(d.querySelector('#runtime-svg').textContent, /Pro 20x/);
@@ -50,5 +51,25 @@ test('all local navigation targets exist in the deployed directory', () => {
     if (href.startsWith('#')) assert.ok(dom.window.document.getElementById(href.slice(1)), href);
     else if (!/^[a-z]+:/i.test(href)) assert.ok(fs.existsSync(path.join('site', href)), href);
   }
+  dom.window.close();
+});
+test('workload and eligibility survive recommendation share links', () => {
+  const dom = page('#tasks=1&budget=1&region=china&exploratory=1');
+  const d = dom.window.document;
+  assert.match(d.querySelector('#budget-result').textContent, /API list estimate/);
+  assert.equal(d.querySelector('#tasks-input').value, '1');
+  d.querySelector('#budget-result button').click();
+  const reloaded = page(dom.window.location.hash);
+  assert.match(reloaded.window.document.querySelector('#rail-content').textContent, /API list estimate/);
+  assert.equal(reloaded.window.document.querySelector('#region-input').value, 'china');
+  assert.equal(reloaded.window.document.querySelector('#exploratory-input').checked, true);
+  reloaded.window.close(); dom.window.close();
+});
+test('unverified model access is not shown as an eligible plan by default', () => {
+  const dom = page('#plans=ollama-pro');
+  assert.match(dom.window.document.querySelector('#routes-body').textContent, /No priced routes/);
+  dom.window.document.querySelector('#exploratory-input').checked = true;
+  dom.window.document.querySelector('#exploratory-input').dispatchEvent(new dom.window.Event('input'));
+  assert.match(dom.window.document.querySelector('#routes-body').textContent, /Ollama Pro/);
   dom.window.close();
 });

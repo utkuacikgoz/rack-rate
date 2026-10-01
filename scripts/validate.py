@@ -3,6 +3,7 @@
 and data/sources.json. Exits non-zero on the first class of failure, after
 printing every problem it found in that class.
 """
+from datetime import date
 import json
 import sys
 from pathlib import Path
@@ -104,6 +105,26 @@ def check_plans(plans_doc, source_ids):
             if pid in ids:
                 errors.append(f"{where} duplicates plan id '{pid}'")
             ids.add(pid)
+
+        scope = p.get("model_scope")
+        if not isinstance(scope, list) or any(not isinstance(x, str) or not x for x in scope):
+            errors.append(f"{where} model_scope must be an explicit list of candidate IDs")
+        elif len(scope) != len(set(scope)):
+            errors.append(f"{where} model_scope contains duplicate IDs")
+        access = p.get("model_access", {})
+        for mid, evidence in access.items():
+            if not isinstance(scope, list) or mid not in scope:
+                errors.append(f"{where} access evidence for model outside scope: {mid}")
+            if evidence.get("status") not in {"observed", "listed"} or evidence.get("source") not in source_ids:
+                errors.append(f"{where} invalid access evidence for {mid}")
+            try:
+                date.fromisoformat(evidence.get("as_of", ""))
+            except (TypeError, ValueError):
+                errors.append(f"{where} access evidence needs ISO date for {mid}")
+        if p.get("region") not in {"china", "check_vendor"}:
+            errors.append(f"{where} missing region eligibility")
+        if not str(p.get("plan_url", "")).startswith("https://"):
+            errors.append(f"{where} missing HTTPS plan URL")
 
         price = p.get("price_usd_month")
         if price is not None and price <= 0:

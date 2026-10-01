@@ -1,178 +1,68 @@
 # Rack Rate
 
-**A hotel's rack rate is the full price on the back of the door. Most guests pay less.**
+Compare API spending and subscription estimates for your AI coding workload.
 
-API list pricing is the same instrument. Published, high, and quietly discounted for almost everyone who walks in.
+**[Live site](https://rack-rate-flax.vercel.app/)** · [Sources](SOURCES.md) · [Contributing](CONTRIBUTING.md)
 
-**[rack-rate-flax.vercel.app](https://rack-rate-flax.vercel.app)** · [method](#the-method) · [sources](SOURCES.md) · [contributing](CONTRIBUTING.md)
+Rack Rate combines a DeepSWE benchmark snapshot with cited subscription quotas. Enter a monthly budget and expected task count to compare estimated spending. Recommendations rank the highest-scoring benchmark configurations that fit both your budget and estimated capacity; ties prefer lower monthly spending. Alternatives show different models.
 
-[DeepSWE](https://deepswe.datacurve.ai/) is a public coding benchmark: 113 original tasks, hand written verifiers, no contamination. It prices every model at API list rates.
+## What the numbers mean
 
-Most people don't buy coding tokens at list rates. People pay $10 to $200 a month and work inside a quota.
+- **Benchmark score:** measured with mini-swe-agent on 113 coding tasks, not separately on every subscription's tool. Highest-scoring reasoning configuration per model; other measured configurations appear in details.
+- **API estimate:** benchmark median cost per attempt × requested tasks. Real workloads and expensive outliers can cost more; this is not a forecast based on a workload mean.
+- **Your subscription cost per task:** monthly subscription price ÷ tasks you actually expect to run. Unused quota does not reduce the bill.
+- **At full use / task:** monthly price ÷ modeled maximum task capacity. This is an optimistic utilization scenario, not the price everyone pays.
+- **Break-even:** monthly price ÷ benchmark API cost, rounded up to whole tasks. It only matters if the plan can support that workload and the route is available.
+- **Quota-equivalent days:** 113 tasks divided by steady-state daily quota capacity, using a 30-day month and recorded rolling caps. It does not estimate elapsed completion time, initial allowance, actual reset scheduling, run duration or concurrency.
 
-This repo joins the two: same scores, real prices, every number cited.
+## Evidence and eligibility
 
-## What it shows
+`model_scope` contains explicit candidate model IDs; it does **not** establish access. New benchmark models do not silently join every aggregator plan. `model_access` records source-observed or source-listed model access with its citation and date. Access is unverified otherwise.
 
-28 models, 16 plans, 178 model-and-plan pairs that are actually possible (a
-Claude subscription cannot run a Kimi model, and `data/plans.json`'s
-`model_scope` field enforces that).
+By default, the site excludes unverified model access, low-confidence plan estimates, and China-only plans. Users can explicitly include exploratory estimates and China-only plans. Other regional restrictions still require checking the vendor. Historical evidence is not a guarantee of present-day availability or support for a particular reasoning setting.
 
-| Model | Score | API list | Cheapest usable plan | |
-|---|---|---|---|---|
-| gpt-6-astra | 74.12% | $3.84 | $0.088 on ChatGPT Pro 20x | 44x |
-| claude-opus-5 | 73.65% | $10.43 | $0.082 on Claude Max 20x | 127x |
-| deepseek-v4-flash | 53.32% | $0.09 | $0.030 on Ollama Pro | 3x |
-| gemini-3.1-pro-preview | 11.73% | $1.72 | $0.575 on Ollama Pro | 3x |
+Only three model-plan combinations in the current snapshot have observed or source-listed access evidence. Other calculated combinations remain available for explicitly enabled exploration. The access catalog needs further primary-source verification; missing evidence is not replaced with a guessed catalog.
 
-The cheapest route on the page, deepseek-v4-flash on Ollama Pro, is also
-mid-pack on score (53%). The frontier here isn't as one-sided as "cheap or
-good, pick one." gemini-3.1-pro-preview shows the other end: a discounted
-route that still barely solves anything. See the chart's
-list-price-to-subscription flight for the full picture across all 28 models.
+Quota evidence and conversion confidence are separate. A quota measured on one model is downgraded when applied to another. Higher-tier multipliers and API-equivalent conversion assumptions remain estimates. The cross-check compares two conversions of shared data; its unresolved disagreement is not independent validation.
 
-## Where this stands right now
+`data/models.json` records the benchmark's generated timestamp; the page displays it. The current snapshot was generated on 2026-09-22. Source retrieval dates are recorded separately. Known gaps, including unpriced plans, are visible in the method section.
 
-`data/plans.json` has 16 real, cited subscription plans, and `data/models.json`
-has 28 real models from a DeepSWE results snapshot (the v1.1 scoring run,
-dated 2026-09-03).
+## Build and test
 
-`deepswe.datacurve.ai`, the live leaderboard, is still blocked by this build
-environment's network egress, so the snapshot in `data/models.json` was
-supplied directly rather than fetched here. `scripts/fetch_deepswe.py`'s
-endpoint and field mapping are now confirmed against that exact data (a real
-fetch outside this build environment matched it exactly), so running it from
-an unblocked network is a plain refresh, not a fix. See `src-deepswe-data` in
-`data/sources.json`. gpt-6-astra's cost figures now reflect DeepSWE's
-disclosed *current* GA pricing, confirmed as of the 2026-09-22 snapshot. An
-earlier snapshot priced it against pre-launch estimated pricing, which was
-about 48% higher. See CONTRIBUTING.md.
+The core pipeline needs Python 3.9+. DOM and decision regression tests use Node 22 and jsdom as a development dependency. The deployed site has no npm runtime dependencies.
 
-## The method
-
-```
-cost_per_task = price_per_month / tasks_per_month
+```sh
+npm ci
+python scripts/validate.py
+python scripts/compute.py
+python -m unittest discover -s tests
+npm test
 ```
 
-`tasks_per_month` comes from whichever unit the vendor publishes.
+GitHub Actions runs these checks on pull requests and main, and fails if regenerated `data/derived.csv`, `data/derived.json`, or `site/index.html` differs from committed output. Vercel serves the prebuilt `site` directory.
 
-| Quota model | Conversion | Used by |
-|---|---|---|
-| `budget` | quota in dollars / DeepSWE cost per task | Claude, ChatGPT, Cursor, OpenCode, Ollama, GitHub Copilot |
-| `credits` | weighted token sum / 10,000, Z.ai's own formula | GLM (international plan, not yet priced, see known_gaps) |
-| `requests` | request quota / agent steps per task | Kimi, GLM (domestic plan, priced here by request count) |
-| `tokens_total` | token quota / tokens per task | cross-check only |
+To refresh the benchmark from a network that can reach it:
 
-Credit and request plans in this repo were measured directly by
-[Awesome Coding Plan](https://github.com/mahonzhan/awesome-coding-plan), CC BY
-4.0. Higher subscription tiers not directly measured (Claude Max 5x/20x,
-ChatGPT Pro) are this project's own scaling of the measured entry tier by the
-vendor's advertised multiplier: a promise carried through arithmetic, marked
-`confidence: medium`, not a second measurement.
+```sh
+python scripts/fetch_deepswe.py --diff
+python scripts/fetch_deepswe.py
+```
 
-## Throughput, not just price
-
-A price per task hides the cap. `days_for_full_run` is how long all 113 tasks
-would take, limited by whichever cap bites first: the monthly quota or the
-rolling five hour window (recorded for Claude's plans, where the source
-measured it directly). This column only populates once `data/models.json` has
-a real cost-per-task figure to divide the quota by.
-
-## Where this is weakest
-
-- **DeepSWE model data is a real snapshot, not a live pull.** See "Where this
-  stands right now" above. The fetch script itself is confirmed working, it
-  just hasn't been re-run from a network that can reach the site.
-- **Only the best reasoning-effort configuration per model is captured.**
-  DeepSWE published more configurations than that (some models were run at
-  up to five effort levels: low, medium, high, xhigh, max); this repo keeps
-  only the highest-scoring one per model, per CONTRIBUTING item 7.
-- **Two models ship with `provider: "Unknown"`.** muse-spark-1.1 and
-  muse-spark-1.2 appear in the DeepSWE snapshot with no vendor identified
-  anywhere in the response. Rather than guess, this repo ships them with an
-  honest "Unknown" rather than a made-up company name.
-- **Google.** AI Pro and AI Ultra are metered in AI credits with no published
-  conversion to tokens or dollars anywhere found. AI Pro is priced as a
-  placeholder, drawn hollow once the chart has data. AI Ultra's price itself
-  is disputed across sources and is not priced at all; see `known_gaps`.
-- **Z.ai's real credit formula.** The GLM plans priced here are the
-  CNY-denominated domestic product, priced by measured request count. Z.ai's
-  international USD plan and its published credit formula (weighted token
-  sum, output weight unconfirmed) are not yet priced; see `known_gaps`.
-- **Cursor's Pro+ and Ultra tiers, and Ollama's Max and Team tiers.** Only
-  found via third-party aggregators, not a reachable vendor page. Low
-  confidence, flagged as such.
-
-`known_gaps` in `data/plans.json` lists every route that exists and is not
-priced, with the reason.
+Review refreshed data before committing. The fetch does not verify plan catalogs or refresh subscription quotas.
 
 ## Layout
 
-```
-data/models.json     DeepSWE snapshot: 28 models, best config per model, dated 2026-09-03 (v1.1)
-data/plans.json      Plans, quota models, evidence, confidence, known_gaps
-data/sources.json    Full citation record for every external dataset
-data/derived.csv     Every model and plan pair, cheapest first. Generated.
-data/derived.json    The same, plus best routes and the cross-check. Generated.
-scripts/fetch_deepswe.py   Refresh models.json from the live leaderboard. Endpoint confirmed working.
-scripts/validate.py        Schema, sanity and citation checks. Runs in CI.
-scripts/compute.py         Join, derive, write derived.* and site/index.html
-scripts/make_og.py         Render the social card from derived.json
-site/template.html   The page, with a data placeholder
-site/index.html      Built output, one self contained file. Generated.
-```
-
-## Build
-
-No dependencies for the core pipeline. Python 3.9 or newer.
-
-```bash
-python scripts/fetch_deepswe.py --diff   # see what moved upstream
-python scripts/validate.py               # catch a broken plan before it ships
-python scripts/compute.py                # rebuild derived.* and the site
-```
-
-CI validates then rebuilds, and fails if the committed output does not match
-the source data. The site ships prebuilt, so a stale `index.html` would serve
-wrong numbers quietly.
-
-`scripts/make_og.py` regenerates the social card. It needs Pillow
-(`pip install pillow`), the only dependency anywhere in this repo.
-
-## The thing this repo actually needs
-
-Two things, in order:
-
-1. **A current run of `scripts/fetch_deepswe.py`.** The endpoint and field
-   mapping are confirmed working; the snapshot in `data/models.json` is just
-   three months old. Anyone who can reach `deepswe.datacurve.ai` can refresh
-   it with `python scripts/fetch_deepswe.py`.
-2. **Measured plan quotas.** Most of what is priced here is measured by one
-   external contributor (Awesome Coding Plan) or scaled from their
-   measurement by a vendor's advertised multiplier. If you have run a plan to
-   exhaustion and counted, your number beats everything derived here.
-
-**[Submit a measured quota](../../issues/new?template=measured-quota.yml)**
-
-You do not need every field. Send what you have and say what you do not.
-Every accepted measurement is credited to your handle in `data/sources.json`.
-
-Other corrections are welcome too. See CONTRIBUTING.md for the fixes worth
-the most, in order.
+- `data/models.json`: benchmark snapshot and effort variants.
+- `data/plans.json`: candidate IDs, access evidence, quota methods, regions and known gaps.
+- `data/sources.json`: citation and retrieval records.
+- `scripts/compute.py`: generates derived data and the page.
+- `scripts/validate.py`: validates data and evidence references.
+- `site/template.html`: page source.
+- `site/decision.js`: workload calculations shared with tests.
+- `tests/`: Python arithmetic/evidence checks and Node decision/DOM regression tests.
 
 ## Credit
 
-See [SOURCES.md](SOURCES.md) for the full record. In short:
+Benchmark methodology and data: [Datacurve DeepSWE](https://github.com/datacurve-ai/deep-swe), Apache-2.0. Quota measurements: [mahonzhan's Awesome Coding Plan](https://github.com/mahonzhan/awesome-coding-plan), CC BY 4.0. Related independent work: [FeiZhuLulu's real-api-pricing](https://github.com/FeiZhuLulu/real-api-pricing). Full attribution and source limitations are in [SOURCES.md](SOURCES.md).
 
-- DeepSWE methodology and licensing: Datacurve, Apache-2.0. The benchmark
-  tasks are not mirrored here. DeepSWE carries a canary string and
-  contamination would ruin the thing this work depends on.
-- Measured quotas come from [Awesome Coding Plan](https://github.com/mahonzhan/awesome-coding-plan)
-  by mahonzhan, **CC BY 4.0**. That dataset replaced the guesses in the first
-  draft of this project.
-- [real-api-pricing](https://github.com/FeiZhuLulu/real-api-pricing) by
-  FeiZhuLulu reached a related idea first, pricing per token across other
-  leaderboards. Independent work, credited here.
-
-The join, the arithmetic and any error in it belong to this project. MIT, see
-`LICENSE`.
+The calculations and any errors in them belong to this project. MIT licensed. Benchmark task content is not mirrored here.

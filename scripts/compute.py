@@ -72,7 +72,8 @@ def tasks_per_month(model, plan):
     return None, f"unknown quota_model '{quota_model}'"
 
 
-def days_for_full_run(plan, model, tpm, task_count):
+def quota_equivalent_days(plan, model, tpm, task_count):
+    """Steady-state quota equivalent, not elapsed completion time."""
     tasks_per_day_monthly = tpm / 30
     window_hours = plan.get("rolling_window_hours")
     window_usd = plan.get("rolling_window_usd")
@@ -89,13 +90,15 @@ def days_for_full_run(plan, model, tpm, task_count):
 
 
 def model_allowed(model, plan):
-    """A plan only prices models its vendor actually lets you run. 'any'
-    covers multi-model aggregator plans (Cursor, Ollama, GitHub Copilot);
-    otherwise model_scope is a list of provider names or exact model ids."""
+    """Only explicit candidate IDs can be joined; availability is separate."""
     scope = plan.get("model_scope")
-    if scope is None or scope == "any":
-        return True
-    return model.get("provider") in scope or model.get("id") in scope
+    return isinstance(scope, list) and model.get("id") in scope
+
+
+def pair_confidence(model, plan):
+    if plan["confidence"] == "measured" and plan.get("measured_against_model") != model["id"]:
+        return "medium"
+    return plan["confidence"]
 
 
 def build_pairs(models, plans, task_count):
@@ -121,11 +124,14 @@ def build_pairs(models, plans, task_count):
                 "api_cost_per_task_usd": model["api_cost_per_task_usd"],
                 "tasks_per_month": round(tpm, 2),
                 "cost_per_task_usd": round(cost_per_task, 4),
-                "days_for_full_run": (
-                    round(d, 2) if (d := days_for_full_run(plan, model, tpm, task_count)) else None
+                "quota_equivalent_days": (
+                    round(d, 2) if (d := quota_equivalent_days(plan, model, tpm, task_count)) else None
                 ),
                 "quota_method": method,
-                "confidence": plan["confidence"],
+                "confidence": pair_confidence(model, plan),
+                "quota_confidence": plan["confidence"],
+                "access_status": plan.get("model_access", {}).get(model["id"], {}).get("status", "unverified"),
+                "region": plan["region"],
             })
     pairs.sort(key=lambda p: p["cost_per_task_usd"])
     return pairs
@@ -134,6 +140,8 @@ def build_pairs(models, plans, task_count):
 def best_routes(pairs):
     best = {}
     for p in pairs:
+        if p["access_status"] == "unverified" or p["confidence"] == "low":
+            continue
         mid = p["model_id"]
         if mid not in best or p["cost_per_task_usd"] < best[mid]["cost_per_task_usd"]:
             best[mid] = p
@@ -191,10 +199,10 @@ def write_csv(pairs, path):
     fields = [
         "model_id", "model_name", "score_pct", "plan_id", "plan_name", "provider",
         "price_usd_month", "api_cost_per_task_usd", "tasks_per_month",
-        "cost_per_task_usd", "days_for_full_run", "quota_method", "confidence",
+        "cost_per_task_usd", "quota_equivalent_days", "quota_method", "confidence", "quota_confidence", "access_status", "region",
     ]
     with path.open("w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fields)
+        writer = csv.DictWriter(f, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for row in pairs:
             writer.writerow(row)
@@ -227,6 +235,7 @@ def main():
             "models": len(models),
             "plans": len(plans),
             "task_count": task_count,
+            "benchmark_date": models_doc.get("generated_at"),
         },
         "pairs": pairs,
         "best_routes": routes,
