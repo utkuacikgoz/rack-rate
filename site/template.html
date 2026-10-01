@@ -551,7 +551,7 @@
 <section id="sources" style="padding:0 0 40px;">
   <div class="measure">
     <h2>Sources</h2>
-    <p class="lede">Every figure traces to one of these. Full detail in <a href="SOURCES.md">SOURCES.md</a>.</p>
+    <p class="lede">Every figure traces to one of these. Full detail in <a href="https://github.com/utkuacikgoz/rack-rate/blob/main/SOURCES.md">SOURCES.md</a>.</p>
     <div class="cards" id="source-cards"></div>
   </div>
 </section>
@@ -559,7 +559,7 @@
 
 <footer class="site">
   <div class="measure">
-    <p>MIT licensed. Measured quotas from <a href="https://github.com/mahonzhan/awesome-coding-plan">Awesome Coding Plan</a> by mahonzhan, CC BY 4.0. See <a href="https://github.com/utkuacikgoz/rack-rate">the repository</a> and <a href="CONTRIBUTING.md">CONTRIBUTING.md</a> for open work.</p>
+    <p>MIT licensed. Measured quotas from <a href="https://github.com/mahonzhan/awesome-coding-plan">Awesome Coding Plan</a> by mahonzhan, CC BY 4.0. See <a href="https://github.com/utkuacikgoz/rack-rate">the repository</a> and <a href="https://github.com/utkuacikgoz/rack-rate/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> for open work.</p>
   </div>
 </footer>
 
@@ -590,6 +590,7 @@
     mode: "list",          // list | sub
     selectedPlans: PLANS.filter(function(p){ return p.available !== false; }).map(function(p){ return p.id; }),
     selectedModel: null,
+    selectedPlan: null,
     hotId: null,
   };
 
@@ -600,9 +601,10 @@
     if (params.get("mode") === "sub" || params.get("mode") === "list") state.mode = params.get("mode");
     if (params.has("plans")) {
       var ids = params.get("plans").split(",").filter(Boolean);
-      if (ids.length) state.selectedPlans = ids;
+      state.selectedPlans = ids.filter(function(id){ return !!planById[id]; });
     }
     if (params.has("model")) state.selectedModel = params.get("model");
+    if (params.has("plan")) state.selectedPlan = params.get("plan");
     return true;
   }
   function writeURL(){
@@ -610,6 +612,7 @@
     params.set("mode", state.mode);
     params.set("plans", state.selectedPlans.join(","));
     if (state.selectedModel) params.set("model", state.selectedModel);
+    if (state.selectedPlan) params.set("plan", state.selectedPlan);
     history.replaceState(null, "", "#" + params.toString());
   }
   var skipOpeningAnimation = readURL();
@@ -688,14 +691,14 @@
   // ---------- budget tool ----------
   var MAX_BUDGET = 300;
   var lastPick = null, pickTimer = null;
-  function pickLink(id, name){
+  function pickLink(id, name, planId){
     var b = document.createElement("button");
     b.type = "button"; b.className = "pick-link"; b.textContent = name;
     b.addEventListener("mouseenter", function(){ setHot(id); });
     b.addEventListener("mouseleave", function(){ setHot(null); });
     b.addEventListener("focus", function(){ setHot(id); });
     b.addEventListener("blur", function(){ setHot(null); });
-    b.addEventListener("click", function(){ select(id); });
+    b.addEventListener("click", function(){ select(id, planId); });
     return b;
   }
   function strong(text){ var el = document.createElement("strong"); el.textContent = text; return el; }
@@ -727,7 +730,7 @@
       });
       key = best.model_id + "|" + best.plan_id;
       if (key === lastPick) return;
-      wrap.appendChild(pickLink(best.model_id, best.model_name));
+      wrap.appendChild(pickLink(best.model_id, best.model_name, best.plan_id));
       wrap.appendChild(document.createTextNode(" scores " + best.score_pct + "% on "));
       wrap.appendChild(strong(best.plan_name));
       wrap.appendChild(document.createTextNode(". $" + best.price_usd_month + "/mo. $" + best.cost_per_task_usd.toFixed(4) + " a task."));
@@ -1316,8 +1319,9 @@
     setTableHot(modelId);
   }
 
-  function select(modelId){
+  function select(modelId, planId){
     state.selectedModel = modelId;
+    state.selectedPlan = planId || null;
     writeURL();
     openRail(modelId, true);
   }
@@ -1346,6 +1350,7 @@
     rail.setAttribute("inert", "");
     railBackdrop.classList.remove("show");
     state.selectedModel = null;
+    state.selectedPlan = null;
     writeURL();
     setHot(null);
     if (railOpener && document.contains(railOpener)) {
@@ -1358,7 +1363,7 @@
     if (!m) return;
     if (fromUser && !rail.classList.contains("open")) railOpener = document.activeElement;
     tip.classList.remove("on");
-    var pairs = (DERIVED.pairs || []).filter(function(p){ return p.model_id === modelId; })
+    var pairs = (DERIVED.pairs || []).filter(function(p){ return p.model_id === modelId && state.selectedPlans.indexOf(p.plan_id) !== -1 && (!state.selectedPlan || p.plan_id === state.selectedPlan); })
       .sort(function(a,b){ return a.cost_per_task_usd - b.cost_per_task_usd; });
     var html = "<h3>" + m.name + "</h3>";
     html += '<div class="rail-figs">';
@@ -1538,7 +1543,7 @@
   // ---------- runtime chart ----------
   function renderRuntime(){
     var svgR = document.getElementById("runtime-svg");
-    var rows = (DERIVED.best_routes || []).filter(function(r){ return r.days_for_full_run; })
+    var rows = routesForTable().filter(function(r){ return r.days_for_full_run; })
       .sort(function(a,b){ return a.days_for_full_run - b.days_for_full_run; });
     var rowH = 28;
     svgR.setAttribute("viewBox", "0 0 1040 " + Math.max(40, rows.length * rowH + 20));
@@ -1729,6 +1734,7 @@
     renderTable(true);
     renderRuntime();
     renderBudgetTool();
+    if (state.selectedModel) openRail(state.selectedModel, false);
   }
 
   // ---------- init ----------
