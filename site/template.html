@@ -492,7 +492,6 @@
 <header class="site" id="top">
   <div class="measure hero-grid">
     <div class="hero-copy">
-      <p class="hero-kicker"><span aria-hidden="true"></span> The AI coding cost index</p>
       <h1>Stop paying <br><span class="h1-mult">sticker price</span> <br>for AI coding.</h1>
       <p class="lede lede-payoff">The same model can carry very different bills. Compare API costs and coding plans for <strong>the work you actually do.</strong></p>
       <a class="hero-method" href="#method">Built on benchmarks. Open to scrutiny.</a>
@@ -500,7 +499,6 @@
     </div>
       <div class="budget-tool" id="workload">
         <div class="calculator-heading"><p class="budget-tool-kicker">Make it your budget</p></div>
-        <p class="calculator-intro">Two inputs. A clearer monthly bill.</p>
         <label class="budget-label" for="budget-input">Monthly budget <span class="field-meta">USD / MONTH</span></label>
         <div class="budget-amount"><span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="300" step="1" inputmode="numeric" aria-describedby="budget-help"></span><span id="budget-help">up to $300</span></div>
         <div class="budget-slider"><input type="range" id="budget-range" min="0" max="1000" step="1" value="258" aria-label="Monthly budget in dollars"><div class="budget-ticks" id="budget-ticks" aria-hidden="true"></div></div>
@@ -512,12 +510,10 @@
           <p class="tool-note">All estimates and regions are included by default. Use these filters to narrow the comparison; check vendor availability before buying.</p>
         </details>
         <a class="primary-action calculator-action" href="#compare">Find my comparison</a>
-        <p class="calculator-footer">All models. All plans. Evidence included.</p>
       </div>
   </div>
   <div class="measure"><div class="coverage-strip" aria-label="Dataset coverage">
     <p><strong>28</strong><span>benchmark models</span></p><p><strong>16</strong><span>coding plans</span></p><p><strong>113</strong><span>coding tasks</span></p>
-    <a href="#sources">Open data.<br>Traceable estimates.</a>
   </div></div>
 </header>
 
@@ -526,7 +522,7 @@
 <main id="main-content">
 <section id="compare" class="compare-section">
   <div class="measure">
-    <p class="eyebrow"><span>01 /</span> Your comparison</p>
+    <p class="eyebrow">Your comparison</p>
     <h2>Your workload. Your price.</h2>
     <p class="lede">Start with the highest-scoring model that fits your budget and estimated capacity. Then compare the bill, the limits and the evidence.</p>
     <div class="comparison-layout">
@@ -552,7 +548,7 @@
 
 <section class="chart-section" id="chart">
   <div class="measure">
-    <p class="eyebrow"><span>02 /</span> The benchmark</p>
+    <p class="eyebrow">The benchmark</p>
     <h2>Capability has a price.<br>Compare both.</h2>
     <p class="lede">See where each model sits on coding performance and cost per task. Switch pricing views to explore the difference a plan could make.</p>
     <div class="panel">
@@ -604,11 +600,11 @@
 
 <section id="routes" class="data-section">
   <div class="measure">
-    <p class="eyebrow"><span>03 /</span> The plan index</p><h2>The plan behind the price.</h2>
+    <p class="eyebrow">The plan index</p><h2>The plan behind the price.</h2>
     <p class="lede">Each model’s lowest estimated cost per task, assuming full use of the selected plan’s quota. Use your comparison above for the bill at your actual workload.</p>
     <div class="comparison-controls">
       <label for="route-search">Find a model or plan<input type="search" id="route-search" placeholder="Search models and plans"></label>
-      <label for="route-sort">Sort by<select id="route-sort"><option value="cost_per_task_usd">Full-use cost</option><option value="score_pct">Benchmark score</option><option value="model_name">Model name</option><option value="api_cost_per_task_usd">API cost</option><option value="plan_name">Plan name</option><option value="quota_equivalent_days">Quota equivalent</option></select></label>
+      <label for="route-sort">Sort by<select id="route-sort"><option value="api_cost_per_task_usd">API cost</option><option value="score_pct">Benchmark score</option><option value="cost_per_task_usd" selected>Full-use cost</option><option value="model_name">Model name</option><option value="plan_name">Plan name</option><option value="quota_equivalent_days">Quota equivalent</option></select></label>
     </div>
     <p class="tool-note" id="route-count" aria-live="polite"></p>
     <div style="overflow-x:auto;">
@@ -631,7 +627,7 @@
 
 <section id="runtime" class="data-section">
   <div class="measure">
-    <p class="eyebrow"><span>04 /</span> The allowance</p><h2>How far does the quota go?</h2>
+    <p class="eyebrow">The allowance</p><h2>How far does the quota go?</h2>
     <p class="lede">How many days of steady-state quota would cover 113 benchmark tasks? These figures describe allowance, not completion time; resets, starting balance and run duration are not modeled.</p>
     <div id="runtime-svg" class="quota-list" aria-label="Quota-equivalent days per route"></div>
   </div>
@@ -639,12 +635,15 @@
 
 <section id="method" class="data-section">
   <div class="measure">
-    <p class="eyebrow"><span>05 /</span> Behind the numbers</p><h2>No mystery math.</h2>
-    <p class="lede">Benchmark performance. Published prices. Cited quotas. We bring them together so you can inspect the assumptions behind every estimate.</p>
-    <p class="tool-note" id="coverage-summary"></p>
-    <p class="lede"><code>cost_per_task = price_per_month / tasks_per_month</code></p>
-    <p class="tool-note">Full-use prices assume the entire estimated quota is consumed. Your effective cost is monthly price divided by tasks actually run. API-equivalent quotas measured on one model do not establish the allowance for another. Reasoning settings, caching, tool behavior and provider rates can change the result.</p>
-    <div class="cards" id="method-cards"></div>
+    <p class="eyebrow">Behind the numbers</p><h2>No mystery math.</h2>
+    <p class="lede">We compare benchmark costs with plan prices and quotas. Your cost per task depends on how much you use.</p>
+    <p class="method-equation">Cost per task = monthly price ÷ tasks completed</p>
+    <details class="method-details">
+      <summary>How we calculate the estimates</summary>
+      <p class="tool-note" id="coverage-summary"></p>
+      <p class="tool-note">Full-use estimates assume you consume the entire modeled quota. Quotas measured on one model may differ on another; reasoning settings, caching, tools and provider rates also affect costs.</p>
+      <div class="cards" id="method-cards"></div>
+    </details>
     <details><summary>Missing evidence and unpriced plans</summary><ul id="known-gaps"></ul></details>
   </div>
 </section>
@@ -660,7 +659,7 @@
 
 <section id="sources" class="data-section">
   <div class="measure">
-    <p class="eyebrow"><span>06 /</span> The source material</p><h2>Follow the numbers.</h2>
+    <p class="eyebrow">The source material</p><h2>Follow the numbers.</h2>
     <p class="lede">Explore the benchmarks, quota measurements and pricing references behind this comparison. Full notes in <a href="https://github.com/utkuacikgoz/rack-rate/blob/main/SOURCES.md">SOURCES.md</a>.</p>
     <div class="cards" id="source-cards"></div>
   </div>
@@ -785,7 +784,7 @@
   (function renderCoverage(){
     var observed = (DERIVED.pairs || []).filter(function(p){ return p.access_status !== "unverified"; }).length;
     var date = (DERIVED.generated_from.benchmark_date || "unknown").slice(0, 10);
-    document.getElementById("coverage-summary").textContent = MODELS.length + " benchmark models across 113 tasks. " + observed + " model-plan combinations have source-documented access. All estimates are included by default, with evidence labels. Benchmark snapshot: " + date + ". Scores were measured with mini-swe-agent, not each subscription’s tool. Costs use benchmark medians; actual workloads vary.";
+    document.getElementById("coverage-summary").textContent = MODELS.length + " models · " + TASK_COUNT + " tasks · Snapshot: " + date + ". " + observed + " model-plan pairs have source-documented access. Scores use mini-swe-agent; costs use benchmark medians, so actual workloads and subscription tools may differ.";
   })();
 
   function decisionOptions(){
