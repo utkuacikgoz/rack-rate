@@ -3,13 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rack Rate — AI coding, priced for your workload</title>
-<meta name="description" content="Compare AI coding models, API costs and monthly plans. Set your budget and workload to see the estimated bill, capacity and evidence.">
+<title>Rack Rate — Stop paying sticker price for AI coding</title>
+<meta name="description" content="Rack Rate compares AI coding models, API costs and monthly plans for your workload, using benchmark results and source-linked quota estimates.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta property="og:title" content="Rack Rate">
-<meta property="og:description" content="Compare API spending and subscription estimates for your workload. Benchmark scores are measured separately.">
-<meta property="og:image" content="/og.png">
+<meta property="og:title" content="Rack Rate — Stop paying sticker price for AI coding">
+<meta property="og:description" content="Rack Rate compares AI coding models, API costs and monthly plans for your workload, using benchmark results and source-linked quota estimates.">
+<meta property="og:image" content="https://rack-rate-flax.vercel.app/og.png">
 <meta property="og:url" content="https://rack-rate-flax.vercel.app">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Rack Rate">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://rack-rate-flax.vercel.app/">
 <script type="application/ld+json">
@@ -21,18 +23,40 @@
       "@id": "https://rack-rate-flax.vercel.app/#website",
       "url": "https://rack-rate-flax.vercel.app/",
       "name": "Rack Rate",
-      "description": "Compare AI coding models, API costs and monthly plans for your workload, with source-linked estimates."
+      "publisher": { "@id": "https://rack-rate-flax.vercel.app/#contributors" },
+      "description": "Rack Rate compares AI coding models, API costs and monthly plans for your workload, using benchmark results and source-linked quota estimates."
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://rack-rate-flax.vercel.app/#webpage",
+      "url": "https://rack-rate-flax.vercel.app/",
+      "name": "Rack Rate — Stop paying sticker price for AI coding",
+      "description": "Rack Rate compares AI coding models, API costs and monthly plans for your workload, using benchmark results and source-linked quota estimates.",
+      "isPartOf": { "@id": "https://rack-rate-flax.vercel.app/#website" },
+      "mainEntity": { "@id": "https://rack-rate-flax.vercel.app/#dataset" },
+      "isAccessibleForFree": true
     },
     {
       "@type": "Dataset",
       "@id": "https://rack-rate-flax.vercel.app/#dataset",
-      "name": "Rack Rate: AI coding model cost per task, API list price vs. subscription price",
+      "name": "Rack Rate AI coding cost and plan comparison",
       "description": "Joins DeepSWE's public coding-agent benchmark scores to cited subscription plan pricing, computing cost per task under each plan's own quota model and citing every figure to its source.",
       "url": "https://rack-rate-flax.vercel.app/",
       "isAccessibleForFree": true,
-      "creator": { "@type": "Organization", "name": "Rack Rate contributors", "url": "https://github.com/utkuacikgoz/rack-rate" },
+      "creator": { "@id": "https://rack-rate-flax.vercel.app/#contributors" },
+      "mainEntityOfPage": { "@id": "https://rack-rate-flax.vercel.app/#webpage" },
       "license": "https://github.com/utkuacikgoz/rack-rate/blob/main/LICENSE",
-      "citation": "https://github.com/datacurve-ai/deep-swe"
+      "citation": "https://github.com/datacurve-ai/deep-swe",
+      "distribution": [
+        { "@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": "https://raw.githubusercontent.com/utkuacikgoz/rack-rate/main/data/derived.csv" },
+        { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://raw.githubusercontent.com/utkuacikgoz/rack-rate/main/data/derived.json" }
+      ]
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://rack-rate-flax.vercel.app/#contributors",
+      "name": "Rack Rate contributors",
+      "url": "https://github.com/utkuacikgoz/rack-rate"
     }
   ]
 }
@@ -493,8 +517,8 @@
   <div class="measure hero-grid">
     <div class="hero-copy">
       <h1>Stop paying <br><span class="h1-mult">sticker price</span> <br>for AI coding.</h1>
-      <p class="lede lede-payoff">The same model can carry very different bills. Compare API costs and coding plans for <strong>the work you actually do.</strong></p>
-      <a class="hero-method" href="#method">Built on benchmarks. Open to scrutiny.</a>
+      <p class="lede lede-payoff">Rack Rate compares AI coding models, API costs and monthly plans for <strong>the work you actually do.</strong></p>
+      <a class="hero-method" href="#method">How the comparison works</a>
 
     </div>
       <div class="budget-tool" id="workload">
@@ -636,13 +660,21 @@
 <section id="method" class="data-section">
   <div class="measure">
     <p class="eyebrow">Behind the numbers</p><h2>No mystery math.</h2>
-    <p class="lede">We compare benchmark costs with plan prices and quotas. Your cost per task depends on how much you use.</p>
+    <p class="lede">We pair <a href="https://github.com/datacurve-ai/deep-swe">DeepSWE coding benchmarks</a> with plan prices and quotas. Your cost per task depends on how much you use.</p>
+    <p class="tool-note dataset-context">Benchmark snapshot: <time datetime="__BENCHMARK_DATE__">__BENCHMARK_DATE__</time>.</p>
     <p class="method-equation">Cost per task = monthly price ÷ tasks completed</p>
     <details class="method-details">
       <summary>How we calculate the estimates</summary>
       <p class="tool-note" id="coverage-summary"></p>
       <p class="tool-note">Full-use estimates assume you consume the entire modeled quota. Quotas measured on one model may differ on another; reasoning settings, caching, tools and provider rates also affect costs.</p>
+      <div class="method-answers">
+        <h3>When is a subscription cheaper than API use?</h3>
+        <p>When its monthly price is below your estimated API bill and its quota covers your workload. Your comparison shows the break-even task count.</p>
+        <h3>Are all model-plan combinations verified?</h3>
+        <p>No. Access labels distinguish observed, source-listed and unverified combinations. Check current model availability with the provider before buying.</p>
+      </div>
       <div class="cards" id="method-cards"></div>
+      <p class="tool-note">Inspect the comparison data: <a href="https://raw.githubusercontent.com/utkuacikgoz/rack-rate/main/data/derived.csv">CSV</a> · <a href="https://raw.githubusercontent.com/utkuacikgoz/rack-rate/main/data/derived.json">JSON</a>.</p>
     </details>
     <details><summary>Missing evidence and unpriced plans</summary><ul id="known-gaps"></ul></details>
   </div>
@@ -653,7 +685,7 @@
     <p class="eyebrow">A note on uncertainty</p><h2>Where the estimates disagree.</h2>
     <p class="lede">Two conversions of the same quota disagree. These estimates share source data and are not independent validation. The gap is unresolved; it should lower confidence in the conversion.</p>
     <details class="cross-details"><summary>See individual comparisons</summary><div id="cross-data" class="cross-list"></div></details>
-    <p id="cross-summary" class="mono" style="color:var(--ink-faint); font-size:.85rem; max-width:60ch;"></p>
+    <p id="cross-summary" class="mono" style="color:var(--ink-faint); font-size:.875rem; max-width:60ch;"></p>
   </div>
 </section>
 
@@ -668,7 +700,7 @@
 
 <footer class="site">
   <div class="measure"><div class="footer-signoff"><span>Rack Rate.</span><p>Know the model.<br>Understand the bill.</p><a href="#top">Back to top</a></div>
-    <p>MIT licensed. Measured quotas from <a href="https://github.com/mahonzhan/awesome-coding-plan">Awesome Coding Plan</a> by mahonzhan, CC BY 4.0. See <a href="https://github.com/utkuacikgoz/rack-rate">the repository</a> and <a href="https://github.com/utkuacikgoz/rack-rate/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> for open work.</p>
+    <p>MIT licensed. Measured quotas from <a href="https://github.com/mahonzhan/awesome-coding-plan">Awesome Coding Plan</a> by mahonzhan, CC BY 4.0. Maintained by <a href="https://github.com/utkuacikgoz/rack-rate">Rack Rate contributors</a>. See <a href="https://github.com/utkuacikgoz/rack-rate/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> for open work.</p>
   </div>
 </footer>
 

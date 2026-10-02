@@ -214,6 +214,8 @@ def inject_into_template(payload):
     if marker not in template:
         raise SystemExit("site/template.html is missing the __RACK_RATE_DATA__ placeholder")
     injected = template.replace(marker, json.dumps(payload, separators=(",", ":")))
+    benchmark_date = (payload["derived"]["generated_from"].get("benchmark_date") or "")[:10]
+    injected = injected.replace("__BENCHMARK_DATE__", benchmark_date)
     (SITE / "index.html").write_text(injected)
 
 
