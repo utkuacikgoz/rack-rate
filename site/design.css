@@ -22,7 +22,6 @@ body { font-size: 16px; line-height: 1.65; }
 h2 { font-size: clamp(2rem, 3.3vw, 3.1rem); line-height: 1.08; letter-spacing: -.04em; font-weight: 400; margin-bottom: 22px; }
 .lede { max-width: 65ch; font-size: 1.05rem; line-height: 1.7; }
 .eyebrow { font: 11px/1.5 "JetBrains Mono", monospace; letter-spacing: .13em; margin: 0 0 22px; color: var(--ink-dim); }
-.eyebrow > span { color: var(--adj); margin-right: 15px; }
 .jump-nav { position: sticky; top: 0; padding: 21px 0; background: rgba(18,19,16,.96); border-bottom: 1px solid var(--rule); backdrop-filter: blur(18px); }
 .jump-nav::after { height: 1px; background: var(--adj); }
 .jump-nav .measure { gap: 32px; }
@@ -35,8 +34,6 @@ h2 { font-size: clamp(2rem, 3.3vw, 3.1rem); line-height: 1.08; letter-spacing: -
 .repo-link { padding-left: 25px; border-left: 1px solid var(--rule); }
 header.site { padding: 78px 0 0; border: 0; }
 .hero-grid { grid-template-columns: minmax(0, 1.5fr) minmax(340px, 1fr); gap: clamp(40px, 6vw, 96px); align-items: center; }
-.hero-kicker { display: flex; align-items: center; gap: 11px; color: var(--ink-dim); font: 11px/1.6 "JetBrains Mono", monospace; text-transform: uppercase; letter-spacing: .1em; margin: 0 0 28px; }
-.hero-kicker > span { width: 6px; height: 6px; background: var(--adj); }
 .hero-copy h1 { font-size: clamp(3.4rem, 6.1vw, 5.6rem); line-height: .98; font-weight: 400; letter-spacing: -.057em; margin: 0 0 30px; }
 .h1-mult { white-space: nowrap; }
 .hero-copy .lede-payoff { font-size: 1.1rem; line-height: 1.65; max-width: 39ch; margin-bottom: 23px; }
@@ -44,9 +41,8 @@ header.site { padding: 78px 0 0; border: 0; }
 .hero-method { display: inline-flex; align-items: center; gap: 18px; color: var(--ink-dim); font-size: .8rem; text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 7px; }
 .hero-grid > .budget-tool { --ink: var(--paper-ink); --ink-dim: var(--paper-muted); --rule: #cbcbbd; --sunk: #e6e3d7; --adj: #434a35; color-scheme: light; background: var(--paper); color: var(--paper-ink); padding: 30px; border: none; border-radius: 3px; box-shadow: 0 16px 48px #0002; max-width: none; }
 .budget-tool:hover, .budget-tool:focus-within { background: var(--paper); }
-.calculator-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.calculator-heading { margin-bottom: 26px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .budget-tool .budget-tool-kicker { font-family: inherit; font-size: 1.2rem; text-transform: none; letter-spacing: -.035em; font-weight: 600; margin: 0; }
-.calculator-intro { font-size: .82rem; margin: 3px 0 25px; color: var(--paper-muted); }
 .budget-tool .budget-label { font-size: .8rem; margin: 0; display: flex; justify-content: space-between; }
 .field-meta { font: 9px "JetBrains Mono", monospace; letter-spacing: .05em; color: var(--paper-muted); }
 .budget-amount { display: flex; align-items: baseline; justify-content: space-between; margin: 4px 0 12px; }
@@ -59,7 +55,13 @@ header.site { padding: 78px 0 0; border: 0; }
 .task-field { border-top: 1px solid var(--rule); padding-top: 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .budget-tool .task-field label { display: block; margin: 0; font-size: .95rem; }
 .task-sublabel { display: block; font-size: .72rem; color: var(--paper-muted); }
-.budget-tool #tasks-input { width: 80px; margin: 0; padding: 8px 12px; background: transparent; border: 1px solid #b4b8a6; border-radius: 2px; font-size: 1.4rem; text-align: right; }
+.budget-tool #tasks-input { appearance: textfield; -moz-appearance: textfield; flex: none; width: calc(5ch + 28px); min-height: 48px; margin: 0; padding: 8px 12px; background: transparent; border: 1px solid #b4b8a6; border-radius: 2px; font-size: 1.25rem; line-height: 1.4; text-align: center; font-variant-numeric: tabular-nums; }
+.budget-tool #tasks-input::-webkit-inner-spin-button, .budget-tool #tasks-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.budget-tool #tasks-input:focus-visible { outline: none; border-color: #434a35; box-shadow: 0 0 0 2px #434a35; }
+.method-equation { color: var(--ink); font-size: 1.2rem; line-height: 1.6; border-left: 2px solid var(--adj); padding-left: 18px; margin: 24px 0; }
+.method-details > summary { padding: 10px 0; min-height: 44px; }
+.method-details .tool-note { max-width: 85ch; }
+.method-details .cards { margin-bottom: 24px; }
 .budget-tool .tool-note { font-size: .72rem; line-height: 1.55; margin: 13px 0 0; }
 .eligibility-controls { margin: 18px 0 0; padding: 0; border: 0; }
 .eligibility-controls summary { font-size: .78rem; padding: 8px 0; min-height: 36px; }
@@ -68,12 +70,11 @@ header.site { padding: 78px 0 0; border: 0; }
 .budget-tool input[type="checkbox"] { accent-color: #434a35; }
 .budget-tool .calculator-action { border-radius: 2px; background: #25291d; color: #f4f0e6; font-size: .9rem; font-weight: 400; min-height: 52px; padding-inline: 18px; margin-top: 15px; }
 .calculator-action:hover { background: #3f4732; }
-.calculator-footer { font-size: .65rem; text-align: center; color: var(--paper-muted); margin: 12px 0 0; }
-.coverage-strip { display: grid; grid-template-columns: repeat(3, 1fr) 1.2fr; border-block: 1px solid var(--rule); margin-top: 72px; padding: 28px 0; gap: 24px; }
+.coverage-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block: 1px solid var(--rule); margin-top: 72px; padding: 28px 0; gap: 24px; }
+.coverage-strip p:last-child { border-right: 0; }
 .coverage-strip p { display: flex; align-items: center; gap: 16px; margin: 0; border-right: 1px solid var(--rule); }
 .coverage-strip strong { font-size: 2rem; color: var(--ink); font-weight: 400; letter-spacing: -.05em; line-height: 1; }
 .coverage-strip span { font-size: .75rem; line-height: 1.4; max-width: 10ch; }
-.coverage-strip > a { justify-self: end; position: relative; padding-right: 0; color: var(--ink-dim); font-size: .8rem; line-height: 1.5; text-decoration: none; }
 .compare-section, section.chart-section, .data-section { padding: 80px 0; }
 .data-section > .measure, section.chart-section > .measure { position: relative; }
 .data-section > .measure::before, section.chart-section > .measure::before { content: ""; position: absolute; top: -80px; left: clamp(24px, 5vw, 80px); right: clamp(24px, 5vw, 80px); height: 1px; background: var(--rule); }
@@ -173,7 +174,6 @@ aside.rail { width: min(490px, 94vw); padding: 36px; }
   header.site { padding-top: 54px; }
   .hero-copy h1 { font-size: 5.65vw; }
   .hero-copy .lede-payoff { font-size: 1rem; }
-  .hero-kicker { font-size: 9px; gap: 8px; }
   .hero-grid > .budget-tool { padding: 22px; }
   .comparison-layout { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 28px; }
   .result-panel { padding: 24px; }
@@ -194,14 +194,11 @@ aside.rail { width: min(490px, 94vw); padding: 36px; }
   .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   header.site { padding-top: 38px; }
   .hero-copy h1 { font-size: clamp(2.9rem, 11.5vw, 4.8rem); line-height: 1; margin-bottom: 24px; }
-  .hero-kicker { font-size: 9px; margin-bottom: 22px; }
   .hero-copy .lede-payoff { font-size: 1rem; max-width: 40ch; }
   .hero-method { font-size: .72rem; }
   .hero-grid > .budget-tool { max-width: none; padding: 26px; }
-  .coverage-strip { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px 16px; margin-top: 36px; padding: 26px 0; }
-  .coverage-strip p { gap: 12px; }
-  .coverage-strip p:nth-child(2) { border: 0; }
-  .coverage-strip > a { justify-self: start; padding-right: 0; font-size: .75rem; }
+  .coverage-strip { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px 16px; margin-top: 36px; padding: 26px 0; }
+  .coverage-strip p { flex-direction: column; align-items: flex-start; gap: 10px; }
   .coverage-strip strong { font-size: 1.8rem; }
   .coverage-strip span { font-size: .7rem; }
   .compare-section, section.chart-section, .data-section { padding: 52px 0; }
@@ -241,7 +238,6 @@ aside.rail { width: min(490px, 94vw); padding: 36px; }
   .coverage-strip { gap: 20px 12px; }
   .coverage-strip strong { font-size: 1.6rem; }
   .coverage-strip span { font-size: .65rem; }
-  .coverage-strip > a { font-size: .65rem; padding-right: 0; }
 }
 /* Flat controls and immediate hero text keep the interface calm and readable. */
 .brand-symbol { display: block; padding: 0; }
