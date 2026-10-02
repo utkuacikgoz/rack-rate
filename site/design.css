@@ -38,7 +38,7 @@ header.site { padding: 78px 0 0; border: 0; }
 .h1-mult { white-space: nowrap; }
 .hero-copy .lede-payoff { font-size: 1.1rem; line-height: 1.65; max-width: 39ch; margin-bottom: 23px; }
 .lede-payoff strong { font-weight: 400; }
-.hero-method { display: inline-flex; align-items: center; gap: 18px; color: var(--ink-dim); font-size: .875rem; text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 7px; }
+.hero-action { display: inline-flex; align-items: center; gap: 18px; color: var(--ink-dim); font-size: .875rem; text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 7px; }
 .hero-grid > .budget-tool { --ink: var(--paper-ink); --ink-dim: var(--paper-muted); --rule: #cbcbbd; --sunk: #e6e3d7; --adj: #434a35; color-scheme: light; background: var(--paper); color: var(--paper-ink); padding: 30px; border: none; border-radius: 3px; box-shadow: 0 16px 48px #0002; max-width: none; }
 .budget-tool:hover, .budget-tool:focus-within { background: var(--paper); }
 .calculator-heading { margin-bottom: 26px; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
@@ -195,7 +195,7 @@ aside.rail { width: min(490px, 94vw); padding: 36px; }
   header.site { padding-top: 38px; }
   .hero-copy h1 { font-size: clamp(2.9rem, 11.5vw, 4.8rem); line-height: 1; margin-bottom: 24px; }
   .hero-copy .lede-payoff { font-size: 1rem; max-width: 40ch; }
-  .hero-method { font-size: .875rem; }
+  .hero-action { font-size: .875rem; }
   .hero-grid > .budget-tool { max-width: none; padding: 26px; }
   .coverage-strip { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px 16px; margin-top: 36px; padding: 26px 0; }
   .coverage-strip p { flex-direction: column; align-items: flex-start; gap: 10px; }
@@ -264,11 +264,16 @@ table.routes th[aria-sort] .sort-button { color: var(--adj); text-decoration: un
 /* Shared reading measure and minimum size for explanatory and supporting text. */
 :root { --text-small: .875rem; --prose-width: 65ch; }
 .tool-note, .evidence-note, .method-details .tool-note, #method > .measure > .tool-note, footer.site > .measure > p { max-width: var(--prose-width); }
-.hero-method { border-bottom: 0; text-decoration: none; }
-.hero-method:hover { text-decoration: underline; }
+.hero-action { color: var(--adj); border-bottom: 1px solid var(--adj); text-decoration: none; min-height: 44px; }
+.hero-action:hover { text-decoration: underline; }
 .tool-note, .chart-legend .item, .toggle-pill button, details.plan-picker summary, table.routes, .formula, .formula-given, .rail-fig .label, .rail .formula, .rail .evidence-list li, .rail-effort-table, .cross-card dl { font-size: var(--text-small); }
-.hero-method, .dataset-context { line-height: 1.6; }
+.hero-action, .dataset-context { line-height: 1.6; }
 .method-answers { margin-top: 24px; max-width: var(--prose-width); }
 .method-answers h3 { font-size: 1rem; margin-top: 24px; }
 .method-answers p { font-size: 1rem; }
 @media (min-width: 701px) and (max-width: 900px) { .usage-illustration > div { grid-template-columns: 1fr 112px; } .usage-bar { grid-column: 1 / -1; grid-row: 2; } .usage-illustration strong { grid-column: 2; grid-row: 1; } }
+
+/* Put the selected state on its control so text and fill stay together. */
+.toggle-pill .thumb { display: none; }
+.toggle-pill button { transition: none; }
+.toggle-pill button[aria-pressed="true"] { color: var(--bg); background: var(--adj); }
