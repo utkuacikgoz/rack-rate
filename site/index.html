@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rack Rate — Stop paying sticker price for AI coding</title>
-<meta name="description" content="Rack Rate compares AI coding models, API costs and monthly plans for your workload, using benchmark results and source-linked quota estimates.">
+<title>Rack Rate: Stop paying sticker price for AI coding</title>
+<meta name="description" content="Find the best AI coding model and monthly plan for your budget. Compares benchmark scores, API cost and plan cost per task, with every number sourced.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta property="og:title" content="Rack Rate — Stop paying sticker price for AI coding">
-<meta property="og:description" content="Rack Rate compares AI coding models, API costs and monthly plans for your workload, using benchmark results and source-linked quota estimates.">
+<meta property="og:title" content="Rack Rate: Stop paying sticker price for AI coding">
+<meta property="og:description" content="Find the best AI coding model and monthly plan for your budget. Compares benchmark scores, API cost and plan cost per task, with every number sourced.">
 <meta property="og:image" content="https://rack-rate-flax.vercel.app/og.png">
 <meta property="og:url" content="https://rack-rate-flax.vercel.app">
 <meta property="og:type" content="website">
@@ -24,14 +24,14 @@
       "url": "https://rack-rate-flax.vercel.app/",
       "name": "Rack Rate",
       "publisher": { "@id": "https://rack-rate-flax.vercel.app/#contributors" },
-      "description": "Rack Rate compares AI coding models, API costs and monthly plans for your workload, using benchmark results and source-linked quota estimates."
+      "description": "Find the best AI coding model and monthly plan for your budget. Compares benchmark scores, API cost and plan cost per task, with every number sourced."
     },
     {
       "@type": "WebPage",
       "@id": "https://rack-rate-flax.vercel.app/#webpage",
       "url": "https://rack-rate-flax.vercel.app/",
-      "name": "Rack Rate — Stop paying sticker price for AI coding",
-      "description": "Rack Rate compares AI coding models, API costs and monthly plans for your workload, using benchmark results and source-linked quota estimates.",
+      "name": "Rack Rate: Stop paying sticker price for AI coding",
+      "description": "Find the best AI coding model and monthly plan for your budget. Compares benchmark scores, API cost and plan cost per task, with every number sourced.",
       "isPartOf": { "@id": "https://rack-rate-flax.vercel.app/#website" },
       "mainEntity": { "@id": "https://rack-rate-flax.vercel.app/#dataset" },
       "isAccessibleForFree": true
@@ -488,6 +488,11 @@
   .result-metrics dt{font-size:.8rem;color:var(--ink-dim);margin-bottom:8px;}.result-metrics dd{margin:0;color:var(--ink);font-size:1.05rem;font-variant-numeric:tabular-nums;}
   @media(max-width:620px){.result-metrics{grid-template-columns:1fr;gap:14px;}.result-metrics > div{display:flex;justify-content:space-between;gap:14px;}.result-metrics dt{margin:0;}.result-metrics dd{font-size:.95rem;}}
   @media (min-width:621px) and (max-width:900px){.chart-wrap,.chart-guide{display:none;}.mobile-comparison{display:block;margin:18px 0;}}
+  .use-cases-label{ font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.75rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-dim); margin:26px 0 10px; }
+  .use-cases{ list-style:none; padding:0; margin:0; display:grid; gap:9px; max-width:52ch; }
+  .use-cases li{ position:relative; padding-left:26px; font-size:1rem; line-height:1.45; color:var(--ink); }
+  .use-cases li::before{ content:"\2192"; position:absolute; left:0; top:0; color:var(--adj); font-family:"JetBrains Mono",ui-monospace,monospace; }
+  .hero-copy .hero-action{ margin-top:28px; }
 </style>
 <link rel="stylesheet" href="design.css">
 <script>
@@ -517,7 +522,13 @@
   <div class="measure hero-grid">
     <div class="hero-copy">
       <h1>Stop paying <br><span class="h1-mult">sticker price</span> <br>for AI coding.</h1>
-      <p class="lede lede-payoff">Rack Rate compares AI coding models, API costs and monthly plans for <strong>the work you actually do.</strong></p>
+      <p class="lede lede-payoff">You can use the same AI coding models two ways: pay per API call, or buy a monthly plan from Claude, ChatGPT, Cursor and others. The plan is often far cheaper. <strong>Rack Rate shows which model and plan give you the best results for your budget.</strong></p>
+      <p class="use-cases-label">Use it to</p>
+      <ul class="use-cases">
+        <li>Pick between Claude, ChatGPT, Cursor and other plans</li>
+        <li>Check whether a plan beats paying per API call</li>
+        <li>Find the cheapest model that still scores well</li>
+      </ul>
       <a class="hero-action" href="#workload">Compare my costs</a>
 
     </div>
