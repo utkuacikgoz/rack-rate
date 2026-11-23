@@ -61,440 +61,10 @@
   ]
 }
 </script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  /* Nimbus Sans L, self-hosted. (URW)++ Design & Development, 2014. Free,
-     metric-compatible with Helvetica. Only Regular/Italic/Bold/Bold Italic
-     exist, no 500/600 weight, so font-weight in this file only ever asks
-     for 400 or 600 (which the browser synthesizes as bold from these). */
-  @font-face{ font-family:"Nimbus Sans L"; src:url("fonts/NimbusSanL-Regular.woff2") format("woff2"); font-weight:400; font-style:normal; font-display:swap; }
-  @font-face{ font-family:"Nimbus Sans L"; src:url("fonts/NimbusSanL-Italic.woff2") format("woff2"); font-weight:400; font-style:italic; font-display:swap; }
-  @font-face{ font-family:"Nimbus Sans L"; src:url("fonts/NimbusSanL-Bold.woff2") format("woff2"); font-weight:600 700; font-style:normal; font-display:swap; }
-  @font-face{ font-family:"Nimbus Sans L"; src:url("fonts/NimbusSanL-BoldItalic.woff2") format("woff2"); font-weight:600 700; font-style:italic; font-display:swap; }
-  :root{
-    --bg:#0A0E15;
-    --panel:#111825;
-    --sunk:#0B1119;
-    --rule:#1D2735;
-    --rule-soft:#161F2C;
-    --ink:#EAEEF5;
-    --ink-dim:#A3B0C4;
-    --ink-faint:#7382A0;
-    --adj:#FFB020;
-    --measured:#45D97F;
-    --api:#5C6A80;
-    --ease:cubic-bezier(.22,.61,.36,1);
-    --dur-reprice:0.85s;
-    --dur-rail:0.4s;
-    --dur-toggle:0.32s;
-    --dur-hover:0.2s;
-  }
-  @media (prefers-reduced-motion: reduce){
-    :root{ --dur-reprice:0.01ms; --dur-rail:0.01ms; --dur-toggle:0.01ms; --dur-hover:0.01ms; }
-  }
-  *{ box-sizing:border-box; }
-  html{ background:var(--bg); font-size:17.5px; }
-  @media (prefers-reduced-motion: no-preference){ html{ scroll-behavior:smooth; } }
-  section[id], #workload{ scroll-margin-top:80px; }
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink-dim);
-    font-family:"Nimbus Sans L","Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size:17.5px;
-    line-height:1.62;
-    text-wrap:pretty;
-  }
-  h1,h2,h3,h4{
-    color:var(--ink);
-    font-weight:600;
-    letter-spacing:-.032em;
-    text-wrap:balance;
-    margin:0 0 .5em;
-  }
-  h1{ font-size:clamp(2.4rem,5vw,3.6rem); line-height:1.05; }
-  h2{ font-size:1.7rem; letter-spacing:-.02em; }
-  h3{ font-size:1.15rem; letter-spacing:-.01em; }
-  p{ margin:0 0 1em; }
-  a{ color:var(--adj); text-decoration-color:rgba(255,176,32,.4); transition:text-decoration-color .15s ease; }
-  a:hover{ text-decoration-color:var(--adj); }
-  a:focus-visible, button:focus-visible{ outline:2px solid var(--adj); outline-offset:2px; border-radius:2px; }
-  code, .mono{ font-family:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
-  .tab-figs, table, .hero-figs, .rail-figs, .formula, code, .chart, figcaption .value{
-    font-variant-numeric: tabular-nums;
-  }
-  /* One content grid aligns the introduction, comparison and evidence. */
-  .measure{ margin-left:auto; margin-right:auto; padding:0 clamp(20px,4vw,56px); }
-  .lede{ max-width:62ch; }
-  @media (min-width:1500px){ h1{ font-size:4.2rem; } }
-
-  header.site{ padding:56px 0 36px; border-bottom:1px solid var(--rule); }
-  .hero-grid{ display:grid; grid-template-columns:minmax(0,1fr); gap:40px; max-width:1360px; }
-  .hero-tool{ display:flex; }
-  @media (min-width:960px){
-    .hero-grid{ grid-template-columns:minmax(0,1fr) minmax(340px,420px); align-items:center; gap:64px; }
-    .hero-tool{ align-items:center; }
-  }
-  @media (prefers-reduced-motion: no-preference){
-    header.site .wordmark{ animation:heroIn .5s .02s var(--ease) both; }
-    header.site h1{ animation:heroIn .6s .07s var(--ease) both; }
-    header.site .lede-payoff{ animation:heroIn .6s .16s var(--ease) both; }
-    header.site .hero-figs{ animation:heroIn .6s .24s var(--ease) both; }
-
-    header.site .hero-cite{ animation:heroIn .6s .4s var(--ease) both; }
-  }
-  @keyframes heroIn{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
-  .wordmark{
-    position:relative; z-index:10; display:inline-block; font-family:"JetBrains Mono",monospace; font-size:.85rem;
-    letter-spacing:.14em; text-transform:uppercase; margin-bottom:18px; cursor:help;
-    background:#F4F1EA; color:#12151B; padding:4px 10px; border-radius:6px;
-    transition:background .15s ease;
-  }
-  .wordmark:hover, .wordmark:focus-visible{ background:#FFFFFF; }
-  .wordmark::after{
-    content:attr(data-tooltip); position:absolute; top:calc(100% + 10px); left:0; z-index:5;
-    width:260px; padding:10px 12px; border-radius:8px; background:var(--sunk); border:1px solid var(--rule);
-    color:var(--ink-dim); font-family:"Nimbus Sans L","Helvetica Neue",Helvetica,Arial,sans-serif;
-    font-size:.82rem; text-transform:none; letter-spacing:normal; line-height:1.45;
-    opacity:0; transform:translateY(-4px); pointer-events:none; transition:opacity .15s ease, transform .15s ease;
-  }
-  .wordmark:hover::after, .wordmark:focus-visible::after{ opacity:1; transform:translateY(0); }
-  .wordmark:focus-visible{ outline:2px solid var(--adj); outline-offset:3px; }
-  .lede-payoff{ font-size:1.2rem; color:var(--ink-dim); max-width:56ch; }
-  .lede-payoff strong{ color:var(--ink); }
-  .h1-mult{ color:var(--adj); white-space:nowrap; }
-  .hero-figs{ display:flex; gap:36px; flex-wrap:wrap; margin-top:28px; }
-  .hero-fig{ min-width:140px; }
-  .hero-fig .value{ font-family:"JetBrains Mono",monospace; font-size:1.6rem; color:var(--adj); font-weight:500; }
-  .hero-fig .label{ color:var(--ink-faint); font-size:.85rem; margin-top:2px; }
-  .hero-cite{ font-size:.85rem; color:var(--ink-faint); margin-top:22px; max-width:60ch; }
-  .hero-cite a{ color:var(--ink-faint); text-decoration-color:rgba(115,130,160,.5); }
-
-  .budget-tool{ --mx:50%; --my:50%; width:100%; padding:24px 26px; background:radial-gradient(340px circle at var(--mx) var(--my), rgba(255,176,32,calc(.07 * var(--spot))), transparent 70%), var(--panel); border:1px solid var(--rule); border-radius:14px; box-shadow:0 24px 60px -30px rgba(0,0,0,.6); transition:--spot .4s ease, border-color .3s ease; }
-  .budget-tool:hover, .budget-tool:focus-within{ --spot:1; border-color:#2A3850; }
-  .budget-tool-kicker{ font-family:"JetBrains Mono",monospace; font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; color:var(--adj); margin-bottom:10px; }
-  .budget-tool label{ font-size:1.1rem; color:var(--ink); display:flex; align-items:center; flex-wrap:wrap; gap:2px; }
-  .budget-input-wrap{
-    display:inline-flex; align-items:center; gap:1px; margin:0 2px;
-    background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:10px;
-    padding:5px 10px 5px 12px; box-shadow:inset 0 1px 2px rgba(0,0,0,.35);
-    font-family:"JetBrains Mono",monospace; color:var(--adj); font-weight:600;
-    transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
-  }
-  .budget-input-wrap:focus-within{
-    border-color:rgba(255,176,32,.55); background:rgba(255,176,32,.06);
-    box-shadow:inset 0 1px 2px rgba(0,0,0,.35), 0 0 0 3px rgba(255,176,32,.18);
-  }
-  #budget-input{
-    box-sizing:content-box; width:3ch; text-align:center; line-height:1.2;
-    background:transparent; border:0; outline:none;
-    color:var(--adj); font-family:"JetBrains Mono",monospace; font-size:1.05rem; font-weight:600;
-    padding:0 2px;
-  }
-  #budget-input::-webkit-outer-spin-button, #budget-input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
-  .budget-result{ margin-top:12px; font-size:.95rem; color:var(--ink-dim); min-height:1.4em; }
-  .budget-result strong{ color:var(--ink); }
-  .budget-result .none{ color:var(--ink-faint); }
-
-  .panel{ background:var(--panel); border:1px solid var(--rule); border-radius:14px; padding:28px; }
-  section.chart-section{ padding:40px 0; }
-  .chart-toolbar{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
-  .chart-legend{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; font-size:.8rem; color:var(--ink-faint); }
-  .chart-legend .item{ display:flex; align-items:center; gap:6px; white-space:nowrap; }
-  .chart-legend .swatch{ width:10px; height:10px; border-radius:50%; flex:none; }
-  .chart-legend .swatch.measured{ background:var(--measured); }
-  .chart-legend .swatch.published{ background:var(--adj); }
-  .chart-legend .swatch.derived{ background:none; border:1.4px solid var(--adj); }
-
-  .toggle-pill{ position:relative; display:flex; width:min(100%,320px); background:var(--sunk); border:1px solid var(--rule); border-radius:999px; padding:3px; font-family:"JetBrains Mono",monospace; font-size:.82rem; }
-  .toggle-pill button{ position:relative; z-index:1; flex:1; text-align:center; white-space:nowrap; background:none; border:0; color:var(--ink-faint); padding:7px 10px; border-radius:999px; cursor:pointer; transition:color var(--dur-toggle) var(--ease); }
-  .toggle-pill button[aria-pressed="true"]{ color:var(--bg); }
-  .toggle-pill .thumb{ position:absolute; top:3px; bottom:3px; left:3px; width:calc(50% - 3px); background:var(--adj); border-radius:999px; box-shadow:0 4px 14px -4px rgba(255,176,32,.55); transition:transform .5s var(--spring); }
-  .toggle-pill button:active{ transform:scale(.97); }
-  .toggle-pill[data-mode="sub"] .thumb{ transform:translateX(100%); }
-
-
-  .chart-wrap{ position:relative; }
-  svg.chart{ width:100%; height:auto; display:block; touch-action:manipulation; }
-  svg.chart:focus{ outline:none; }
-  svg.chart:focus-visible{ outline:2px solid var(--adj); outline-offset:4px; border-radius:8px; }
-  .gridline{ stroke:var(--rule-soft); stroke-width:1; }
-  .axis-label{ fill:var(--ink-faint); font-size:11px; font-family:"JetBrains Mono",monospace; }
-  .node{ transition:opacity var(--dur-hover) var(--ease); }
-  .node.dim{ opacity:.26; }
-  .node .connector{ stroke:var(--api); stroke-width:1; stroke-dasharray:2 3; }
-  .node .range-bar{ display:none; }
-  .node .halo{ fill:var(--adj); opacity:0; transition:opacity var(--dur-hover) var(--ease); }
-  .node.hot .halo{ opacity:.16; }
-  .node .dot{ transition:cx var(--dur-reprice) var(--out-expo), cy var(--dur-reprice) var(--out-expo), r .35s var(--spring); transition-delay:var(--wave,0ms), var(--wave,0ms), 0ms; cursor:pointer; filter:url(#ballShadow); transform-box:fill-box; transform-origin:center; }
-  @media (prefers-reduced-motion: no-preference){
-    .node.enter .dot{ animation:dotPop .6s var(--spring) both; animation-delay:var(--enter,0ms); }
-    .node.enter .label{ animation:labelIn .7s var(--out-expo) both; animation-delay:calc(var(--enter,0ms) + 160ms); }
-    .node.hot .halo{ transform-box:fill-box; transform-origin:center; animation:haloBreath 1.8s ease-in-out infinite; }
-  }
-  @keyframes dotPop{ from{ opacity:0; transform:scale(.15); } to{ opacity:1; transform:scale(1); } }
-  .node .dot.measured{ fill:url(#ballGreen); stroke:none; }
-  .node .dot.published{ fill:url(#ballAmber); stroke:none; }
-  .node .dot.derived{ fill:none; stroke:var(--adj); stroke-width:1.6; filter:none; }
-  .node .leader{ stroke:var(--ink-faint); stroke-width:1; opacity:0; transition:opacity .45s var(--ease); }
-  .node .connector{ transition:opacity .45s var(--ease); }
-  .chart.repricing .leader, .chart.repricing .connector{ opacity:0 !important; transition-duration:.12s; }
-  .node.leadered .leader{ opacity:.6; }
-  .node .label{ fill:var(--ink-dim); font-size:12px; font-family:"JetBrains Mono",monospace; transition:transform var(--dur-reprice) var(--out-expo), fill var(--dur-hover) var(--ease); transition-delay:var(--wave,0ms), 0ms; }
-  .node.hot .label{ fill:var(--ink); }
-  .crosshair{ stroke:var(--adj); stroke-width:1; stroke-dasharray:3 3; opacity:0; pointer-events:none; }
-  .crosshair.on{ opacity:.7; }
-  .crosshair-chip{ fill:var(--sunk); stroke:var(--rule); }
-  .crosshair-chip text{ fill:var(--adj); font-family:"JetBrains Mono",monospace; font-size:11px; }
-  .empty-state{ fill:var(--ink-faint); font-size:13px; }
-  .runtime-row, .cross-point{ cursor:pointer; }
-  .runtime-row:hover .runtime-bar{ filter:brightness(1.25); }
-  .runtime-row:focus-visible{ outline:2px solid var(--adj); outline-offset:2px; }
-  .cross-dot{ transition:r var(--dur-hover) var(--ease); }
-
-  .plan-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
-  .plan-chip{ font-family:"JetBrains Mono",monospace; font-size:.8rem; background:var(--sunk); border:1px solid var(--rule); color:var(--ink-dim); padding:6px 12px; border-radius:999px; cursor:pointer; transition:border-color .2s ease, color .2s ease, background .2s ease, transform .3s var(--spring); }
-  .plan-chip:hover{ border-color:#2A3850; color:var(--ink); }
-  .plan-chip:active{ transform:scale(.94); }
-  .plan-chip[aria-pressed="true"]{ border-color:var(--adj); color:var(--adj); background:rgba(255,176,32,.07); }
-  details.plan-picker summary{ cursor:pointer; color:var(--ink-dim); font-family:"JetBrains Mono",monospace; font-size:.85rem; }
-
-  .rail-backdrop{
-    position:fixed; inset:0; background:rgba(5,7,11,.6); backdrop-filter:blur(3px); z-index:19;
-    opacity:0; pointer-events:none; transition:opacity var(--dur-rail) var(--ease);
-  }
-  .rail-backdrop.show{ opacity:1; pointer-events:auto; }
-  aside.rail{ position:fixed; top:0; right:0; height:100%; width:min(420px,92vw); background:var(--panel); border-left:1px solid var(--rule); padding:28px; overflow-y:auto; transform:translateX(100%); box-shadow:-24px 0 48px -24px rgba(0,0,0,.5); transition:transform var(--dur-rail) var(--ease); z-index:20; }
-  aside.rail.open{ transform:translateX(0); }
-  aside.rail .close{ background:none; border:0; color:var(--ink-faint); font-size:1.4rem; line-height:1; cursor:pointer; position:absolute; top:18px; right:18px; width:38px; height:38px; border-radius:50%; display:grid; place-items:center; transition:background .2s ease, color .2s ease, transform .4s var(--spring); }
-  aside.rail .close:hover{ background:var(--sunk); color:var(--ink); transform:rotate(90deg); }
-  aside.rail .close:active{ transform:rotate(90deg) scale(.9); }
-  .rail-figs{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:20px 0; }
-  .rail-fig .value{ font-family:"JetBrains Mono",monospace; color:var(--adj); font-size:1.15rem; }
-  .rail-fig .label{ color:var(--ink-faint); font-size:.8rem; }
-  .rail .formula{ background:var(--sunk); border:1px solid var(--rule); border-radius:8px; padding:14px; font-size:.85rem; white-space:pre-wrap; }
-  .rail .evidence-list{ list-style:none; padding:0; margin:12px 0 0; }
-  .rail .evidence-list li{ padding:8px 0; border-top:1px solid var(--rule-soft); font-size:.85rem; }
-  .rail-effort-table{ width:100%; border-collapse:collapse; font-size:.8rem; }
-  .rail-effort-table th{ text-align:left; color:var(--ink-faint); font-weight:500; padding:4px 6px; border-bottom:1px solid var(--rule); }
-  .rail-effort-table td{ padding:5px 6px; border-bottom:1px solid var(--rule-soft); color:var(--ink-dim); }
-  .rail-effort-table tr.active td{ color:var(--adj); }
-
-  table.routes{ width:100%; border-collapse:collapse; font-size:.85rem; }
-  table.routes th{ text-align:left; color:var(--ink-faint); font-weight:500; font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; padding:10px 12px; border-bottom:1px solid var(--rule); cursor:pointer; user-select:none; white-space:nowrap; transition:color .15s ease; }
-  table.routes th[data-key]:hover{ color:var(--ink); }
-  table.routes th[data-key]:focus-visible{ color:var(--ink); outline:2px solid var(--adj); outline-offset:-2px; border-radius:3px; }
-  table.routes th[data-key]::after{ content:"\2195"; display:inline-block; margin-left:5px; opacity:.35; font-weight:400; }
-  table.routes th[aria-sort]::after{ opacity:1; color:var(--adj); }
-  table.routes th[aria-sort="ascending"]::after{ content:"\2191"; }
-  table.routes th[aria-sort="descending"]::after{ content:"\2193"; }
-  table.routes td{ padding:9px 12px; border-bottom:1px solid var(--rule-soft); transition:background .12s ease; }
-  table.routes tr{ cursor:pointer; }
-  table.routes tr:hover td{ background:var(--sunk); }
-  table.routes tr:focus-visible td{ background:var(--sunk); }
-  table.routes tr:focus-visible{ outline:2px solid var(--adj); outline-offset:-2px; }
-  .confidence-dot{ display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; }
-  .confidence-dot.measured{ background:var(--measured); }
-  .confidence-dot.published{ background:var(--adj); }
-  .confidence-dot.derived{ background:none; border:1.4px solid var(--adj); }
-  .confidence-dot.unresolved{ background:none; border:1px dashed var(--ink-faint); }
-
-  @media (max-width:620px){
-    table.routes thead{ display:none; }
-    table.routes, table.routes tbody, table.routes tr, table.routes td{ display:block; width:100%; }
-    table.routes tr{ border:1px solid var(--rule-soft); border-radius:10px; margin-bottom:10px; padding:8px 12px; }
-    table.routes td{ border:0; padding:6px 0; display:flex; justify-content:space-between; gap:12px; }
-    table.routes td::before{ content:attr(data-label); color:var(--ink-faint); font-size:.8rem; text-transform:uppercase; }
-  }
-
-  .cards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px; margin-top:20px; }
-  @media (max-width:620px){ .cards{ grid-template-columns:1fr; } }
-  .card{ --mx:50%; --my:50%; background:radial-gradient(280px circle at var(--mx) var(--my), rgba(255,176,32,calc(.085 * var(--spot))), transparent 70%), var(--panel); border:1px solid var(--rule); border-radius:12px; padding:20px; min-width:0; overflow-wrap:anywhere; transition:border-color .2s ease, transform .35s var(--out-expo), box-shadow .3s ease, --spot .35s ease; }
-  .card:hover{ --spot:1; border-color:#2A3850; transform:translateY(-3px); box-shadow:0 16px 32px -18px rgba(0,0,0,.6); }
-  .card a{ overflow-wrap:anywhere; word-break:break-word; }
-  .card-kicker{ font-family:"JetBrains Mono",monospace; font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; color:var(--adj); margin-bottom:6px; }
-  .formula{ font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.8rem; line-height:1.6; color:var(--ink); white-space:pre-wrap; overflow-wrap:anywhere; background:var(--sunk); border:1px solid var(--rule); border-radius:8px; padding:14px 16px; }
-  .formula-given{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin-top:12px; padding:0 2px; font-family:"JetBrains Mono",monospace; font-size:.8rem; color:var(--ink-faint); }
-  .formula-given b{ color:var(--adj); font-weight:600; text-align:right; }
-  .lede code{ color:var(--adj); background:var(--sunk); border:1px solid var(--rule); border-radius:6px; padding:3px 9px; font-size:.85rem; -webkit-box-decoration-break:clone; box-decoration-break:clone; }
-  .license-badge{ display:inline-block; font-family:"JetBrains Mono",monospace; font-size:.8rem; padding:3px 8px; border-radius:5px; background:var(--sunk); border:1px solid var(--rule); color:var(--ink-faint); }
-  .license-badge.open{ color:var(--measured); border-color:var(--measured); }
-
-  .jump-nav{ position:sticky; top:0; z-index:5; background:rgba(10,14,21,.9); backdrop-filter:blur(6px); border-bottom:1px solid var(--rule); padding:12px 0; transition:box-shadow .3s ease; }
-  .jump-nav.stuck{ box-shadow:0 14px 32px -22px rgba(0,0,0,.9); }
-  .jump-nav::after{ content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; background:linear-gradient(90deg,var(--adj),#FFE4A8); transform:scaleX(var(--p,0)); transform-origin:left; pointer-events:none; }
-  .jump-nav .measure{ display:flex; align-items:center; justify-content:space-between; gap:20px; }
-  .jump-nav-links{ position:relative; display:flex; gap:22px; overflow-x:auto; white-space:nowrap; padding-bottom:7px; margin-bottom:-7px; scrollbar-width:none; }
-  .jump-nav-links::-webkit-scrollbar{ display:none; }
-  .jump-nav a{ color:var(--ink-faint); font-family:"JetBrains Mono",monospace; font-size:.8rem; text-decoration:none; transition:color .2s ease; }
-  .jump-nav a:hover, .jump-nav a[aria-current]{ color:var(--ink); }
-  .nav-ink{ position:absolute; left:0; bottom:0; height:2px; width:0; border-radius:2px; background:var(--adj); opacity:0; transition:transform .6s var(--out-expo), width .6s var(--out-expo), opacity .3s ease; pointer-events:none; }
-  .nav-ink.on{ opacity:1; }
-  .repo-link{ display:flex; align-items:center; gap:6px; flex:none; }
-  .repo-link svg{ opacity:.8; }
-  @media (max-width:620px){ .repo-link span{ display:none; } }
-
-  footer.site{ padding:48px 0 80px; border-top:1px solid var(--rule); color:var(--ink-faint); font-size:.85rem; }
-
-  /* ---- motion & interaction system ---- */
-  :root{ --out-expo:cubic-bezier(.16,1,.3,1); --spring:cubic-bezier(.34,1.56,.64,1); }
-  @property --spot{ syntax:"<number>"; inherits:false; initial-value:0; }
-  @keyframes fadeUp{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:none; } }
-  @keyframes swapIn{ from{ opacity:0; transform:translateY(8px); } to{ opacity:1; transform:none; } }
-  @keyframes railIn{ from{ opacity:0; transform:translateX(18px); } to{ opacity:1; transform:none; } }
-  @keyframes effGrow{ from{ transform:scaleX(0); } to{ transform:scaleX(1); } }
-  @keyframes chipIn{ from{ opacity:0; transform:translateY(8px) scale(.94); } to{ opacity:1; transform:none; } }
-  @keyframes haloBreath{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.3); } }
-
-  html.motion [data-reveal]{ opacity:0; transform:translateY(26px); }
-  html.motion [data-reveal].in{ opacity:1; transform:none; transition:opacity .8s var(--out-expo), transform 1s var(--out-expo); transition-delay:calc(var(--i,0) * 85ms); }
-
-  html.motion .chart.pending .node .dot, html.motion .chart.pending .node .label, html.motion .chart.pending .node .leader{ opacity:0; }
-  html.motion .chart.pending .node .dot{ transform:scale(.15); }
-
-  html.motion #runtime-svg .runtime-bar{ clip-path:inset(0 100% 0 0 round 7px); transition:clip-path 1s var(--out-expo); transition-delay:calc(var(--i,0) * 30ms); }
-  html.motion #runtime-svg.in .runtime-bar{ clip-path:inset(0 0 0 0 round 7px); }
-  html.motion #runtime-svg .runtime-val{ opacity:0; transition:opacity .5s ease; transition-delay:calc(var(--i,0) * 30ms + 420ms); }
-  html.motion #runtime-svg.in .runtime-val{ opacity:1; }
-  html.motion #cross-svg .cross-dot{ transform-box:fill-box; transform-origin:center; transform:scale(0); transition:transform .7s var(--spring), r .35s var(--spring); transition-delay:calc(var(--i,0) * 70ms), 0ms; }
-  html.motion #cross-svg.in .cross-dot{ transform:scale(1); }
-  html.motion #cross-svg .cross-label{ opacity:0; transition:opacity .5s ease; transition-delay:calc(var(--i,0) * 70ms + 300ms); }
-  html.motion #cross-svg.in .cross-label{ opacity:1; }
-  html.motion #cross-svg .cross-median{ clip-path:inset(0 0 100% 0); transition:clip-path 1.1s var(--out-expo) .2s; }
-  html.motion #cross-svg.in .cross-median{ clip-path:inset(0 0 0 0); }
-
-  .chart[data-focus="measured"] .node:not([data-conf="measured"]),
-  .chart[data-focus="published"] .node:not([data-conf="published"]),
-  .chart[data-focus="derived"] .node:not([data-conf="derived"]){ opacity:.14; }
-  .chart.near{ cursor:pointer; }
-
-  .chart-legend .item{ padding:4px 8px; margin:-4px -8px; border-radius:8px; cursor:default; transition:background .15s ease, color .15s ease; }
-  .chart-legend .item:hover, .chart-legend .item:focus-visible{ background:rgba(255,255,255,.05); color:var(--ink-dim); }
-  @media (prefers-reduced-motion: no-preference){
-    .chart-legend .item{ animation:fadeUp .5s var(--out-expo) both; animation-delay:calc(var(--i,0) * 70ms); }
-    details.plan-picker[open] .plan-chip{ animation:chipIn .5s var(--spring) both; animation-delay:calc(var(--i,0) * 22ms); }
-    aside.rail.open #rail-content > *{ animation:railIn .65s var(--out-expo) both; animation-delay:calc(var(--i,0) * 55ms + 140ms); }
-    aside.rail.open .eff-bar i{ animation:effGrow .9s var(--out-expo) both; animation-delay:calc(var(--i,0) * 70ms + 520ms); }
-    .budget-result.swap > *{ animation:swapIn .5s var(--out-expo) both; }
-    details.plan-picker{ interpolate-size:allow-keywords; }
-    details.plan-picker::details-content{ block-size:0; overflow:clip; transition:block-size .45s var(--out-expo), content-visibility .45s allow-discrete; }
-    details.plan-picker[open]::details-content{ block-size:auto; }
-  }
-
-  .chart-tip{ position:absolute; left:0; top:0; z-index:4; min-width:176px; max-width:310px; padding:13px 15px 12px; background:rgba(11,17,25,.94); border:1px solid #2A3850; border-radius:12px; box-shadow:0 20px 44px -18px rgba(0,0,0,.85); backdrop-filter:blur(10px); pointer-events:none; opacity:0; transform:translate3d(var(--tx,0px),var(--ty,0px),0) scale(.95); transform-origin:var(--ox,0%) 50%; transition:opacity .14s ease, transform .26s var(--out-expo); }
-  .chart-tip.on{ opacity:1; transform:translate3d(var(--tx,0px),var(--ty,0px),0) scale(1); }
-  .tip-score{ font-family:"JetBrains Mono",monospace; font-weight:600; font-size:1.35rem; line-height:1.1; color:var(--ink); }
-  .tip-name{ color:var(--ink-dim); font-size:.85rem; margin:3px 0 9px; }
-  .tip-row{ display:flex; align-items:center; gap:9px; font-size:.82rem; color:var(--ink-dim); padding:2px 0; }
-  .tip-row b{ color:var(--ink); font-family:"JetBrains Mono",monospace; font-weight:500; }
-  .tip-key{ width:14px; height:3px; border-radius:2px; flex:none; background:var(--api); }
-  .tip-key.measured{ background:var(--measured); }
-  .tip-key.published{ background:var(--adj); }
-  .tip-gain{ margin-top:7px; padding-top:7px; border-top:1px solid var(--rule); color:var(--ink-faint); font-size:.82rem; }
-  .tip-gain b{ color:var(--adj); font-family:"JetBrains Mono",monospace; font-weight:600; }
-
-  .budget-slider{ position:relative; margin-top:20px; padding-bottom:30px; }
-  .budget-slider input[type="range"]{ -webkit-appearance:none; appearance:none; display:block; width:100%; height:22px; margin:0; background:transparent; cursor:pointer; --fill:25%; }
-  .budget-slider input[type="range"]::-webkit-slider-runnable-track{ height:4px; border-radius:2px; background:linear-gradient(90deg,var(--adj) var(--fill),var(--rule) var(--fill)); }
-  .budget-slider input[type="range"]::-moz-range-track{ height:4px; border-radius:2px; background:var(--rule); }
-  .budget-slider input[type="range"]::-moz-range-progress{ height:4px; border-radius:2px; background:var(--adj); }
-  .budget-slider input[type="range"]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:20px; height:20px; margin-top:-8px; border:0; border-radius:50%; background:radial-gradient(circle at 35% 30%,#FFE4A8,#FFB020 38%,#C67900); box-shadow:0 2px 6px rgba(0,0,0,.55), 0 0 0 0 rgba(255,176,32,.2); transition:transform .3s var(--spring), box-shadow .3s ease; }
-  .budget-slider input[type="range"]::-moz-range-thumb{ width:20px; height:20px; border:0; border-radius:50%; background:radial-gradient(circle at 35% 30%,#FFE4A8,#FFB020 38%,#C67900); box-shadow:0 2px 6px rgba(0,0,0,.55); transition:transform .3s var(--spring), box-shadow .3s ease; }
-  .budget-slider input[type="range"]:hover::-webkit-slider-thumb{ transform:scale(1.12); }
-  .budget-slider input[type="range"]:active::-webkit-slider-thumb{ transform:scale(1.28); box-shadow:0 2px 6px rgba(0,0,0,.55), 0 0 0 7px rgba(255,176,32,.18); }
-  .budget-slider input[type="range"]:focus-visible{ outline:none; }
-  .budget-slider input[type="range"]:focus-visible::-webkit-slider-thumb{ box-shadow:0 2px 6px rgba(0,0,0,.55), 0 0 0 5px rgba(255,176,32,.3); }
-  .budget-slider input[type="range"]:focus-visible::-moz-range-thumb{ box-shadow:0 2px 6px rgba(0,0,0,.55), 0 0 0 5px rgba(255,176,32,.3); }
-  .budget-ticks{ position:absolute; left:10px; right:10px; top:17px; height:0; pointer-events:none; }
-  .budget-ticks .tick{ position:absolute; top:0; width:2px; height:7px; margin-left:-1px; border-radius:1px; background:#2A3850; transition:background .3s ease, height .35s var(--spring); }
-  .budget-ticks .tick.on{ background:var(--adj); height:10px; }
-  .budget-ticks .tick span{ position:absolute; top:14px; left:50%; transform:translateX(-50%); font-family:"JetBrains Mono",monospace; font-size:.8rem; color:var(--ink-faint); transition:color .3s ease; }
-  .budget-ticks .tick.on span{ color:var(--ink-dim); }
-
-  .pick-link{ all:unset; cursor:pointer; color:var(--ink); font-weight:600; border-bottom:1px solid rgba(255,176,32,.5); transition:color .15s ease, border-color .15s ease; }
-  .pick-link:hover{ color:var(--adj); border-color:var(--adj); }
-  .pick-link:focus-visible{ outline:2px solid var(--adj); outline-offset:2px; border-radius:2px; }
-
-  .eff-bar{ display:block; height:3px; margin-top:5px; border-radius:2px; background:var(--rule); overflow:hidden; }
-  .eff-bar i{ display:block; height:100%; width:var(--w); border-radius:2px; background:var(--adj); transform-origin:left; }
-  table.routes td{ font-variant-numeric:tabular-nums; }
-
-  @keyframes labelIn{ from{ opacity:0; } to{ opacity:1; } }
-  .chart-tip.snap{ transition:opacity .14s ease; }
-  .sr-only{ position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
-  button.item{ font:inherit; color:inherit; background:none; border:0; text-align:left; cursor:pointer; }
-  .chart-legend button.item[aria-pressed="true"]{ background:rgba(255,176,32,.12); color:var(--ink); }
-  .tip-key.derived{ background:transparent; box-shadow:inset 0 0 0 1px var(--adj); }
-  .row-in{ animation:fadeUp .55s var(--out-expo) both; }
-
-  @media (prefers-reduced-motion: reduce){
-    *, *::before, *::after{ animation-duration:.01ms !important; animation-iteration-count:1 !important; animation-delay:0ms !important; transition-duration:.01ms !important; transition-delay:0ms !important; scroll-behavior:auto !important; }
-  }
-  #tasks-input, #region-input{max-width:100%;background:var(--sunk);color:var(--ink);border:1px solid var(--rule);border-radius:6px;padding:8px;font:inherit;}
-  #tasks-input{width:90px;margin-left:auto;} #region-input{width:100%;}
-  .budget-tool label{margin-top:12px;gap:8px;} .budget-tool .estimate-option{font-size:.85rem;display:block;}
-  .tool-note{font-size:.85rem;line-height:1.55;color:var(--ink-dim);margin:10px 0;}
-  .recommendation{padding:14px 0;border-top:1px solid var(--rule);}.recommendation p{margin:8px 0;}
-  .skip-link{position:fixed;top:8px;left:8px;transform:translateY(-200%);z-index:30;padding:12px;background:var(--ink);color:var(--bg);}
-  .skip-link:focus{transform:none;} :is(button,a,input,select,summary):focus-visible{outline:2px solid var(--adj);outline-offset:4px;}
-  .hero-grid{align-items:start;} .hero-copy{padding-top:20px;} .alternatives{border-top:1px solid var(--rule);padding-top:16px;margin-top:12px;}
-  summary{cursor:pointer;} .alternatives summary,.cross-details summary{min-height:44px;padding:10px 0;color:var(--ink);}
-  .mobile-comparison{display:none;} .model-card,.quota-card{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px;color:var(--ink-dim);font:inherit;cursor:pointer;}
-  .model-card + .model-card,.quota-card + .quota-card{margin-top:10px;} .model-card-title{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--ink);font-weight:600;margin-bottom:8px;}
-  .model-card-title strong{color:var(--adj);white-space:nowrap;} .model-card > span:last-child,.quota-card > span{font-size:.9rem;line-height:1.5;}
-  .quota-list{max-width:900px;margin:24px 0;} .quota-track{display:block;height:6px;background:var(--rule);border-radius:4px;margin-top:12px;overflow:hidden;}
-  .quota-track > span{display:block;height:100%;background:var(--adj);border-radius:4px;}
-  .text-action{display:inline-block;background:none;border:0;color:var(--adj);font:inherit;text-decoration:underline;text-underline-offset:4px;cursor:pointer;padding:10px 0;min-height:44px;}
-  .plan-picker{margin-top:12px;}.plan-chip{min-height:44px;}.chart-legend .item{white-space:normal;text-align:left;line-height:1.5;}
-  .comparison-controls{display:flex;flex-wrap:wrap;gap:16px;margin-top:24px;}.comparison-controls label{flex:1;min-width:200px;font-size:.9rem;}
-  .comparison-controls input,.comparison-controls select{display:block;width:100%;margin-top:8px;padding:12px;background:var(--panel);color:var(--ink);border:1px solid var(--rule);border-radius:8px;font:inherit;}
-  .sort-button{background:none;border:0;padding:8px 0;color:inherit;font:inherit;cursor:pointer;text-transform:inherit;}
-  .route-model{background:none;border:0;color:var(--ink);font:inherit;text-align:left;padding:8px 0;cursor:pointer;text-decoration:underline;text-underline-offset:4px;}
-  .route-evidence{display:block;font-size:.8rem;color:var(--ink-dim);margin-top:5px;} .cross-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
-  .cross-card{border:1px solid var(--rule);padding:18px;border-radius:10px;}.cross-card h3{font-size:1rem;overflow-wrap:anywhere;}.cross-card p{font-size:.9rem;}
-  .cross-card dl{font-size:.85rem;margin:12px 0 0;}.cross-card dl > div{display:flex;justify-content:space-between;gap:12px;margin-top:8px;}.cross-card dd{margin:0;text-align:right;color:var(--ink);}
-  .node .dot{filter:none;}.node .dot.measured{fill:var(--measured);}.node .dot.published{fill:var(--adj);}
-  @media(max-width:620px){
-    .chart-wrap,.chart-guide{display:none;}.mobile-comparison{display:block;margin:18px 0;}
-    .hero-copy{padding-top:0;} .hero-figs{gap:20px;} .budget-tool{padding:20px;} .panel{padding:18px;}
-    .comparison-controls{display:block;}.comparison-controls label{display:block;margin-top:12px;}
-    .cross-list{grid-template-columns:minmax(0,1fr);} .cross-card dl > div{flex-wrap:wrap;}
-    .route-evidence{font-size:.85rem;} table.routes td{align-items:center;} table.routes td > span{text-align:right;}
-    .chart-legend{gap:12px;}.chart-legend .item{font-size:.85rem;}.quota-card{padding:16px;}
-    .jump-nav a{min-height:44px;display:inline-flex;align-items:center;} .budget-tool input,.budget-tool select{font-size:16px;}
-  }
-  .eyebrow{text-transform:uppercase;letter-spacing:.1em;font-size:.75rem;font-weight:600;color:var(--adj);margin:18px 0 14px;}
-  .hero-actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:28px;}
-  .primary-action{display:inline-flex;align-items:center;justify-content:center;gap:24px;padding:14px 20px;background:var(--adj);color:var(--bg);border-radius:8px;font-weight:600;text-decoration:none;min-height:48px;}
-  .primary-action:hover{background:#ffc355;}.why-card{align-self:center;border-left:2px solid var(--adj);padding:8px 0 8px 28px;}.why-card h2{font-size:1.55rem;line-height:1.2;margin:14px 0;}.why-card p{line-height:1.6;}
-  .usage-example{display:flex;flex-direction:column;gap:10px;padding:22px;background:var(--panel);border:1px solid var(--rule);border-radius:10px;margin:24px 0;font-size:.9rem;}.usage-example strong{font-size:2rem;color:var(--ink);}.usage-example small{font-size:1rem;font-weight:400;}
-  .compare-section{padding:48px 0 72px;}.comparison-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:28px;margin-top:32px;align-items:start;}
-  .result-panel{padding:28px;background:var(--panel);border:1px solid var(--rule);border-radius:14px;}.comparison-layout h3{font-size:1.1rem;margin:0 0 18px;color:var(--ink);}.budget-tool h3:not(:first-child){margin-top:28px;}.eligibility-controls{border-top:1px solid var(--rule);margin-top:24px;padding-top:14px;font-size:.9rem;}.eligibility-controls summary{min-height:44px;padding:8px 0;}
-  .monthly-total{display:block;font-size:2.3rem;color:var(--ink);letter-spacing:-.03em;margin:14px 0;}.monthly-total small{font-size:1rem;font-weight:400;color:var(--ink-dim);letter-spacing:0;margin-left:5px;}.result-plan{display:block;color:var(--adj);font-size:.9rem;}
-  .alternatives .monthly-total{font-size:1.5rem;}.result-panel .pick-link{font-size:1.1rem;}.result-panel .recommendation:first-child{padding-top:0;border-top:0;}
-  @media(min-width:960px){.hero-grid{grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr);gap:64px;}.hero-copy h1{font-size:clamp(2.6rem,4.2vw,4.2rem);}}
-  @media(max-width:760px){.comparison-layout{grid-template-columns:minmax(0,1fr);gap:18px;}.result-panel{padding:20px;}.why-card{padding-left:20px;}.hero-actions{gap:12px;}.compare-section{padding-top:32px;}.hero-copy h1{font-size:2.35rem;}.hero-grid{gap:26px;}.usage-example{padding:16px;}}
-  .hero-copy{min-width:0;padding-top:0;}.hero-instruction{font-size:1rem;line-height:1.6;color:var(--ink-dim);max-width:45ch;margin:26px 0;}
-  .hero-proof{display:flex;align-items:center;flex-wrap:wrap;gap:12px 26px;border-top:1px solid var(--rule);padding-top:22px;margin-top:30px;font-size:.8rem;color:var(--ink-dim);}.hero-proof strong{color:var(--ink);font-weight:600;}.hero-proof a{color:var(--ink-dim);}
-  .hero-grid > .budget-tool{align-self:center;}.budget-tool .budget-tool-kicker{margin-bottom:16px;}.calculator-action{display:flex;width:100%;margin-top:18px;font-size:.95rem;justify-content:space-between;}
-  .hero-grid .budget-tool{box-shadow:none;}.wordmark{cursor:default;}.wordmark::after{display:none;}
-  .decision-guide{border-left:1px solid var(--rule);padding:8px 0 8px 28px;align-self:start;}.decision-guide h3{font-size:1.3rem;line-height:1.3;}.decision-guide p{line-height:1.65;color:var(--ink-dim);}.comparison-layout{grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:48px;}
-  @media(min-width:960px){header.site{padding:72px 0 56px;}.hero-grid{grid-template-columns:minmax(0,1.7fr) minmax(330px,1fr);gap:64px;align-items:center;}.hero-copy h1{font-size:clamp(3rem,4.4vw,4rem);line-height:1.04;letter-spacing:-.05em;}.hero-copy .lede-payoff{font-size:1.2rem;line-height:1.55;}}
-  @media(max-width:959px){.hero-grid{gap:32px;}.hero-copy h1{font-size:clamp(2.4rem,7vw,4rem);line-height:1.08;}.hero-grid > .budget-tool{max-width:580px;}}
-  @media(max-width:760px){.comparison-layout{grid-template-columns:minmax(0,1fr);gap:24px;}.decision-guide{padding:0 0 0 18px;}.hero-proof{gap:12px 22px;}.hero-instruction{font-size:.95rem;}header.site{padding-top:32px;}}
-  .measure{max-width:1360px;}.result-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;padding:20px 0;margin:20px 0 12px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
-  .result-metrics dt{font-size:.8rem;color:var(--ink-dim);margin-bottom:8px;}.result-metrics dd{margin:0;color:var(--ink);font-size:1.05rem;font-variant-numeric:tabular-nums;}
-  @media(max-width:620px){.result-metrics{grid-template-columns:1fr;gap:14px;}.result-metrics > div{display:flex;justify-content:space-between;gap:14px;}.result-metrics dt{margin:0;}.result-metrics dd{font-size:.95rem;}}
-  @media (min-width:621px) and (max-width:900px){.chart-wrap,.chart-guide{display:none;}.mobile-comparison{display:block;margin:18px 0;}}
-  .use-cases-label{ font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.75rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-dim); margin:26px 0 10px; }
-  .use-cases{ list-style:none; padding:0; margin:0; display:grid; gap:9px; max-width:52ch; }
-  .use-cases li{ position:relative; padding-left:26px; font-size:1rem; line-height:1.45; color:var(--ink); }
-  .use-cases li::before{ content:"\2192"; position:absolute; left:0; top:0; color:var(--adj); font-family:"JetBrains Mono",ui-monospace,monospace; }
-  .hero-copy .hero-action{ margin-top:28px; }
-</style>
+<link rel="preload" href="fonts/NimbusSanL-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/instrument-serif-latin-400-italic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="design.css">
+<script>if(!matchMedia("(prefers-reduced-motion: reduce)").matches&&!navigator.webdriver)document.documentElement.classList.add("motion");</script>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
 </script>
@@ -521,61 +91,57 @@
 <header class="site" id="top">
   <div class="measure hero-grid">
     <div class="hero-copy">
-      <h1>Stop paying <br><span class="h1-mult">sticker price</span> <br>for AI coding.</h1>
-      <p class="lede lede-payoff">You can use the same AI coding models two ways: pay per API call, or buy a monthly plan from Claude, ChatGPT, Cursor and others. The plan is often far cheaper. <strong>Rack Rate shows which model and plan give you the best results for your budget.</strong></p>
-      <p class="use-cases-label">Use it to</p>
-      <ul class="use-cases">
-        <li>Pick between Claude, ChatGPT, Cursor and other plans</li>
-        <li>Check whether a plan beats paying per API call</li>
-        <li>Find the cheapest model that still scores well</li>
-      </ul>
-      <a class="hero-action" href="#workload">Compare my costs</a>
-
-    </div>
-      <div class="budget-tool" id="workload">
-        <div class="calculator-heading"><p class="budget-tool-kicker">Make it your budget</p></div>
-        <label class="budget-label" for="budget-input">Monthly budget <span class="field-meta">USD / MONTH</span></label>
-        <div class="budget-amount"><span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="300" step="1" inputmode="numeric" aria-describedby="budget-help"></span><span id="budget-help">up to $300</span></div>
-        <div class="budget-slider"><input type="range" id="budget-range" min="0" max="1000" step="1" value="258" aria-label="Monthly budget in dollars"><div class="budget-ticks" id="budget-ticks" aria-hidden="true"></div></div>
-        <div class="task-field"><label for="tasks-input">Coding tasks <span class="task-sublabel">per month</span></label><input type="number" id="tasks-input" value="10" min="1" max="10000" step="1" inputmode="numeric" aria-describedby="tasks-help"></div>
-        <p class="tool-note" id="tasks-help">Think completed coding jobs, rather than chat messages. Costs use benchmark task medians.</p>
-        <details class="eligibility-controls"><summary>Refine the comparison</summary>
-          <label for="region-input">Plan eligibility <select id="region-input"><option value="other">Exclude China-only plans</option><option value="china" selected>Include China-only plans</option></select></label>
-          <label class="estimate-option"><input type="checkbox" id="exploratory-input" checked> Include unverified access and low-confidence estimates</label>
-          <p class="tool-note">All estimates and regions are included by default. Use these filters to narrow the comparison; check vendor availability before buying.</p>
-        </details>
-        <a class="primary-action calculator-action" href="#compare">Find my comparison</a>
+      <h1><span class="hl" style="--l:0"><span>Stop paying</span></span> <span class="hl" style="--l:1"><span><span class="h1-mult">sticker price</span></span></span> <span class="hl" style="--l:2"><span>for AI coding.</span></span></h1>
+      <p class="lede-payoff">Claude, ChatGPT and Cursor sell the same models by the month, often far cheaper than the API. <strong>Rack Rate finds the best one for your budget.</strong></p>
+      <div class="ratecard" id="ratecard" aria-live="polite" hidden>
+        <div class="rc-head"><span>At your usage</span><span class="rc-model" id="rc-model"></span></div>
+        <div class="rc-body">
+          <div class="rc-col"><span class="rc-label">Pay per call</span><s class="rc-old" id="rc-old"></s></div>
+          <svg class="rc-arrow" viewBox="0 0 44 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 10h38M32 3l8 7-8 7"/></svg>
+          <div class="rc-col"><span class="rc-label" id="rc-plan"></span><strong class="rc-new" id="rc-new"></strong></div>
+        </div>
+        <p class="rc-foot" id="rc-foot"></p>
       </div>
+    </div>
+    <div class="budget-tool" id="workload">
+      <div class="calculator-heading"><p class="budget-tool-kicker">Your budget</p><span class="field-meta">USD / month</span></div>
+      <label class="sr-only" for="budget-input">Monthly budget in dollars</label>
+      <div class="budget-amount"><span class="budget-input-wrap">$<input type="number" id="budget-input" value="20" min="1" max="300" step="1" inputmode="numeric" aria-describedby="budget-help"></span><span id="budget-help">max $300</span></div>
+      <div class="budget-slider"><input type="range" id="budget-range" min="0" max="1000" step="1" value="258" aria-label="Monthly budget in dollars"><div class="budget-ticks" id="budget-ticks" aria-hidden="true"></div></div>
+      <div class="task-field"><label for="tasks-input">Coding tasks <span class="task-sublabel">per month</span></label><input type="number" id="tasks-input" value="10" min="1" max="10000" step="1" inputmode="numeric" aria-describedby="tasks-help"></div>
+      <p class="tool-note" id="tasks-help">A task is one finished coding job, not a chat message.</p>
+      <details class="eligibility-controls"><summary>Filters</summary>
+        <label for="region-input">Plan eligibility <select id="region-input"><option value="other">Exclude China-only plans</option><option value="china" selected>Include China-only plans</option></select></label>
+        <label class="estimate-option"><input type="checkbox" id="exploratory-input" checked> Include unverified access and low-confidence estimates</label>
+        <p class="tool-note">All included by default. Confirm availability before buying.</p>
+      </details>
+      <a class="primary-action calculator-action" href="#compare">Find my comparison</a>
+    </div>
   </div>
   <div class="measure"><div class="coverage-strip" aria-label="Dataset coverage">
-    <p><strong>28</strong><span>benchmark models</span></p><p><strong>16</strong><span>coding plans</span></p><p><strong>113</strong><span>coding tasks</span></p>
+    <p style="--l:0"><strong data-count="28">28</strong><span>benchmark<br>models</span></p><p style="--l:1"><strong data-count="16">16</strong><span>coding<br>plans</span></p><p style="--l:2"><strong data-count="113">113</strong><span>coding<br>tasks</span></p>
   </div></div>
+  <div class="ticker" id="ticker" aria-hidden="true" hidden><div class="ticker-track" id="ticker-track"></div></div>
 </header>
-
-
 
 <main id="main-content">
 <section id="compare" class="compare-section">
   <div class="measure">
-    <p class="eyebrow">Your comparison</p>
-    <h2>Your workload. Your price.</h2>
-    <p class="lede">Start with the highest-scoring model that fits your budget and estimated capacity. Then compare the bill, the limits and the evidence.</p>
+    <p class="eyebrow"><b>01</b> Your comparison</p>
+    <h2>Your workload.<br><em>Your price.</em></h2>
+    <p class="lede">The highest scoring model that fits your budget and capacity.</p>
     <div class="comparison-layout">
       <div class="result-panel">
-
         <div class="budget-result" id="budget-result" aria-live="polite"></div>
       </div>
       <aside class="decision-guide" aria-labelledby="decision-guide-title">
-        <p class="eyebrow">Why usage matters</p><h3 id="decision-guide-title">A plan earns its value when you use it.</h3>
-        <p>The subscription stays the same. The cost of each task changes with how much you use it.</p>
+        <p class="eyebrow">Why usage matters</p>
+        <h3 id="decision-guide-title">Use it more. <span class="serif">Pay less per task.</span></h3>
         <div class="usage-illustration" aria-label="Illustration: a twenty dollar plan costs two dollars per task at ten tasks, or twenty cents at one hundred tasks, if quota permits.">
           <div><span>10 tasks</span><span class="usage-bar" style="--usage:100%"></span><strong>$2.00 <small>/ task</small></strong></div>
           <div><span>100 tasks</span><span class="usage-bar" style="--usage:10%"></span><strong>$0.20 <small>/ task</small></strong></div>
-          <p>Same $20 plan. Illustration assumes enough quota.</p>
+          <p>Same $20 plan, if quota allows.</p>
         </div>
-
-        <a class="text-action" href="#workload">Fine-tune your workload</a>
-        <p class="tool-note">Benchmark performance is a reference point. Your tasks and coding tools will behave differently.</p>
       </aside>
     </div>
   </div>
@@ -583,9 +149,9 @@
 
 <section class="chart-section" id="chart">
   <div class="measure">
-    <p class="eyebrow">The benchmark</p>
-    <h2>Capability has a price.<br>Compare both.</h2>
-    <p class="lede">See where each model sits on coding performance and cost per task. Switch pricing views to explore the difference a plan could make.</p>
+    <p class="eyebrow"><b>02</b> The benchmark</p>
+    <h2>Capability has a price.<br><em>Compare both.</em></h2>
+    <p class="lede">Score against cost per task, for every model.</p>
     <div class="panel">
       <div class="chart-toolbar">
         <div class="toggle-pill" data-mode="list" id="toggle-pill">
@@ -595,7 +161,7 @@
         </div>
         <div class="chart-legend" id="chart-legend"></div>
       </div>
-      <p class="tool-note chart-guide">Higher means a better benchmark score. Further left means lower cost per task. The cost axis is logarithmic: each step is 10×. Hollow points without an eligible subscription stay at their API cost. Use arrow keys to explore and Enter for details.</p>
+      <p class="tool-note chart-guide">Up is better. Left is cheaper. Each cost step is 10×. Arrow keys explore, Enter opens details.</p>
       <div class="mobile-comparison" id="mobile-comparison" aria-label="Model comparison"></div>
       <div class="chart-wrap">
         <svg class="chart" id="chart-svg" viewBox="0 0 960 520" tabindex="0" role="img" aria-label="Score against cost per task for every model">
@@ -624,7 +190,7 @@
         <div class="sr-only" id="chart-live" aria-live="polite"></div>
       </div>
       <p class="tool-note" id="eligibility-summary"></p>
-      <a class="text-action" href="#compare">Adjust workload and evidence filters</a>
+      <a class="text-action" href="#compare">Adjust filters</a>
       <details class="plan-picker">
         <summary id="plan-picker-summary">Plans: all on</summary>
         <div class="plan-chips" id="plan-chips"></div>
@@ -635,14 +201,14 @@
 
 <section id="routes" class="data-section">
   <div class="measure">
-    <p class="eyebrow">The plan index</p><h2>The plan behind the price.</h2>
-    <p class="lede">Each model’s lowest estimated cost per task, assuming full use of the selected plan’s quota. Use your comparison above for the bill at your actual workload.</p>
+    <p class="eyebrow"><b>03</b> The plan index</p><h2>The plan behind<br><em>the price.</em></h2>
+    <p class="lede">Each model’s cheapest plan, at full use of its quota.</p>
     <div class="comparison-controls">
-      <label for="route-search">Find a model or plan<input type="search" id="route-search" placeholder="Search models and plans"></label>
+      <label for="route-search">Search<input type="search" id="route-search" placeholder="Model or plan"></label>
       <label for="route-sort">Sort by<select id="route-sort"><option value="api_cost_per_task_usd">API cost</option><option value="score_pct">Benchmark score</option><option value="cost_per_task_usd" selected>Full-use cost</option><option value="model_name">Model name</option><option value="plan_name">Plan name</option><option value="quota_equivalent_days">Quota equivalent</option></select></label>
     </div>
     <p class="tool-note" id="route-count" aria-live="polite"></p>
-    <div style="overflow-x:auto;">
+    <div class="table-scroll">
       <table class="routes" id="routes-table">
         <thead>
           <tr>
@@ -651,7 +217,7 @@
             <th data-key="api_cost_per_task_usd" scope="col"><button type="button" class="sort-button">API list</button></th>
             <th data-key="plan_name" scope="col"><button type="button" class="sort-button">Plan</button></th>
             <th data-key="cost_per_task_usd" scope="col"><button type="button" class="sort-button">At full use / task</button></th>
-            <th data-key="quota_equivalent_days" scope="col"><button type="button" class="sort-button">Quota-equivalent days</button></th>
+            <th data-key="quota_equivalent_days" scope="col"><button type="button" class="sort-button">Quota days</button></th>
           </tr>
         </thead>
         <tbody id="routes-body"></tbody>
@@ -662,30 +228,30 @@
 
 <section id="runtime" class="data-section">
   <div class="measure">
-    <p class="eyebrow">The allowance</p><h2>How far does the quota go?</h2>
-    <p class="lede">How many days of steady-state quota would cover 113 benchmark tasks? These figures describe allowance, not completion time; resets, starting balance and run duration are not modeled.</p>
+    <p class="eyebrow"><b>04</b> The allowance</p><h2>How far does<br><em>the quota go?</em></h2>
+    <p class="lede">Days of quota it takes to cover 113 benchmark tasks. This is allowance, not completion time.</p>
     <div id="runtime-svg" class="quota-list" aria-label="Quota-equivalent days per route"></div>
   </div>
 </section>
 
 <section id="method" class="data-section">
   <div class="measure">
-    <p class="eyebrow">Behind the numbers</p><h2>No mystery math.</h2>
-    <p class="lede">We pair <a href="https://github.com/datacurve-ai/deep-swe">DeepSWE coding benchmarks</a> with plan prices and quotas. Your cost per task depends on how much you use.</p>
-    <p class="tool-note dataset-context">Benchmark snapshot: <time datetime="__BENCHMARK_DATE__">__BENCHMARK_DATE__</time>.</p>
+    <p class="eyebrow"><b>05</b> Behind the numbers</p><h2>No <em>mystery</em> math.</h2>
+    <p class="lede"><a href="https://github.com/datacurve-ai/deep-swe">DeepSWE benchmarks</a> plus plan prices and quotas.</p>
+    <p class="dataset-context">Snapshot <time datetime="__BENCHMARK_DATE__">__BENCHMARK_DATE__</time></p>
     <p class="method-equation">Cost per task = monthly price ÷ tasks completed</p>
     <details class="method-details">
       <summary>How we calculate the estimates</summary>
       <p class="tool-note" id="coverage-summary"></p>
-      <p class="tool-note">Full-use estimates assume you consume the entire modeled quota. Quotas measured on one model may differ on another; reasoning settings, caching, tools and provider rates also affect costs.</p>
+      <p class="tool-note">Full-use estimates assume you burn the whole quota. Reasoning settings, caching and tools shift real costs.</p>
       <div class="method-answers">
-        <h3>When is a subscription cheaper than API use?</h3>
-        <p>When its monthly price is below your estimated API bill and its quota covers your workload. Your comparison shows the break-even task count.</p>
-        <h3>Are all model-plan combinations verified?</h3>
-        <p>No. Access labels distinguish observed, source-listed and unverified combinations. Check current model availability with the provider before buying.</p>
+        <h3>When does a plan beat the API?</h3>
+        <p>When its price is below your API bill and its quota covers your workload. Break-even is in your comparison.</p>
+        <h3>Is every model and plan pairing verified?</h3>
+        <p>No. Access labels show observed, listed or unverified. Confirm with the provider before buying.</p>
       </div>
       <div class="cards" id="method-cards"></div>
-      <p class="tool-note">Inspect the comparison data: <a href="https://raw.githubusercontent.com/utkuacikgoz/rack-rate/main/data/derived.csv">CSV</a> · <a href="https://raw.githubusercontent.com/utkuacikgoz/rack-rate/main/data/derived.json">JSON</a>.</p>
+      <p class="tool-note">Data: <a href="https://raw.githubusercontent.com/utkuacikgoz/rack-rate/main/data/derived.csv">CSV</a> · <a href="https://raw.githubusercontent.com/utkuacikgoz/rack-rate/main/data/derived.json">JSON</a></p>
     </details>
     <details><summary>Missing evidence and unpriced plans</summary><ul id="known-gaps"></ul></details>
   </div>
@@ -693,27 +259,28 @@
 
 <section id="cross-check" class="data-section">
   <div class="measure">
-    <p class="eyebrow">A note on uncertainty</p><h2>Where the estimates disagree.</h2>
-    <p class="lede">Two conversions of the same quota disagree. These estimates share source data and are not independent validation. The gap is unresolved; it should lower confidence in the conversion.</p>
+    <p class="eyebrow"><b>06</b> A note on uncertainty</p><h2>Where the estimates<br><em>disagree.</em></h2>
+    <p class="lede">Two conversions of one quota disagree, and they share source data.</p>
     <details class="cross-details"><summary>See individual comparisons</summary><div id="cross-data" class="cross-list"></div></details>
-    <p id="cross-summary" class="mono" style="color:var(--ink-faint); font-size:.875rem; max-width:60ch;"></p>
+    <p id="cross-summary" class="mono"></p>
   </div>
 </section>
 
 <section id="sources" class="data-section">
   <div class="measure">
-    <p class="eyebrow">The source material</p><h2>Follow the numbers.</h2>
-    <p class="lede">Explore the benchmarks, quota measurements and pricing references behind this comparison. Full notes in <a href="https://github.com/utkuacikgoz/rack-rate/blob/main/SOURCES.md">SOURCES.md</a>.</p>
+    <p class="eyebrow"><b>07</b> The source material</p><h2>Follow<br><em>the numbers.</em></h2>
+    <p class="lede">Benchmarks, quota measurements and pricing references. Full notes in <a href="https://github.com/utkuacikgoz/rack-rate/blob/main/SOURCES.md">SOURCES.md</a>.</p>
     <div class="cards" id="source-cards"></div>
   </div>
 </section>
 </main>
 
 <footer class="site">
-  <div class="measure"><div class="footer-signoff"><span>Rack Rate.</span><p>Know the model.<br>Understand the bill.</p><a href="#top">Back to top</a></div>
-    <p>MIT licensed. Measured quotas from <a href="https://github.com/mahonzhan/awesome-coding-plan">Awesome Coding Plan</a> by mahonzhan, CC BY 4.0. Maintained by <a href="https://github.com/utkuacikgoz/rack-rate">Rack Rate contributors</a>. See <a href="https://github.com/utkuacikgoz/rack-rate/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> for open work.</p>
+  <div class="measure"><div class="footer-signoff"><span>Rack Rate.</span><div><p>Know the model.<br>Understand the bill.</p><a href="#top">Back to top</a></div></div>
+    <p>MIT licensed. Quotas from <a href="https://github.com/mahonzhan/awesome-coding-plan">Awesome Coding Plan</a> by mahonzhan, CC BY 4.0.</p>
   </div>
 </footer>
+
 
 <div class="rail-backdrop" id="rail-backdrop"></div>
 <aside class="rail" id="rail" role="dialog" aria-modal="true" aria-labelledby="rail-title" aria-hidden="true" inert>
@@ -827,7 +394,7 @@
   (function renderCoverage(){
     var observed = (DERIVED.pairs || []).filter(function(p){ return p.access_status !== "unverified"; }).length;
     var date = (DERIVED.generated_from.benchmark_date || "unknown").slice(0, 10);
-    document.getElementById("coverage-summary").textContent = MODELS.length + " models · " + TASK_COUNT + " tasks · Snapshot: " + date + ". " + observed + " model-plan pairs have source-documented access. Scores use mini-swe-agent; costs use benchmark medians, so actual workloads and subscription tools may differ.";
+    document.getElementById("coverage-summary").textContent = MODELS.length + " models, " + TASK_COUNT + " tasks, snapshot " + date + ". " + observed + " model-plan pairs have source-documented access. Scores use mini-swe-agent and costs use benchmark medians.";
   })();
 
   function decisionOptions(){
@@ -854,14 +421,70 @@
     return b;
   }
   function strong(text){ var el = document.createElement("strong"); el.textContent = text; return el; }
+  function money(v){ return "$" + v.toFixed(2); }
+  // Persistent hero figures glide to their new value instead of jumping.
+  var moneyNow = {};
+  function tweenMoney(el, to, first){
+    var from = moneyNow[el.id];
+    moneyNow[el.id] = to;
+    cancelAnimationFrame(el._raf);
+    if (!motionOK || from === to) { el.textContent = money(to); return; }
+    var dur = first ? 1500 : 450, delay = first ? 900 : 0, start = from === undefined ? 0 : from;
+    el.textContent = money(start);
+    var t0 = null;
+    setTimeout(function(){
+      el._raf = requestAnimationFrame(function step(ts){
+        if (t0 === null) t0 = ts;
+        var p = Math.min(1, (ts - t0) / dur);
+        el.textContent = money(start + (to - start) * (1 - Math.pow(1 - p, 4)));
+        if (p < 1) el._raf = requestAnimationFrame(step);
+      });
+    }, delay);
+  }
+  var rateCardKey = null, flashTimer = null;
+  function renderRateCard(best){
+    var card = document.getElementById("ratecard");
+    if (!card) return;
+    if (!best) { card.hidden = true; return; }
+    var first = card.hidden && rateCardKey === null;
+    card.hidden = false;
+    var api = best.plan_id === "api";
+    var diff = api ? 0 : best.apiMonthly - best.monthly;
+    card.setAttribute("data-state", api ? "api" : diff >= 0.005 ? "plan" : "loss");
+    document.getElementById("rc-model").textContent = best.model_name;
+    document.getElementById("rc-plan").textContent = api ? "Pay per call" : best.plan_name;
+    if (!api) tweenMoney(document.getElementById("rc-old"), best.apiMonthly, first);
+    tweenMoney(document.getElementById("rc-new"), best.monthly, first);
+    document.getElementById("rc-foot").innerHTML = api ? "No plan beats the API at this usage."
+      : diff >= 0.005 ? "You keep <b>" + money(diff) + "</b> a month"
+      : "The API is <b>" + money(-diff) + "</b> cheaper at this usage";
+    var key = best.model_id + "|" + best.plan_id;
+    if (motionOK && rateCardKey !== null && key !== rateCardKey) {
+      card.classList.add("flash");
+      clearTimeout(flashTimer);
+      flashTimer = setTimeout(function(){ card.classList.remove("flash"); }, 160);
+    }
+    rateCardKey = key;
+  }
+  var resultSeen = false;
+  function saveBar(best){
+    var max = Math.max(best.apiMonthly, best.monthly), diff = best.apiMonthly - best.monthly;
+    var el = document.createElement("div");
+    el.className = "savebar" + (resultSeen ? " go" : "");
+    el.innerHTML = '<div class="sb-row"><span>Pay per call</span><span class="sb-track"><i style="--w:' + (best.apiMonthly / max * 100).toFixed(1) + '%"></i></span><b>' + money(best.apiMonthly) + '</b></div>' +
+      '<div class="sb-row plan"><span>This plan</span><span class="sb-track"><i style="--w:' + (best.monthly / max * 100).toFixed(1) + '%"></i></span><b>' + money(best.monthly) + '</b></div>' +
+      '<p class="sb-verdict">' + (diff >= 0.005 ? "You keep <b>" + money(diff) + "</b> a month." : diff <= -0.005 ? "The API is <b>" + money(-diff) + "</b> cheaper a month at this usage." : "Same cost as the API at this usage.") + '</p>';
+    return el;
+  }
   function renderBudgetTool(){
     var out = document.getElementById("budget-result"), opts = decisionOptions();
     out.replaceChildren();
     if (!Number.isInteger(opts.tasks) || opts.tasks < 1 || opts.tasks > 10000 || !(opts.budget > 0)) {
-      out.textContent = "Enter a positive budget and 1–10,000 whole tasks per month."; return;
+      out.textContent = "Enter a budget and 1 to 10,000 whole tasks per month."; renderRateCard(null); return;
     }
     var candidates = RackRateDecision.recommend(MODELS, DERIVED.pairs || [], opts);
-    if (!candidates.length) { out.textContent = "No route fits this workload and budget. Reduce the task count, increase the budget, or review the evidence filters."; return; }
+    if (!candidates.length) { out.textContent = "Nothing fits. Raise the budget, lower the task count or loosen the filters."; renderRateCard(null); return; }
+    renderRateCard(candidates[0]);
     var alternatives = document.createElement("details"); alternatives.className = "alternatives";
     var summary = document.createElement("summary"); summary.textContent = "Compare " + Math.min(2, candidates.length - 1) + " alternatives";
     alternatives.appendChild(summary);
@@ -877,16 +500,17 @@
       detail.innerHTML = '<span class="result-plan">' + escapeHTML(best.plan_name) + '</span><strong class="monthly-total">$' + best.monthly.toFixed(2) + '<small>/month</small></strong><span>' + opts.tasks + (opts.tasks === 1 ? ' task · $' : ' tasks · $') + best.perTask.toFixed(3) + ' per task at your usage</span>';
       card.appendChild(detail);
       var note = document.createElement("p"); note.className = "tool-note";
-      note.textContent = best.plan_id === "api" ? "API estimate uses benchmark median cost. Actual runs vary; no subscription required." : evidenceSummary(best) + " Estimated capacity: " + Math.floor(best.capacity) + " tasks/month. API for the same workload: $" + best.apiMonthly.toFixed(2) + ". Break-even: about " + best.breakEven + " tasks/month.";
+      note.textContent = "Benchmark median cost. Actual runs vary, and no subscription is needed.";
       if (best.plan_id !== "api") {
+        card.appendChild(saveBar(best));
         var metrics = document.createElement("dl"); metrics.className = "result-metrics";
-        [["API at your usage", "$" + best.apiMonthly.toFixed(2) + "/mo"], ["Estimated capacity", Math.floor(best.capacity) + " tasks/mo"], ["Break-even", best.breakEven + " tasks/mo"]].forEach(function(metric){
+        [["Estimated capacity", Math.floor(best.capacity) + " tasks/mo"], ["Break-even", best.breakEven + " tasks/mo"]].forEach(function(metric){
           var item = document.createElement("div"), term = document.createElement("dt"), value = document.createElement("dd");
           term.textContent = metric[0]; value.textContent = metric[1]; item.append(term, value); metrics.appendChild(item);
         });
         card.appendChild(metrics);
         note.classList.add("evidence-note");
-        note.textContent = "Access: " + best.access_status + ". " + (best.access_status === "unverified" ? "This model-plan pairing needs confirmation from the vendor." : "Source-documented access; check current vendor availability.");
+        note.textContent = "Access " + best.access_status + ". " + (best.access_status === "unverified" ? "Confirm this pairing with the vendor." : "Source-documented; check current availability.");
       }
       card.appendChild(note);
       var action = document.createElement("button"); action.type = "button"; action.className = "text-action";
@@ -1537,30 +1161,30 @@
     html += '</div>';
     var chosen = null;
     if (state.selectedPlan === "api") {
-      html += '<p>API list estimate: $' + (m.api_cost_per_task_usd * decisionOptions().tasks).toFixed(2) + ' for ' + decisionOptions().tasks + (decisionOptions().tasks === 1 ? ' task.' : ' tasks.') + ' Benchmark median; actual costs vary.</p>';
+      html += '<p>API list estimate: $' + (m.api_cost_per_task_usd * decisionOptions().tasks).toFixed(2) + ' for ' + decisionOptions().tasks + (decisionOptions().tasks === 1 ? ' task.' : ' tasks.') + ' Benchmark median, so real costs vary.</p>';
     } else if (pairs.length) {
       var best = pairs[0]; chosen = best;
       html += '<div class="formula">At full utilization only:\ncost_per_task = price_per_month / tasks_per_month\n= $' + best.price_usd_month + ' / ' + best.tasks_per_month + '\n= $' + best.cost_per_task_usd.toFixed(4) + ' on ' + best.plan_name + '</div>';
       if (best.quota_equivalent_days) {
-        html += '<p style="margin-top:12px;">Quota equivalent for 113 tasks on ' + best.plan_name + ': <strong style="color:var(--adj)">' + best.quota_equivalent_days + ' days</strong>; not a completion-time estimate.</p>';
+        html += '<p style="margin-top:12px;">113 tasks equal <strong style="color:var(--adj)">' + best.quota_equivalent_days + ' days</strong> of ' + best.plan_name + ' quota. Not a completion time.</p>';
       }
     } else {
-      html += '<p>No plan in the selected set prices this model yet.</p>';
+      html += '<p>No selected plan prices this model yet.</p>';
     }
-    html += '<p class="tool-note">Score measured with mini-swe-agent at ' + escapeHTML(m.reasoning_effort || "default") + ' effort. Subscription tools may perform differently. Cost and capacity use benchmark medians, not a measured monthly workload.</p>';
+    html += '<p class="tool-note">Scored with mini-swe-agent at ' + escapeHTML(m.reasoning_effort || "default") + ' effort. Costs and capacity use benchmark medians.</p>';
     if (chosen) {
       var plan = planById[chosen.plan_id], estimate = RackRateDecision.costs(chosen, decisionOptions().tasks);
       html += '<p>' + escapeHTML(evidenceSummary(chosen)) + '</p>';
       html += '<p>At your ' + decisionOptions().tasks + ' tasks/month: $' + estimate.monthly.toFixed(2) + '/month, $' + estimate.perTask.toFixed(3) + '/task. API estimate: $' + estimate.apiMonthly.toFixed(2) + '. Break-even: about ' + estimate.breakEven + ' tasks/month.</p>';
-      if (!estimate.fits) html += '<p>Requested workload exceeds this route’s estimated monthly capacity. Extra usage is not priced.</p>';
+      if (!estimate.fits) html += '<p>Your workload exceeds this plan’s estimated capacity. Extra usage is not priced.</p>';
       html += '<p>' + escapeHTML(plan.method) + '</p>';
       var access = (plan.model_access || {})[m.id];
-      html += '<p>Model access: ' + (access ? escapeHTML(access.status + " in source dated " + access.as_of) : 'unverified; confirm model and reasoning-level access before purchasing') + '.</p>';
+      html += '<p>Model access: ' + (access ? escapeHTML(access.status + " in source dated " + access.as_of) : 'unverified. Confirm model and reasoning access before buying') + '.</p>';
       html += '<p><a href="' + escapeHTML(plan.plan_url) + '">Check ' + escapeHTML(plan.name) + ' availability and pricing</a></p>';
     }
     if (m.effort_variants && m.effort_variants.length) {
       html += '<h3 style="margin-top:24px;">Reasoning effort</h3>';
-      html += '<p style="font-size:.82rem; margin-bottom:10px;">DeepSWE ran this model at ' + m.effort_variants.length + ' effort levels. The chart uses the highest-scoring one.</p>';
+      html += '<p style="font-size:.82rem; margin-bottom:10px;">Run at ' + m.effort_variants.length + ' effort levels. The chart uses the best score.</p>';
       html += '<table class="rail-effort-table">';
       html += '<thead><tr><th>Effort</th><th>Score</th><th>Cost</th><th>Steps</th></tr></thead><tbody>';
       m.effort_variants.forEach(function(v, vi){
@@ -1632,7 +1256,7 @@
   }
   function renderTable(flip){
     var rows = routesForTable().filter(function(r){ return (r.model_name + " " + r.plan_name).toLowerCase().includes(routeQuery); });
-    document.getElementById("route-count").textContent = rows.length + " matching models. Open a model for plan evidence and your workload costs.";
+    document.getElementById("route-count").textContent = rows.length + " models. Select one for its evidence.";
     var body = document.getElementById("routes-body");
     var before = null;
     if (flip && motionOK) {
@@ -1642,17 +1266,17 @@
       });
     }
     if (!rows.length) {
-      body.innerHTML = '<tr><td colspan="6" data-label="">' + (routeQuery ? "No matches. Try another model or plan." : "No priced routes yet for the selected plans and evidence filters.") + "</td></tr>";
+      body.innerHTML = '<tr><td colspan="6" data-label="">' + (routeQuery ? "No matches." : "No priced routes for these plans and filters.") + "</td></tr>";
       return;
     }
-    body.innerHTML = rows.map(function(r){
-      return '<tr data-model="' + r.model_id + '" data-plan="' + r.plan_id + '">' +
+    body.innerHTML = rows.map(function(r, ri){
+      return '<tr style="--r:' + Math.min(ri, 14) + '" data-model="' + r.model_id + '" data-plan="' + r.plan_id + '">' +
         '<td data-label="Model"><button type="button" class="route-model">' + escapeHTML(r.model_name) + '</button></td>' +
-        '<td data-label="Score">' + r.score_pct + "%</td>" +
+        '<td data-label="Score"><span class="score-cell"><span>' + r.score_pct + '%</span><i class="mini" style="--w:' + r.score_pct + '%"></i></span></td>' +
         '<td data-label="API list">$' + r.api_cost_per_task_usd.toFixed(3) + "</td>" +
         '<td data-label="Plan"><span>' + escapeHTML(r.plan_name) + '<small class="route-evidence">Access: ' + r.access_status + '</small></span></td>' +
         '<td data-label="At full use / task"><span class="confidence-dot ' + confidenceClass(r) + '"></span>$' + r.cost_per_task_usd.toFixed(4) + "</td>" +
-        '<td data-label="Quota-equivalent days">' + (r.quota_equivalent_days || "n/a") + "</td>" +
+        '<td data-label="Quota days">' + (r.quota_equivalent_days || "n/a") + "</td>" +
         "</tr>";
     }).join("");
     Array.prototype.forEach.call(body.querySelectorAll("tr[data-model]"), function(tr){
@@ -1737,12 +1361,12 @@
       var pair = cheapestFor(m.id, "sub");
       return { m: m, pair: pair, cost: state.mode === "sub" ? (pair ? pair.cost_per_task_usd : null) : m.api_cost_per_task_usd };
     }).filter(function(r){ return r.cost !== null; }).sort(function(a,b){ return b.m.score_pct - a.m.score_pct; });
-    box.innerHTML = '<p class="tool-note">Ranked by benchmark score. Tap a model for details.</p>' +
+    box.innerHTML = '<p class="tool-note">Ranked by score. Tap a model for details.</p>' +
       rows.slice(0, mobileExpanded ? rows.length : 5).map(function(r){
         var planId = state.mode === "sub" ? r.pair.plan_id : "api";
         return '<button type="button" class="model-card" data-model="' + r.m.id + '" data-plan="' + planId + '"><span class="model-card-title">' + escapeHTML(r.m.name) + '<strong>' + r.m.score_pct + '%</strong></span><span>$' + r.cost.toFixed(3) + '/task · ' + (state.mode === "sub" ? 'at full use on ' + escapeHTML(r.pair.plan_name) : 'API median') + '</span></button>';
       }).join("");
-    if (!rows.length) box.innerHTML += '<p>No eligible subscription estimates. Review the evidence filters or use API list prices.</p>';
+    if (!rows.length) box.innerHTML += '<p>No eligible subscription estimates. Loosen the filters or use API list prices.</p>';
     if (rows.length > 5) {
       var more = document.createElement("button"); more.type = "button"; more.className = "text-action";
       more.textContent = mobileExpanded ? "Show top 5" : "Show all " + rows.length + " models";
@@ -1751,15 +1375,15 @@
     }
     bindModelButtons(box);
     document.getElementById("eligibility-summary").textContent =
-      state.exploratory ? "All evidence levels: unverified access and low-confidence estimates are included. Confirm availability before buying." : "Evidence filter: only observed or source-listed model access; low-confidence estimates excluded.";
+      state.exploratory ? "Includes unverified access and low-confidence estimates." : "Observed or source-listed access only.";
   }
   function renderRuntime(){
     var box = document.getElementById("runtime-svg");
     var rows = routesForTable().filter(function(r){ return r.quota_equivalent_days; }).sort(function(a,b){ return a.quota_equivalent_days - b.quota_equivalent_days; });
-    if (!rows.length) { box.innerHTML = '<p>No quota estimates for the selected plans and evidence filters.</p>'; return; }
+    if (!rows.length) { box.innerHTML = '<p>No quota estimates for these plans and filters.</p>'; return; }
     var max = Math.max.apply(null, rows.map(function(r){ return r.quota_equivalent_days; }));
-    box.innerHTML = rows.slice(0, quotaExpanded ? rows.length : 6).map(function(r){
-      return '<button type="button" class="quota-card" data-model="' + r.model_id + '" data-plan="' + r.plan_id + '"><span class="model-card-title">' + escapeHTML(r.model_name) + '<strong>' + r.quota_equivalent_days + ' days</strong></span><span>' + escapeHTML(r.plan_name) + ' · Access: ' + r.access_status + '</span><span class="quota-track" aria-hidden="true"><span style="width:' + (r.quota_equivalent_days / max * 100) + '%"></span></span></button>';
+    box.innerHTML = rows.slice(0, quotaExpanded ? rows.length : 6).map(function(r, ri){
+      return '<button type="button" class="quota-card" data-model="' + r.model_id + '" data-plan="' + r.plan_id + '"><span class="model-card-title">' + escapeHTML(r.model_name) + '<strong>' + r.quota_equivalent_days + ' days</strong></span><span>' + escapeHTML(r.plan_name) + ' · Access: ' + r.access_status + '</span><span class="quota-track" aria-hidden="true"><span style="width:' + (r.quota_equivalent_days / max * 100) + '%;--i:' + ri + '"></span></span></button>';
     }).join("");
     if (rows.length > 6) {
       var more = document.createElement("button"); more.type = "button"; more.className = "text-action";
@@ -1842,7 +1466,7 @@
     var box = document.getElementById("cross-data");
     box.innerHTML = rows.map(function(r){ return '<article class="cross-card"><h3>' + escapeHTML(r.model_name) + '</h3><p>' + escapeHTML(r.plan_name) + '</p><dl><div><dt>Dollar conversion</dt><dd>' + r.tasks_by_dollars + ' tasks/month</dd></div><div><dt>Token conversion</dt><dd>' + r.tasks_by_tokens + ' tasks/month</dd></div><div><dt>Disagreement</dt><dd>' + r.ratio + '×</dd></div></dl></article>'; }).join("");
     document.getElementById("cross-summary").textContent = summary.median_ratio ?
-      "Median disagreement: " + summary.median_ratio + "× across " + summary.pair_count + " pairs (range " + summary.min_ratio + "–" + summary.max_ratio + "×)." : "No cross-check data yet.";
+      "Median disagreement: " + summary.median_ratio + "× across " + summary.pair_count + " pairs (range " + summary.min_ratio + " to " + summary.max_ratio + "×)." : "No cross-check data yet.";
   }
 
   // ---------- sources ----------
@@ -1901,12 +1525,64 @@
   document.getElementById("known-gaps").innerHTML = (DERIVED.known_gaps || []).map(function(g){ return '<li><strong>' + escapeHTML(g.plan) + '</strong>: ' + escapeHTML(g.reason) + '</li>'; }).join("");
   if (state.selectedModel) openRail(state.selectedModel, false);
 
+  // ---------- hero extras: ticker, counters, pointer glow ----------
+  (function initHero(){
+    var ticker = document.getElementById("ticker"), track = document.getElementById("ticker-track");
+    if (ticker && track && MODELS.length) {
+      var set = MODELS.slice().sort(function(a, b){ return b.score_pct - a.score_pct; }).map(function(m){
+        return '<span class="ticker-item">' + escapeHTML(m.name) + ' <b>' + m.score_pct + '%</b></span>';
+      }).join("");
+      track.innerHTML = '<div class="ticker-set">' + set + '</div><div class="ticker-set">' + set + '</div>';
+      ticker.hidden = false;
+    }
+    var counts = document.querySelectorAll("[data-count]");
+    if (motionOK && "IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (!e.isIntersecting) return;
+          io.unobserve(e.target);
+          countUp(e.target, Number(e.target.getAttribute("data-count")), 0, "", "", 900, 1500);
+        });
+      }, { threshold: .6 });
+      Array.prototype.forEach.call(counts, function(el){ io.observe(el); });
+    }
+    var hero = document.getElementById("top"), glowTick = false, gx = 80, gy = 22;
+    if (hero && motionOK) {
+      hero.addEventListener("pointermove", function(e){
+        if (e.pointerType !== "mouse") return;
+        var r = hero.getBoundingClientRect();
+        gx = (e.clientX - r.left) / r.width * 100; gy = (e.clientY - r.top) / r.height * 100;
+        if (glowTick) return;
+        glowTick = true;
+        requestAnimationFrame(function(){ glowTick = false; hero.style.setProperty("--gx", gx.toFixed(1) + "%"); hero.style.setProperty("--gy", gy.toFixed(1) + "%"); });
+      }, { passive: true });
+    }
+  })();
+
   // ---------- scroll reveals ----------
-  Array.prototype.forEach.call(document.querySelectorAll("main h2, main .lede, main .panel, #routes .measure > div, #cross-summary, footer.site .measure, #method-cards .card, #source-cards .card"), function(el){
+  Array.prototype.forEach.call(document.querySelectorAll("main .eyebrow, main h2, main .lede, main .panel, .result-panel, .decision-guide, #routes .measure > div, #cross-summary, footer.site .measure, #method-cards .card, #source-cards .card, #method .method-equation"), function(el){
     watch(el, "reveal");
   });
   watch(document.getElementById("runtime-svg"), "inview");
-
+  if (motionOK && "IntersectionObserver" in window) {
+    var once = function(el, fn, threshold){
+      if (!el) return;
+      var io = new IntersectionObserver(function(entries){
+        if (!entries[0].isIntersecting) return;
+        io.disconnect(); fn();
+      }, { threshold: threshold });
+      io.observe(el);
+    };
+    once(document.querySelector(".result-panel"), function(){
+      resultSeen = true;
+      Array.prototype.forEach.call(document.querySelectorAll(".savebar"), function(el){ el.classList.add("go"); });
+    }, .25);
+    once(document.getElementById("routes-table"), function(){
+      var body = document.getElementById("routes-body");
+      body.classList.add("intro");
+      setTimeout(function(){ body.classList.remove("intro"); }, 2200);
+    }, .12);
+  }
 
   // ---------- nav scroll-spy ----------
   (function initNav(){

@@ -23,3 +23,11 @@ Do not substitute one for the other without re-checking this note.
 
 If you are a maintainer and can source a copy with clearer bundled licensing
 terms, replacing these files is welcome.
+
+# Instrument Serif and JetBrains Mono
+
+Self-hosted as WOFF2 (Latin subset, unmodified) from the Fontsource packages
+`@fontsource/instrument-serif` and `@fontsource/jetbrains-mono`.
+
+- Instrument Serif: Copyright 2022 The Instrument Serif Project Authors. SIL Open Font License 1.1, see `OFL-InstrumentSerif.txt`.
+- JetBrains Mono: Copyright 2020 The JetBrains Mono Project Authors. SIL Open Font License 1.1, see `OFL-JetBrainsMono.txt`.

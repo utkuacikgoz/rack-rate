@@ -29,7 +29,7 @@ Quota evidence and conversion confidence are separate. A quota measured on one m
 
 ## Build and test
 
-The core pipeline needs Python 3.9+. DOM and decision regression tests use Node 22 and jsdom as a development dependency. The deployed site has no npm runtime dependencies.
+The core pipeline needs Python 3.9+. DOM and decision regression tests use Node 22.22 or newer and jsdom as a development dependency. The deployed site has no npm runtime dependencies.
 
 ```sh
 npm ci
@@ -57,8 +57,9 @@ Review refreshed data before committing. The fetch does not verify plan catalogs
 - `data/sources.json`: citation and retrieval records.
 - `scripts/compute.py`: generates derived data and the page.
 - `scripts/validate.py`: validates data and evidence references.
-- `site/template.html`: page source.
-- `site/design.css`: editorial layout, typography, colors and responsive presentation.
+- `site/template.html`: page markup and interaction scripts.
+- `site/design.css`: the full design system: tokens, layout, components, chart styling and motion.
+- `site/fonts/`: self-hosted Nimbus Sans L, Instrument Serif and JetBrains Mono.
 - `site/decision.js`: workload calculations shared with tests.
 - `tests/`: Python arithmetic/evidence checks and Node decision/DOM regression tests.
 
