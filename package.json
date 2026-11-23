@@ -9,7 +9,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "jsdom": "26.1.0"
+    "jsdom": "31.0.1"
   },
   "private": true
 }
